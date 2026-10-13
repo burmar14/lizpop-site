@@ -1,6 +1,6 @@
 /* Liz Pop Art: styles
-   Sections: tokens, base, buttons, doodles, header, hero, reminder, prints, book,
-   events, brand work, portfolio, about, newsletter, studio, most loved, footer, dialogs, motion */
+   Sections: tokens, base, buttons, doodles, header, hero, doorways, reminder, prints, book,
+   events, brand work, portfolio, about, newsletter, studio, most loved, extras, pause, footer, dialogs, motion */
 
 
 /* ---------- Tokens ---------- */
@@ -183,6 +183,32 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 }
 
 
+/* ---------- Doorways (home) ---------- */
+.doors { padding: 0 0 72px; }
+.door-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.door {
+  display: flex; flex-direction: column; gap: 6px; text-decoration: none;
+  padding: 22px 20px 24px; background: var(--paper); border: 2.5px solid var(--ink);
+  border-radius: 18px 24px 20px 26px; box-shadow: 5px 5px 0 var(--ink); transition: transform .2s ease;
+}
+.door:nth-child(odd) { transform: rotate(-1deg); }
+.door:nth-child(even) { transform: rotate(1deg); }
+.door:hover, .door:focus-visible { transform: rotate(0deg) translateY(-6px); animation: wiggle-up .5s ease-in-out; }
+.door-for { font-family: var(--hand); font-weight: 600; font-size: .9rem; color: var(--green-deep); }
+.door-title { font-family: var(--hand); font-weight: 800; font-size: 1.35rem; line-height: 1.2; }
+.door-text { color: var(--ink-soft); font-size: .95rem; line-height: 1.45; }
+.door-shop { background: var(--pink-wash); }
+.door-book { background: #d9ecd2; }
+.door-extras { background: #fff2bf; }
+.door-brands { background: #dfe2f7; }
+@media (max-width: 900px) { .door-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) {
+  .doors { padding-bottom: 48px; }
+  .door-grid { grid-template-columns: 1fr; gap: 16px; }
+  .door { padding: 16px 18px 18px; }
+}
+
+
 /* ---------- Today's reminder ---------- */
 .reminder { padding: 0 0 72px; }
 .reminder-card {
@@ -247,7 +273,7 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 .book-feature { background: var(--green-deep); color: #fff; }
 .book-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: center; }
 .book-feature .kicker { color: var(--yellow); }
-.book-feature h2 { color: var(--pink); -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill; }
+.book-feature h1, .book-feature h2 { color: var(--pink); -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill; }
 .book-feature p { color: #e8f1e4; }
 .book-feature .details { font-size: .95rem; color: #c9dcc3; }
 .book-feature .btn-row { margin-bottom: 14px; }
@@ -298,8 +324,7 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 .market-photo figcaption { position: absolute; left: 10px; right: 10px; bottom: 8px; font-family: var(--hand); font-size: .9rem; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 
-/* ---------- Brand work (home teaser) ---------- */
-.brand-section { background: var(--pink-wash); border-bottom: 3px solid var(--ink); }
+/* ---------- Brand work ---------- */
 .work-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 48px; align-items: start; }
 .stat-card {
   background: var(--paper); border: 2.5px solid var(--ink); border-radius: 22px 16px 24px 18px;
@@ -308,7 +333,6 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 .stat + .stat { margin-top: 18px; }
 .stat b { display: block; font-family: var(--hand); font-size: 2.2rem; color: var(--pink-deep); line-height: 1; }
 .stat span { color: var(--ink-soft); font-size: .95rem; }
-.featured-work { margin-top: 56px; }
 .clients { margin-top: 36px; }
 .portfolio-work { padding-top: 20px; }
 .portfolio-work .clients { margin: 0 0 40px; }
@@ -423,6 +447,45 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 .loved-card .brand { position: absolute; left: 10px; top: 10px; background: var(--paper); border: 2px solid var(--ink); border-radius: 999px; padding: 2px 10px; font-family: var(--hand); font-weight: 700; font-size: .8rem; max-width: calc(100% - 20px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .loved-card .t { font-family: var(--hand); font-weight: 800; font-size: 1.02rem; line-height: 1.25; margin-top: 12px; }
 @media (max-width: 900px) { .loved-row { grid-template-columns: repeat(2, 1fr); } }
+
+
+/* ---------- Little extras ---------- */
+.mood, .nature, .pause-teaser { padding-top: 0; }
+.mood-art {
+  width: 150px; aspect-ratio: 4 / 5; object-fit: cover; margin: 6px auto 20px;
+  border: 3px solid var(--ink); border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); transform: rotate(-2deg);
+}
+.nature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.nature-card {
+  display: flex; align-items: center; gap: 20px; padding: 22px 24px; background: var(--paper);
+  border: 2.5px solid var(--ink); border-radius: 22px 16px 24px 18px; box-shadow: 5px 5px 0 var(--ink);
+}
+.nature-card:nth-child(odd) { transform: rotate(-.8deg); }
+.nature-card:nth-child(even) { transform: rotate(.8deg); }
+.nature-card svg, .nature-card img { width: 84px; height: 84px; flex: none; object-fit: contain; }
+.nature-card .what { font-family: var(--hand); font-weight: 600; font-size: .9rem; color: var(--pink-deep); }
+.nature-card h3 { margin: 0 0 4px; }
+.nature-card p { margin: 0; color: var(--ink-soft); font-size: .95rem; line-height: 1.45; }
+@media (max-width: 760px) { .nature-grid { grid-template-columns: 1fr; } }
+
+
+/* ---------- Pause (breathing) ---------- */
+.pause-wrap { max-width: 640px; text-align: center; }
+.pause .lede { font-size: 1.2rem; color: var(--ink-soft); }
+.breather { position: relative; width: min(300px, 80vw); aspect-ratio: 1; margin: 34px auto; display: grid; place-items: center; }
+.breath-ring {
+  position: absolute; inset: 0; border-radius: 50%; background: var(--pink-wash);
+  border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); transform: scale(.62);
+}
+.breather.is-breathing .breath-ring { animation: breathe-circle 8s ease-in-out infinite; }
+@keyframes breathe-circle { 0%, 100% { transform: scale(.62); } 50% { transform: scale(1); } }
+.breath-text { position: relative; z-index: 1; font-family: var(--hand); font-weight: 800; font-size: 1.5rem; }
+.pause-actions, .pause-done .btn-row { justify-content: center; }
+.pause-thanks { font-family: var(--hand); font-weight: 800; font-size: 1.6rem; color: var(--pink-deep); }
+.pause-art {
+  width: 200px; aspect-ratio: 4 / 5; object-fit: cover; margin: 44px auto 0;
+  border: 3px solid var(--ink); border-radius: 10px; box-shadow: 5px 5px 0 var(--ink); transform: rotate(2deg);
+}
 
 
 /* ---------- Footer ---------- */

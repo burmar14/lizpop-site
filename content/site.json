@@ -522,5 +522,64 @@
         "url": "https://www.instagram.com/lizpop_art/reel/Dd4nIjzv2nJ/"
       }
     ]
+  },
+  "extras": {
+    "title": "Little extras",
+    "intro": "A few small things for the days you need them. Nothing to buy, nothing to finish.",
+    "mood_title": "How are you feeling?",
+    "mood_intro": "Pick one and I'll hand you a little reminder to match.",
+    "nature_title": "Out your window",
+    "moon": [
+      {
+        "name": "New moon",
+        "line": "A blank page kind of night. Nothing to fix and nothing to prove."
+      },
+      {
+        "name": "Waxing crescent",
+        "line": "Something small is starting. Let it be small for now."
+      },
+      {
+        "name": "First quarter moon",
+        "line": "Half a moon is still a moon. Half done is still moving."
+      },
+      {
+        "name": "Waxing gibbous",
+        "line": "Almost full. You are closer than it feels."
+      },
+      {
+        "name": "Full moon",
+        "line": "Big feelings are allowed tonight. Let them be big, and let them pass."
+      },
+      {
+        "name": "Waning gibbous",
+        "line": "A good night to say thank you for what this month taught you."
+      },
+      {
+        "name": "Last quarter moon",
+        "line": "Put something down tonight. You don't have to carry all of it."
+      },
+      {
+        "name": "Waning crescent",
+        "line": "Rest. The reset is almost here."
+      }
+    ],
+    "seasons": [
+      {
+        "name": "Winter",
+        "line": "A good season to go slow, stay in, and be soft with yourself."
+      },
+      {
+        "name": "Spring",
+        "line": "Things are waking up, and so are you. No rush."
+      },
+      {
+        "name": "Summer",
+        "line": "Long days, sticky sidewalks, and permission to do less."
+      },
+      {
+        "name": "Autumn",
+        "line": "Letting things fall away is part of how you grow."
+      }
+    ]
   }
 }

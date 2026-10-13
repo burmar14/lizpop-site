@@ -1,0 +1,42 @@
+<!-- Pop-ups: send a reminder, received reminder, image and video viewer -->
+<dialog class="sheet" id="shareDialog" aria-labelledby="shareTitle">
+  <button class="close" type="button" data-close aria-label="Close">&times;</button>
+  <h2 id="shareTitle" data-text="share.heading">Send a little reminder</h2>
+  <p class="muted" data-text="share.intro">Pick a doodle to go with it.</p>
+  <div class="share-preview">
+    <img id="sharePic" src="/images/art/trust-grass.webp" alt="">
+    <blockquote id="shareQuote"></blockquote>
+  </div>
+  <div class="field">
+    <label for="shareArt">Doodle to send</label>
+    <select id="shareArt"></select>
+  </div>
+  <div class="field">
+    <label for="shareFrom">From (optional)</label>
+    <input id="shareFrom" type="text" maxlength="40" placeholder="Your first name" autocomplete="given-name">
+  </div>
+  <div class="share-actions">
+    <a class="btn btn-pink" id="shareText" href="#">Text it</a>
+    <a class="btn btn-yellow" id="shareEmail" href="#">Email it</a>
+    <button class="btn" type="button" id="shareCopy">Copy link</button>
+    <button class="btn" type="button" id="shareNative" hidden>More options</button>
+  </div>
+  <p class="muted small" id="shareStatus" role="status"></p>
+</dialog>
+
+<dialog class="sheet gift" id="giftDialog" aria-labelledby="giftTitle">
+  <button class="close" type="button" data-close aria-label="Close">&times;</button>
+  <p class="kicker" id="giftFrom">Someone sent you a little reminder</p>
+  <img id="giftPic" src="/images/art/trust-grass.webp" alt="">
+  <blockquote id="giftQuote" class="gift-quote"></blockquote>
+  <h2 id="giftTitle" class="sr-only">A little reminder for you</h2>
+  <div class="share-actions">
+    <button class="btn btn-pink" type="button" data-close>Look around</button>
+    <button class="btn btn-yellow" type="button" id="giftBack">Send one back</button>
+  </div>
+</dialog>
+
+<dialog class="viewer" id="viewer" aria-label="Viewer">
+  <button class="close" type="button" aria-label="Close">&times;</button>
+  <div class="viewer-body"></div>
+</dialog>

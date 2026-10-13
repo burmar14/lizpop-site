@@ -43,6 +43,7 @@ collections:
         label: Quote list
         file: content/quotes.json
         fields:
+          - { name: moods, label: Feelings people can pick, widget: list, hint: "Shown as buttons on the Extras page. Spell them the same way in each quote below." }
           - name: items
             label: Quotes
             label_singular: Quote
@@ -51,6 +52,7 @@ collections:
             add_to_top: true
             fields:
               - { name: text, label: Quote, widget: string, hint: "Keep it short and kind, one or two lines." }
+              - { name: moods, label: Feelings it fits, widget: list, required: false, hint: "Which feeling buttons on the Extras page should show this quote." }
               - { name: show, label: Show on site, widget: boolean, default: true }
 
   - name: prints
@@ -169,6 +171,31 @@ collections:
                   - { name: alt, label: Description, widget: string }
               - { name: note, label: Small note under buttons, widget: string, required: false }
           - { name: quotes_label, label: Label above the daily quote, widget: string }
+          - name: extras
+            label: Little extras page
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: intro, label: Intro, widget: text }
+              - { name: mood_title, label: Heading above the feeling buttons, widget: string }
+              - { name: mood_intro, label: Line under that heading, widget: string }
+              - { name: nature_title, label: Heading for the moon and season, widget: string }
+              - name: moon
+                label: Moon notes (in order from new moon to waning crescent)
+                label_singular: Moon phase
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: name, label: Phase name, widget: string }
+                  - { name: line, label: Note, widget: string }
+              - name: seasons
+                label: Season notes (winter, spring, summer, autumn)
+                label_singular: Season
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: name, label: Season, widget: string }
+                  - { name: line, label: Note, widget: string }
           - name: share
             label: Send a reminder
             widget: object

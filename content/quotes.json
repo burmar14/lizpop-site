@@ -1,64 +1,129 @@
 {
+  "moods": [
+    "Anxious",
+    "Overwhelmed",
+    "Sad",
+    "Tired",
+    "Lonely",
+    "Not enough",
+    "Hopeful"
+  ],
   "items": [
     {
       "text": "You must learn to proceed with uncertainty.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Anxious"
+      ]
     },
     {
       "text": "I am where I am supposed to be and good things are always meant for me.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Anxious",
+        "Hopeful"
+      ]
     },
     {
       "text": "I am thankful for the tears that helped my garden bloom.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Sad",
+        "Hopeful"
+      ]
     },
     {
       "text": "I choose to believe that amazing things are meant for me.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Hopeful"
+      ]
     },
     {
       "text": "You owe it to yourself to become everything you've ever dreamed of becoming.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Hopeful",
+        "Not enough"
+      ]
     },
     {
       "text": "You are made of all the beautiful things.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Not enough",
+        "Lonely"
+      ]
     },
     {
       "text": "Take up space.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Not enough",
+        "Lonely"
+      ]
     },
     {
       "text": "Take it easy.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Overwhelmed",
+        "Tired"
+      ]
     },
     {
       "text": "I am doing my best.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Overwhelmed",
+        "Not enough"
+      ]
     },
     {
       "text": "Trust it will all work out.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Anxious"
+      ]
     },
     {
       "text": "Step away for a while!",
-      "show": true
+      "show": true,
+      "moods": [
+        "Overwhelmed",
+        "Tired"
+      ]
     },
     {
       "text": "I am so glad you are here.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Lonely",
+        "Sad"
+      ]
     },
     {
       "text": "It will get better.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Sad"
+      ]
     },
     {
       "text": "Go easy on yourself.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Tired",
+        "Overwhelmed",
+        "Not enough"
+      ]
     },
     {
       "text": "Thank you for growing with me.",
-      "show": true
+      "show": true,
+      "moods": [
+        "Hopeful"
+      ]
     }
   ]
 }

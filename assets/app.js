@@ -124,7 +124,7 @@
     return choice;
   }
   function rotateHeroWords(hero) {
-    if (!hero) return;
+    if (!hero || !$('[data-text="hero.kicker"]')) return;
     var kickers = [hero.kicker].concat(hero.kickers || []).filter(Boolean);
     var headlines = [{ headline: hero.headline, highlight: hero.highlight }]
       .concat(hero.headlines || []).filter(function (h) { return h.headline && h.highlight; });
@@ -178,29 +178,58 @@
 
   /* ---------- Reminder and sharing ---------- */
   // Everyone sees the same quote on a given day; it changes at local midnight.
-  function renderQuotes(data) {
-    var box = $('#qotd'), btn = $('#qnext');
+  function renderQuotes(data, share) {
+    var box = $('#qotd'), btn = $('#qnext'), chips = $('#moodChips'), artImg = $('#moodArt');
     if (!box) return;
-    var list = (data.items || []).filter(function (q) { return q.show !== false && q.text; }).map(function (q) { return q.text; });
+    var items = (data.items || []).filter(function (q) { return q.show !== false && q.text; });
+    var list = items.map(function (q) { return q.text; });
     if (!list.length) { box.closest('section').hidden = true; return; }
     var d = new Date();
     var day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
     var i = day % list.length;
     quoteState.list = list; quoteState.i = i;
-    box.textContent = list[i];
+    var pool = list.map(function (t, n) { return n; });   // which reminders "another one" can pick from
+    var arts = ((share && share.art) || []).filter(function (a) { return a.image; });
+    function swapArt() {
+      if (!artImg || !arts.length) return;
+      var n = Math.floor(Math.random() * arts.length);
+      artImg.src = arts[n].image; artImg.alt = arts[n].label || '';
+      quoteState.art = n;   // so "send this" starts on the doodle you are looking at
+    }
+    function show(n) {
+      i = n; quoteState.i = n;
+      box.classList.add('fade');
+      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); swapArt(); }, 250);
+    }
+    function pick() {
+      var choices = pool.filter(function (n) { return n !== i; });
+      return choices.length ? choices[Math.floor(Math.random() * choices.length)] : i;
+    }
+    box.textContent = list[i]; swapArt();
+    if (chips) {
+      var moods = (data.moods || []).filter(function (m) { return items.some(function (q) { return (q.moods || []).indexOf(m) > -1; }); });
+      if (moods.length) {
+        chips.hidden = false;
+        chips.innerHTML = '<button type="button" class="chip" aria-pressed="true" data-m="">Anything</button>' +
+          moods.map(function (m) { return '<button type="button" class="chip" aria-pressed="false" data-m="' + esc(m) + '">' + esc(m) + '</button>'; }).join('');
+        $all('button', chips).forEach(function (b) {
+          b.addEventListener('click', function () {
+            $all('button', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+            b.setAttribute('aria-pressed', 'true');
+            var m = b.getAttribute('data-m');
+            pool = list.map(function (t, n) { return n; }).filter(function (n) { return !m || (items[n].moods || []).indexOf(m) > -1; });
+            show(pick());
+          });
+        });
+      }
+    }
     if (!btn) return;
     if (list.length < 2) { btn.hidden = true; return; }
-    btn.addEventListener('click', function () {
-      var next = i;
-      while (next === i) next = Math.floor(Math.random() * list.length);
-      i = next; quoteState.i = i;
-      box.classList.add('fade');
-      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); }, 250);
-    });
+    btn.addEventListener('click', function () { show(pick()); });
   }
 
   function hash(str) { var x = 5381; for (var i = 0; i < str.length; i++) x = ((x << 5) + x + str.charCodeAt(i)) | 0; return (x >>> 0).toString(36); }
-  var quoteState = { list: [], i: 0 };
+  var quoteState = { list: [], i: 0, art: null };
   function setupShare(share) {
     var dlg = $('#shareDialog'), btn = $('#qshare');
     if (!dlg || !btn) return;
@@ -239,8 +268,9 @@
         navigator.share({ title: 'A little reminder for you', text: 'A little reminder for you. See it here:', url: link() }).catch(function () {});
       });
     }
-    btn.addEventListener('click', function () { refresh(); dlg.showModal(); });
-    window.__openShare = function () { refresh(); dlg.showModal(); };
+    function open() { if (quoteState.art !== null && art[quoteState.art]) sel.value = quoteState.art; refresh(); dlg.showModal(); }
+    btn.addEventListener('click', open);
+    window.__openShare = open;
   }
   function checkGift(share) {
     var q = new URLSearchParams(location.search);
@@ -262,6 +292,64 @@
   $all('dialog.sheet').forEach(function (d) {
     d.addEventListener('click', function (e) { if (e.target === d || e.target.hasAttribute('data-close')) d.close(); });
   });
+
+  /* ---------- Little extras: moon, season, breathing ---------- */
+  var SYNODIC = 29.530588853;
+  // A simple moon drawing: dark disc, lit part on top. f runs 0 (new) to 1 and back to new.
+  function moonSVG(age) {
+    var f = age / SYNODIC, k = Math.cos(2 * Math.PI * f), waxing = f < 0.5, rx = Math.abs(k) * 40;
+    var limb = waxing ? 1 : 0, term = waxing ? (k > 0 ? 0 : 1) : (k > 0 ? 1 : 0);
+    return '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="#231d1a"/>' +
+      '<path d="M50 10 A40 40 0 0 ' + limb + ' 50 90 A' + rx.toFixed(1) + ' 40 0 0 ' + term + ' 50 10Z" fill="#ffd94a"/>' +
+      '<circle cx="50" cy="50" r="40" fill="none" stroke="#231d1a" stroke-width="4"/></svg>';
+  }
+  var SEASON_ART = [
+    '<img src="/images/doodle-sparkle.png?v=2" alt="">',
+    '<img src="/images/cast/daisy.png" alt="">',
+    '<img src="/images/doodle-strawberry.png" alt="">',
+    '<svg viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1 C 4 8, 2 18, 12 28 C 22 18, 20 8, 12 1 Z" fill="#c8642b" stroke="#231d1a" stroke-width="1.2"/><path d="M12 4 L12 27" stroke="#231d1a" stroke-width="1"/></svg>'
+  ];
+  function renderNature(ex) {
+    var moonBox = $('#moonCard'), seasonBox = $('#seasonCard');
+    if (!moonBox || !ex) return;
+    var age = (((Date.now() / 86400000 - Date.UTC(2000, 0, 6, 18, 14) / 86400000) % SYNODIC) + SYNODIC) % SYNODIC;
+    var moon = (ex.moon || [])[Math.floor(age / SYNODIC * 8 + 0.5) % 8];
+    if (moon) moonBox.innerHTML = moonSVG(age) + '<div><div class="what">Tonight</div><h3>' + esc(moon.name) + '</h3><p>' + esc(moon.line) + '</p></div>';
+    else moonBox.hidden = true;
+    var m = new Date().getMonth(), si = (m === 11 || m < 2) ? 0 : m < 5 ? 1 : m < 8 ? 2 : 3;
+    var season = (ex.seasons || [])[si];
+    if (season) seasonBox.innerHTML = SEASON_ART[si] + '<div><div class="what">This season</div><h3>' + esc(season.name) + '</h3><p>' + esc(season.line) + '</p></div>';
+    else seasonBox.hidden = true;
+  }
+
+  // One minute of breathing: in for four, out for four.
+  function setupPause(share) {
+    var ring = $('#breather');
+    if (!ring) return;
+    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
+    if (art.length) { var a = art[Math.floor(Math.random() * art.length)]; $('#pauseArt').src = a.image; $('#pauseArt').alt = a.label || ''; }
+    var text = $('#breathText'), start = $('#pauseStart'), done = $('#pauseDone'), timer;
+    function finish() {
+      clearInterval(timer);
+      ring.classList.remove('is-breathing');
+      text.textContent = 'All done';
+      done.hidden = false;
+    }
+    function run() {
+      clearInterval(timer);
+      start.hidden = true; done.hidden = true;
+      ring.classList.add('is-breathing');
+      text.textContent = 'Breathe in';
+      var beat = 0;
+      timer = setInterval(function () {
+        beat++;
+        if (beat >= 15) { finish(); return; }
+        text.textContent = beat % 2 ? 'Breathe out' : 'Breathe in';
+      }, 4000);
+    }
+    start.addEventListener('click', run);
+    $('#pauseAgain').addEventListener('click', run);
+  }
 
   /* ---------- Prints ---------- */
   function renderPrints(data, etsyUrl, max, moods, moodsLabel) {
@@ -295,7 +383,9 @@
         '<div class="img-box"><img src="' + esc(p.image) + '" alt="' + esc(p.alt || p.title) + '" loading="lazy" decoding="async" width="400" height="500"></div>' +
         '<div class="title">' + esc(p.title) + '</div><div class="cue">See on Etsy</div></div></a>';
     }
-    draw('');
+    var want = new URLSearchParams(location.search).get('feeling');
+    var pre = want && bar && $all('button', bar).filter(function (b) { return b.getAttribute('data-m') === want; })[0];
+    if (pre) pre.click(); else draw('');
   }
 
   /* ---------- Portfolio and brand work ---------- */
@@ -364,16 +454,6 @@
         });
       });
     }
-  }
-
-  function renderFeaturedWork(data) {
-    var grid = $('#featuredWork');
-    if (!grid) return;
-    var items = (data.items || []).filter(function (p) { return p.show !== false && p.featured; }).slice(0, 3);
-    if (!items.length) return;
-    grid.innerHTML = items.map(cardHTML).join('');
-    grid.hidden = false;
-    wireCards(grid, items);
   }
 
   function renderClients(brand) {
@@ -582,18 +662,20 @@
   }, true);
 
   /* ---------- Boot ---------- */
+  // Old links like lizpop.art/#book now live on their own pages.
+  var MOVED = { '#prints': '/shop/', '#book': '/book/', '#events': '/shop/', '#about': '/about/', '#work': '/portfolio/', '#letter': '/about/#letter' };
+  if (page === 'home' && MOVED[location.hash]) { location.replace(MOVED[location.hash]); return; }
   $all('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
   externalize(document);
   leaves();
 
   Promise.all([
     load('site').catch(function () { return null; }),
-    page === 'home' ? load('prints').catch(function () { return { items: [] }; }) : Promise.resolve(null),
-    load('portfolio').catch(function () { return { items: [] }; }),
-    page === 'home' ? load('quotes').catch(function () { return null; }) : Promise.resolve(null)
+    $('#printGrid') ? load('prints').catch(function () { return { items: [] }; }) : Promise.resolve(null),
+    $('#portfolioGrid') ? load('portfolio').catch(function () { return { items: [] }; }) : Promise.resolve(null),
+    $('#qotd') ? load('quotes').catch(function () { return null; }) : Promise.resolve(null)
   ]).then(function (res) {
     var site = res[0], prints = res[1], portfolio = res[2], quotes = res[3];
-    if (quotes) renderQuotes(quotes);
     if (site) {
       bind(site);
       if (site.book) renderPreviews(site.book);
@@ -601,7 +683,7 @@
       renderEvents(site.events);
       renderClients(site.brand);
       renderMarkets(site.markets);
-      if ($('#events') && $('#eventList').hidden && $('#markets').hidden) $('#events').hidden = true;
+      if ($('#events') && $('#eventList').hidden && (!$('#markets') || $('#markets').hidden)) $('#events').hidden = true;
       if (site.book && !site.book.bonus_url && $('#bonus')) $('#bonus').hidden = true;
       var other = $('#otherLinks');
       if (other && site.book && Array.isArray(site.book.other_links)) {
@@ -613,12 +695,13 @@
     }
     if (site) {
       rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
+      if (quotes) renderQuotes(quotes, site.share);
+      renderNature(site.extras); setupPause(site.share);
       setupShare(site.share);
       if (page === 'home') checkGift(site.share);
     }
-    if (prints) renderPrints(prints, site && site.shop && site.shop.etsy_url, site && site.shop && site.shop.max_prints, site && site.shop && site.shop.moods, site && site.shop && site.shop.moods_label);
-    if (page === 'home') renderFeaturedWork(portfolio);
-    if (page === 'portfolio') renderPortfolio(portfolio);
+    if (prints) renderPrints(prints, site && site.shop && site.shop.etsy_url, page === 'home' ? 4 : site && site.shop && site.shop.max_prints, site && site.shop && site.shop.moods, site && site.shop && site.shop.moods_label);
+    if (portfolio) renderPortfolio(portfolio);
     externalize(document);
   });
 })();

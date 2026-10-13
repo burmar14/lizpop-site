@@ -24,10 +24,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Styles (first hero picture loads early so the page paints fast) -->
+<!-- Styles -->
 <link rel="preload" as="image" href="/images/hits/just-relax-45.webp" fetchpriority="high">
-<link rel="stylesheet" href="/assets/site.css?v=16">
-
+<link rel="stylesheet" href="/assets/site.css?v=19">
 <!-- Info for Google -->
 <script type="application/ld+json">
 {
@@ -66,19 +65,21 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- Header -->
+<!-- @header  -->
 <header class="site-header">
   <nav class="nav" aria-label="Main">
     <a class="logo" href="/" aria-label="Liz Pop Art home">liz<span>pop</span></a>
     <div class="nav-links">
-      <a href="#loved">Art</a>
-      <a href="#prints">Prints</a>
-      <a href="#book">Book</a>
-      <a href="/portfolio/">Brand work</a>
-      <a href="#about">About</a>
+      <a href="/shop/" data-nav="shop">Shop</a>
+      <a href="/book/" data-nav="book">Book</a>
+      <a href="/extras/" data-nav="extras">Extras</a>
+      <a href="/portfolio/" data-nav="brands">For brands</a>
+      <a href="/about/" data-nav="about">About</a>
       <a class="btn btn-pink" href="https://www.etsy.com/shop/LizPopArtShop" data-href="shop.etsy_url">Shop on Etsy</a>
     </div>
   </nav>
 </header>
+<!-- @/header -->
 
 <main id="main">
 
@@ -91,7 +92,7 @@
         <p class="lede" data-text="hero.intro">Hi, I'm Liz. I draw soft little reminders for big feelings and hard days. Pick one for your wall, or for someone who needs it.</p>
         <div class="btn-row">
           <a class="btn btn-pink" href="https://www.etsy.com/shop/LizPopArtShop" data-href="shop.etsy_url">Shop prints on Etsy</a>
-          <a class="btn btn-yellow" href="#book">Meet the book</a>
+          <a class="btn btn-yellow" href="/book/">Meet the book</a>
         </div>
         <p class="note" data-text="hero.note" data-hide-empty>1,400+ sales on Etsy and a lot of happy walls.</p>
       </div>
@@ -102,6 +103,32 @@
         <img class="doodle d-sparkle" src="/images/doodle-sparkle.png?v=2" alt="">
         <div class="dots" id="heroDots" role="group" aria-label="Choose artwork"></div>
       </div>
+    </div>
+  </section>
+
+  <!-- Doorways -->
+  <section class="doors" aria-label="Where to next">
+    <div class="wrap door-grid">
+      <a class="door door-shop" href="/shop/">
+        <span class="door-for">For art lovers</span>
+        <span class="door-title">Prints for your walls</span>
+        <span class="door-text">Little drawings for your home, or for someone who needs one.</span>
+      </a>
+      <a class="door door-book" href="/book/">
+        <span class="door-for">The new book</span>
+        <span class="door-title">Little Doodles for Big Feelings</span>
+        <span class="door-text">Out October 20. Preorder it, and come say hi at the signing.</span>
+      </a>
+      <a class="door door-extras" href="/extras/">
+        <span class="door-for">Need a minute?</span>
+        <span class="door-title">Little extras</span>
+        <span class="door-text">Pick a feeling and get a little reminder to match. Or just breathe with me.</span>
+      </a>
+      <a class="door door-brands" href="/portfolio/">
+        <span class="door-for">For brands</span>
+        <span class="door-title">Let's work together</span>
+        <span class="door-text">Illustrated stories and videos for brands and organizations that care about people.</span>
+      </a>
     </div>
   </section>
 
@@ -139,22 +166,20 @@
     </div>
   </section>
 
-  <!-- Etsy prints -->
+  <!-- A few prints -->
   <section class="prints" id="prints">
     <div class="wrap">
       <div class="section-head">
         <h2>Prints for your walls</h2>
         <p data-text="shop.prints_intro">A few favorites from the shop. Tap any print to see it on Etsy.</p>
       </div>
-      <div class="filters moods" id="moods" role="group" aria-label="Shop by feeling" hidden></div>
       <div class="print-grid" id="printGrid">
         <noscript><p>See all prints on <a href="https://www.etsy.com/shop/LizPopArtShop">Etsy</a>.</p></noscript>
       </div>
       <div class="prints-foot">
         <p class="prints-count">1,400+ orders shipped from the shop.</p>
-        <a class="btn btn-pink" href="https://www.etsy.com/shop/LizPopArtShop" data-href="shop.etsy_url">Browse the whole shop</a>
+        <a class="btn btn-pink" href="/shop/">See the whole shop</a>
       </div>
-      <div class="reviews" id="reviews" aria-label="What customers say"></div>
     </div>
   </section>
 
@@ -173,92 +198,9 @@
           <div class="btn-row">
             <a class="btn btn-yellow btn-big" href="https://a.co/d/0bqxwMVU" data-href="book.amazon_url"><span data-text="book.amazon_label">Preorder on Amazon</span></a>
             <span id="otherLinks"></span>
+            <a class="btn" href="/book/">More about the book</a>
           </div>
           <p class="bonus" id="bonus"><span data-text="book.bonus_text">Preordered already? Grab your free coloring book.</span> <a href="#" data-href="book.bonus_url">Claim it here</a></p>
-        </div>
-      </div>
-
-      <div class="peek" id="peek">
-        <h3>Peek inside</h3>
-        <div class="peek-row" id="peekRow"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Events and markets -->
-  <section class="events" id="events">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>Come say hi</h2>
-        <p data-text="events_intro">Markets, signings, and other places to meet in person.</p>
-      </div>
-      <div class="event-list" id="eventList"></div>
-      <div class="markets" id="markets" hidden>
-        <h3 id="marketsTitle">At the markets</h3>
-        <p id="marketsIntro"></p>
-        <div class="market-row" id="marketRow"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- From the studio (filled in from the admin content) -->
-  <section class="studio" id="studio" hidden>
-    <div class="wrap">
-      <div class="section-head">
-        <h2 data-text="studio.title">From the studio</h2>
-        <p data-text="studio.intro">A peek at where the doodles happen.</p>
-      </div>
-      <div class="studio-row" id="studioRow"></div>
-      <div class="btn-row studio-links">
-        <a class="btn btn-green" href="https://www.instagram.com/lizpop_art/" data-href="social.instagram">Follow on Instagram</a>
-        <a class="btn" href="https://www.tiktok.com/@lizpopart" data-href="social.tiktok">Watch on TikTok</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Brand work -->
-  <section class="brand-section" id="work">
-    <div class="wrap">
-      <div class="work-grid">
-        <div>
-          <h2 data-text="brand.headline">Let's make something together</h2>
-          <p data-text="brand.intro">I make illustrated stories and influencer-style videos for brands and organizations. Most of my work is about mental health, but I also love projects around art, tech, community spaces, and events.</p>
-          <ul class="chips" data-list="brand.topics">
-            <li>Mental health</li><li>Art &amp; creativity</li><li>Tech</li><li>Community</li><li>Events</li>
-          </ul>
-          <div class="btn-row">
-            <a class="btn btn-pink" href="/portfolio/">See my brand portfolio</a>
-            <a class="btn" href="mailto:lizpopart@sixteenth.com" data-href="brand.rep_email" data-prefix="mailto:">Email my team</a>
-          </div>
-        </div>
-        <div class="stat-card" data-stats="brand.stats">
-          <div class="stat"><b>175K</b><span>followers on Instagram</span></div>
-          <div class="stat"><b>420+</b><span>posts and videos shared</span></div>
-          <div class="stat"><b>Philly</b><span>based</span></div>
-        </div>
-      </div>
-      <div class="clients" data-clients></div>
-      <div class="work-cards featured-work" id="featuredWork" hidden></div>
-    </div>
-  </section>
-
-  <!-- About Liz -->
-  <section class="bio-section" id="about">
-    <div class="wrap about-grid">
-      <div class="polaroid">
-        <div class="img-box"><img src="/images/hero.webp" data-src="about.photo" width="400" height="500" loading="lazy" decoding="async" alt="Liz in her studio"></div>
-        <div class="caption" data-text="about.photo_caption">the artist :)</div>
-      </div>
-      <div>
-        <h2>Hi, I'm Liz</h2>
-        <div data-paras="about.body">
-          <p>I'm an artist and illustrator based in Philly. I draw funny little characters going through very real feelings, and somehow a lot of you feel them too.</p>
-          <p>You can find my prints on Etsy, my book wherever books are sold, and me at markets around the city. Thanks so much for stopping by!</p>
-        </div>
-        <div class="btn-row">
-          <a class="btn btn-green" href="https://www.instagram.com/lizpop_art/" data-href="social.instagram">Instagram</a>
-          <a class="btn" href="https://www.tiktok.com/@lizpopart" data-href="social.tiktok" data-hide-empty>TikTok</a>
-          <a class="btn btn-yellow" href="https://www.buymeacoffee.com/lkarcewski" data-href="social.coffee" data-hide-empty>Buy me a coffee</a>
         </div>
       </div>
     </div>
@@ -286,6 +228,7 @@
 </main>
 
 <!-- Footer pals -->
+<!-- @footer -->
 <footer class="site-footer">
   <div class="cast" id="cast" aria-label="Liz's characters waving hello">
     <svg class="hill" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 64 C 180 26, 340 30, 520 52 S 860 92, 1040 58 S 1300 22, 1440 48 L1440 120 L0 120 Z" fill="#7fb36b" stroke="#231d1a" stroke-width="3"/></svg>
@@ -308,9 +251,12 @@
     <div class="wrap">
       <h3>Thanks for stopping by!</h3>
       <ul>
+        <li><a href="/shop/">Shop</a></li>
+        <li><a href="/book/">The book</a></li>
+        <li><a href="/extras/">Little extras</a></li>
+        <li><a href="/portfolio/">For brands</a></li>
+        <li><a href="/about/">About</a></li>
         <li><a href="https://www.etsy.com/shop/LizPopArtShop" data-href="shop.etsy_url">Etsy shop</a></li>
-        <li><a href="#book">The book</a></li>
-        <li><a href="/portfolio/">Brand work</a></li>
         <li><a href="https://www.instagram.com/lizpop_art/" data-href="social.instagram">Instagram</a></li>
         <li><a href="https://www.tiktok.com/@lizpopart" data-href="social.tiktok">TikTok</a></li>
       </ul>
@@ -318,7 +264,10 @@
     </div>
   </div>
 </footer>
+<!-- @/footer -->
 
+<!-- Pop-ups: send a reminder, received reminder, image and video viewer -->
+<!-- @dialogs -->
 <!-- Pop-ups: send a reminder, received reminder, image and video viewer -->
 <dialog class="sheet" id="shareDialog" aria-labelledby="shareTitle">
   <button class="close" type="button" data-close aria-label="Close">&times;</button>
@@ -361,6 +310,7 @@
   <button class="close" type="button" aria-label="Close">&times;</button>
   <div class="viewer-body"></div>
 </dialog>
+<!-- @/dialogs -->
 
 <script src="/assets/app.js?v=19" defer></script>
 </body>

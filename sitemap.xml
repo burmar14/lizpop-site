@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://lizpop.art/</loc></url>
+  <url><loc>https://lizpop.art/shop/</loc></url>
+  <url><loc>https://lizpop.art/book/</loc></url>
+  <url><loc>https://lizpop.art/extras/</loc></url>
+  <url><loc>https://lizpop.art/pause/</loc></url>
   <url><loc>https://lizpop.art/portfolio/</loc></url>
+  <url><loc>https://lizpop.art/about/</loc></url>
 </urlset>
