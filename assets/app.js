@@ -442,19 +442,32 @@
   }
 
   /* ---------- Portfolio and brand work ---------- */
-  // The yellow highlight steps along the topic chips, one at a time (it stays on the first one for reduced motion).
+  // The yellow highlight steps along the topic chips, one at a time. Tap a chip to jump to it;
+  // the stepping pauses for a few seconds, then carries on from there (it stays put for reduced motion).
   function rotateChips() {
     $all('.chips').forEach(function (ul) {
-      var items = $all('li', ul), n = 0;
+      var items = $all('li', ul), n = 0, timer, pause;
       if (items.length < 2) return;
       ul.classList.add('is-rotating');
-      items[0].classList.add('is-lit');
-      if (reduceMotion) return;
-      setInterval(function () {
-        items[n].classList.remove('is-lit');
-        n = (n + 1) % items.length;
-        items[n].classList.add('is-lit');
-      }, 2400);
+      items.forEach(function (li, i) {
+        li.innerHTML = '<button type="button" aria-pressed="false">' + li.innerHTML + '</button>';
+        li.firstChild.addEventListener('click', function () {
+          light(i);
+          clearInterval(timer); clearTimeout(pause);
+          pause = setTimeout(step, 6000);
+        });
+      });
+      function light(i) {
+        items[n].classList.remove('is-lit'); items[n].firstChild.setAttribute('aria-pressed', 'false');
+        n = i;
+        items[n].classList.add('is-lit'); items[n].firstChild.setAttribute('aria-pressed', 'true');
+      }
+      function step() {
+        light((n + 1) % items.length);
+        timer = setInterval(function () { light((n + 1) % items.length); }, 2400);
+      }
+      light(0);
+      if (!reduceMotion) timer = setInterval(function () { light((n + 1) % items.length); }, 2400);
     });
   }
 
