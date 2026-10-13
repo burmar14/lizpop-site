@@ -497,9 +497,8 @@
   function isVideoItem(it) { return !!it.video_url && it.type !== 'illustration' && it.type !== 'artwork'; }
   function cardHTML(item, i) {
     var isVideo = isVideoItem(item);
-    var tags = (item.tags || []).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('');
     return '<article class="work-card" data-type="' + esc(item.type) + '">' +
-      '<button type="button" class="thumb" data-i="' + i + '" aria-label="' + (isVideo ? 'Watch video: ' : 'View artwork: ') + esc(item.title) + '">' +
+      '<button type="button" class="thumb' + (item._w && item._w / item._h > 0.66 ? ' fits' : '') + '" data-i="' + i + '" aria-label="' + (isVideo ? 'Watch video: ' : 'View artwork: ') + esc(item.title) + '">' +
       (TYPE_LABEL[item.type] ? '<span class="badge t-' + esc(item.type) + '">' + TYPE_LABEL[item.type] + '</span>' : '') +
       (item.thumbnail
         ? '<img src="' + esc(item.thumbnail) + '" alt="' + esc(item.alt || item.title) + '" loading="lazy" decoding="async" width="' + (item._w || 400) + '" height="' + (item._h || 500) + '">'
@@ -510,7 +509,6 @@
       '<h3>' + esc(item.title) + '</h3>' +
       (item.description ? '<p>' + esc(item.description) + '</p>' : '') +
       ((item.link_url || (isVideo && /instagram|tiktok/.test(item.video_url))) ? '<p><a href="' + esc(item.link_url || item.video_url) + '">' + (isVideo ? 'Watch the full video' : 'See the original post') + '</a></p>' : '') +
-      (tags ? '<div class="tags">' + tags + '</div>' : '') +
       '</div></article>';
   }
 
@@ -553,7 +551,7 @@
       });
       grid.innerHTML = items.length ? items.map(cardHTML).join('')
         : '<div class="empty">' + (workTopic ? 'Nothing tagged ' + esc(workTopic) + ' in this view yet.' : 'New work is on the way. In the meantime, see my latest videos on Instagram.') + '</div>';
-      grid.style.columnCount = items.length ? '' : '1';
+      grid.style.display = items.length ? '' : 'block';
       wireCards(grid, items);
     }
     redrawWork = draw;
