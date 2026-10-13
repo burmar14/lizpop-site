@@ -600,6 +600,16 @@
         "name": "Autumn",
         "line": "Letting things fall away is part of how you grow."
       }
-    ]
+    ],
+    "walk": {
+      "ladybug_lines": [
+        "keep going",
+        "you are doing great",
+        "small steps count",
+        "take your time",
+        "I am glad you are here",
+        "be gentle with yourself"
+      ]
+    }
   }
 }

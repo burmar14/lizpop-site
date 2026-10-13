@@ -260,8 +260,10 @@
 
   function hash(str) { var x = 5381; for (var i = 0; i < str.length; i++) x = ((x << 5) + x + str.charCodeAt(i)) | 0; return (x >>> 0).toString(36); }
   var quoteState = { list: [], i: 0, art: null };
+  // The little walk game sets which reminder "send this" should share once the walk is over.
+  window.lizpopSetShare = function (list, i, art) { quoteState.list = list; quoteState.i = i; quoteState.art = art; };
   function setupShare(share) {
-    var dlg = $('#shareDialog'), btns = $all('#qshare, #moodShare');
+    var dlg = $('#shareDialog'), btns = $all('#qshare, #moodShare, #walkShare');
     if (!dlg || !btns.length) return;
     var art = ((share && share.art) || []).filter(function (a) { return a.image; });
     if (!art.length) { btns.forEach(function (b) { b.hidden = true; }); return; }

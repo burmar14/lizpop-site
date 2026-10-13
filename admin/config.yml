@@ -181,6 +181,11 @@ collections:
               - { name: mood_title, label: Heading above the feeling buttons, widget: string }
               - { name: mood_intro, label: Line under that heading, widget: string }
               - { name: nature_title, label: Heading for the moon and season, widget: string }
+              - name: walk
+                label: The little walk game
+                widget: object
+                fields:
+                  - { name: ladybug_lines, label: What the ladybug says when it flies by, widget: list, hint: "Short and kind. One is picked at random each time." }
               - name: moon
                 label: Moon notes (in order from new moon to waning crescent)
                 label_singular: Moon phase

@@ -469,7 +469,7 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 
 
 /* ---------- Little extras ---------- */
-.mood, .nature, .pause-teaser { padding-top: 0; }
+.mood, .nature, .pause-teaser, .game-teaser { padding-top: 0; }
 .mood-result { margin-top: 26px; }
 @media (min-width: 821px) {
   /* the doodle sits beside the reminder so it fills the card */
