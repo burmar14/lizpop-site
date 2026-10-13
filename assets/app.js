@@ -114,6 +114,27 @@
   }
 
   /* ---------- Hero slideshow ---------- */
+  // The small line and the headline change from visit to visit, and never repeat the last one you saw.
+  function pickFresh(list, key) {
+    var last = '';
+    try { last = localStorage.getItem(key) || ''; } catch (e) {}
+    var pool = list.filter(function (x) { return JSON.stringify(x) !== last; });
+    var choice = (pool.length ? pool : list)[Math.floor(Math.random() * (pool.length || list.length))];
+    try { localStorage.setItem(key, JSON.stringify(choice)); } catch (e) {}
+    return choice;
+  }
+  function rotateHeroWords(hero) {
+    if (!hero) return;
+    var kickers = [hero.kicker].concat(hero.kickers || []).filter(Boolean);
+    var headlines = [{ headline: hero.headline, highlight: hero.highlight }]
+      .concat(hero.headlines || []).filter(function (h) { return h.headline && h.highlight; });
+    if (kickers.length > 1) $('[data-text="hero.kicker"]').textContent = pickFresh(kickers, 'lp-kicker');
+    if (headlines.length > 1) {
+      var h = pickFresh(headlines, 'lp-headline');
+      $('[data-text="hero.headline"]').textContent = h.headline;
+      $('[data-text="hero.highlight"]').textContent = h.highlight;
+    }
+  }
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function renderHero(hero) {
     var scene = $('#heroScene'), dots = $('#heroDots');
@@ -588,7 +609,7 @@
       }
     }
     if (site) {
-      renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
+      rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
       setupShare(site.share);
       if (page === 'home') checkGift(site.share);
     }

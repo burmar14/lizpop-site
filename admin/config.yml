@@ -146,6 +146,17 @@ collections:
               - { name: kicker, label: Small line above the headline, widget: string }
               - { name: headline, label: Headline, widget: string }
               - { name: highlight, label: Pink highlighted word, widget: string }
+              - { name: kickers, label: More small lines, widget: list, required: false, hint: "The small line above the headline. One is picked at random each visit, along with the one above." }
+              - name: headlines
+                label: More headlines
+                label_singular: Headline
+                widget: list
+                required: false
+                summary: "{{fields.headline}} {{fields.highlight}}"
+                hint: "One is picked at random each visit, along with the one above. The pink word goes at the end."
+                fields:
+                  - { name: headline, label: Headline, widget: string }
+                  - { name: highlight, label: Pink highlighted word, widget: string }
               - { name: intro, label: Intro, widget: text }
               - name: slides
                 label: Rotating artwork

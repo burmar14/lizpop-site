@@ -3,6 +3,49 @@
     "kicker": "Emotional doodler from Philly",
     "headline": "Funny little drawings with a lot of",
     "highlight": "heart.",
+    "kickers": [
+      "Doodling my feelings in Philly",
+      "Hand-drawn in Philly",
+      "Hello from Liz in Philly",
+      "Feelings, but make them cute",
+      "A doodle for every mood",
+      "Philly artist with a lot of feelings",
+      "Drawn at my desk in Philly"
+    ],
+    "headlines": [
+      {
+        "headline": "Big feelings,",
+        "highlight": "little doodles."
+      },
+      {
+        "headline": "Tiny drawings for",
+        "highlight": "hard days."
+      },
+      {
+        "headline": "Little drawings that say",
+        "highlight": "it's okay."
+      },
+      {
+        "headline": "Funny little drawings about",
+        "highlight": "being human."
+      },
+      {
+        "headline": "Drawings for the days you need a",
+        "highlight": "hug."
+      },
+      {
+        "headline": "You are doing better than you",
+        "highlight": "think."
+      },
+      {
+        "headline": "Gentle reminders for your",
+        "highlight": "walls."
+      },
+      {
+        "headline": "Doodles to keep you",
+        "highlight": "company."
+      }
+    ],
     "intro": "Hi, I'm Liz. I draw soft little reminders for big feelings and hard days. Pick one for your wall, or for someone who needs it.",
     "note": "1,400+ sales on Etsy and a lot of happy walls.",
     "slides": [
