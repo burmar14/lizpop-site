@@ -107,18 +107,38 @@
   }
 
   /* ---------- Renderers ---------- */
-  function renderPrints(data, etsyUrl) {
+  function renderPrints(data, etsyUrl, max, moods, moodsLabel) {
     var grid = $('#printGrid');
     if (!grid) return;
-    var items = (data.items || []).filter(function (p) { return p.show !== false; });
-    if (!items.length) return;
-    grid.innerHTML = items.map(function (p) {
+    var shown = (data.items || []).filter(function (p) { return p.show !== false && p.image; });
+    if (!shown.length) return;
+    var bar = $('#moods');
+    var usable = (moods || []).filter(function (m) { return shown.some(function (p) { return (p.moods || []).indexOf(m) > -1; }); });
+    if (bar && usable.length) {
+      bar.hidden = false;
+      bar.innerHTML = '<span class="label">' + esc(moodsLabel || 'Shop by feeling') + '</span>' +
+        '<button type="button" class="chip" aria-pressed="true" data-m="">All</button>' +
+        usable.map(function (m) { return '<button type="button" class="chip" aria-pressed="false" data-m="' + esc(m) + '">' + esc(m) + '</button>'; }).join('');
+      $all('button', bar).forEach(function (b) {
+        b.addEventListener('click', function () {
+          $all('button', bar).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+          b.setAttribute('aria-pressed', 'true');
+          draw(b.getAttribute('data-m'));
+        });
+      });
+    }
+    function draw(mood) {
+      var items = (mood ? shown.filter(function (p) { return (p.moods || []).indexOf(mood) > -1; }) : shown).slice(0, max || 12);
+      grid.innerHTML = items.map(printHTML).join('');
+      externalize(grid);
+    }
+    function printHTML(p) {
       return '<a class="print" href="' + esc(p.etsy_url || etsyUrl) + '">' +
         '<div class="tape"></div><div class="frame">' +
         '<div class="img-box"><img src="' + esc(p.image) + '" alt="' + esc(p.alt || p.title) + '" loading="lazy" decoding="async" width="400" height="500"></div>' +
         '<div class="title">' + esc(p.title) + '</div><div class="cue">See on Etsy</div></div></a>';
-    }).join('');
-    externalize(grid);
+    }
+    draw('');
   }
 
   function renderPreviews(book) {
@@ -136,18 +156,23 @@
     });
   }
 
+  var TYPE_LABEL = { influencer: 'Influencer video', animation: 'Animation', illustration: 'Illustration', video: 'Video', artwork: 'Illustration' };
+  function isVideoItem(it) { return !!it.video_url && it.type !== 'illustration' && it.type !== 'artwork'; }
   function cardHTML(item, i) {
-    var isVideo = item.type === 'video';
+    var isVideo = isVideoItem(item);
     var tags = (item.tags || []).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('');
     return '<article class="pcard" data-type="' + esc(item.type) + '">' +
-      '<button type="button" class="thumb" data-i="' + i + '" aria-label="' + (isVideo ? 'Play video: ' : 'View artwork: ') + esc(item.title) + '">' +
-      '<img src="' + esc(item.thumbnail) + '" alt="' + esc(item.alt || item.title) + '" loading="lazy" decoding="async" width="400" height="500">' +
+      '<button type="button" class="thumb" data-i="' + i + '" aria-label="' + (isVideo ? 'Watch video: ' : 'View artwork: ') + esc(item.title) + '">' +
+      (TYPE_LABEL[item.type] ? '<span class="badge t-' + esc(item.type) + '">' + TYPE_LABEL[item.type] + '</span>' : '') +
+      (item.thumbnail
+        ? '<img src="' + esc(item.thumbnail) + '" alt="' + esc(item.alt || item.title) + '" loading="lazy" decoding="async" width="400" height="500">'
+        : '<span class="nameplate" aria-hidden="true">' + esc(item.client || item.title) + '</span>') +
       (isVideo ? '<span class="play" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M7 4 L20 12 L7 20 Z" fill="#231d1a"/></svg></span>' : '') +
       '</button><div class="body">' +
       (item.client ? '<div class="client">' + esc(item.client) + '</div>' : '') +
       '<h3>' + esc(item.title) + '</h3>' +
       (item.description ? '<p>' + esc(item.description) + '</p>' : '') +
-      (item.link_url ? '<p><a href="' + esc(item.link_url) + '">See the original post</a></p>' : '') +
+      ((item.link_url || (isVideo && /instagram|tiktok/.test(item.video_url))) ? '<p><a href="' + esc(item.link_url || item.video_url) + '">' + (isVideo ? 'Watch the full video' : 'See the original post') + '</a></p>' : '') +
       (tags ? '<div class="tags">' + tags + '</div>' : '') +
       '</div></article>';
   }
@@ -156,7 +181,8 @@
     $all('.thumb', root).forEach(function (b) {
       b.addEventListener('click', function () {
         var it = items[+b.getAttribute('data-i')];
-        if (it.type === 'video' && it.video_url) { openVideo(it.video_url, it.orientation !== 'horizontal', it.title); return; }
+        if (isVideoItem(it)) { openVideo(it.video_url, it.orientation !== 'horizontal', it.title); return; }
+        if (!it.thumbnail) { if (it.link_url) window.open(it.link_url, '_blank', 'noopener'); return; }
         var imgs = [{ src: it.thumbnail, alt: it.alt || it.title }].concat((it.gallery || []).map(function (g) { return { src: g.image, alt: g.alt || it.title }; }));
         openImages(imgs, 0);
       });
@@ -167,7 +193,7 @@
   function renderPortfolio(data) {
     var grid = $('#portfolioGrid');
     if (!grid) return;
-    var all = (data.items || []).filter(function (p) { return p.show !== false && p.thumbnail; });
+    var all = (data.items || []).filter(function (p) { return p.show !== false && p.title; });
     var filters = $('#filters');
 
     function draw(kind) {
@@ -179,7 +205,14 @@
     }
     draw('all');
     if (filters) {
-      if (!all.some(function (p) { return p.type === 'video'; }) || !all.some(function (p) { return p.type === 'artwork'; })) filters.hidden = true;
+      var kinds = 0;
+      $all('button', filters).forEach(function (b) {
+        var k = b.getAttribute('data-filter');
+        if (k === 'all') return;
+        var has = all.some(function (p) { return p.type === k; });
+        b.hidden = !has; if (has) kinds++;
+      });
+      if (kinds < 2) filters.hidden = true;
       $all('button', filters).forEach(function (b) {
         b.addEventListener('click', function () {
           $all('button', filters).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
@@ -193,11 +226,78 @@
   function renderFeaturedWork(data) {
     var grid = $('#featuredWork');
     if (!grid) return;
-    var items = (data.items || []).filter(function (p) { return p.show !== false && p.featured && p.thumbnail; }).slice(0, 3);
+    var items = (data.items || []).filter(function (p) { return p.show !== false && p.featured; }).slice(0, 3);
     if (!items.length) return;
     grid.innerHTML = items.map(cardHTML).join('');
     grid.hidden = false;
     wireCards(grid, items);
+  }
+
+  /* ---------- Reviews and events ---------- */
+  function renderReviews(list) {
+    var box = $('#reviews');
+    if (!box) return;
+    list = (list || []).filter(function (r) { return r.text; });
+    if (!list.length) { box.hidden = true; return; }
+    box.innerHTML = list.map(function (r) {
+      return '<figure class="review"><span class="stars" aria-label="5 stars">\u2605\u2605\u2605\u2605\u2605</span>' +
+        '<blockquote>' + esc(r.text) + '</blockquote>' +
+        (r.name ? '<figcaption class="who">' + esc(r.name) + ', Etsy review</figcaption>' : '') + '</figure>';
+    }).join('');
+  }
+
+  // Events with a date (YYYY-MM-DD) drop off the site the day after they happen.
+  function renderEvents(list) {
+    var box = $('#eventList'), section = $('#events');
+    if (!box) return;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    list = (list || []).filter(function (e) {
+      if (e.show === false || !e.title) return false;
+      if (e.date) { var d = new Date(e.date + 'T23:59:59'); if (!isNaN(d) && d < today) return false; }
+      return true;
+    }).sort(function (a, b) { return (a.date || '9999') < (b.date || '9999') ? -1 : 1; });
+    if (!list.length) { box.hidden = true; return; }
+    box.innerHTML = list.map(function (e) {
+      var when = e.when || (e.date ? new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' }) : '');
+      return '<div class="event"><div>' +
+        (when ? '<div class="when">' + esc(when) + '</div>' : '') +
+        '<h3>' + esc(e.title) + '</h3>' +
+        (e.place ? '<div class="place">' + esc(e.place) + '</div>' : '') +
+        (e.details ? '<p>' + esc(e.details) + '</p>' : '') + '</div>' +
+        (e.url ? '<a class="btn btn-pink" href="' + esc(e.url) + '">' + esc(e.link_label || 'Details') + '</a>' : '') + '</div>';
+    }).join('');
+    externalize(box);
+  }
+
+  function renderClients(brand) {
+    $all('[data-clients]').forEach(function (box) {
+      var list = (brand && brand.clients) || [];
+      if (!list.length) { box.hidden = true; return; }
+      box.innerHTML = '<div class="label">' + esc(brand.clients_label || 'Worked with') + '</div><ul>' +
+        list.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>';
+    });
+  }
+
+  function renderMarkets(m) {
+    var box = $('#markets');
+    if (!box) return;
+    var photos = ((m && m.photos) || []).filter(function (p) { return p.image; });
+    if (!photos.length) { box.hidden = true; return; }
+    box.hidden = false;
+    $('#marketsTitle').textContent = m.title || 'At the markets';
+    $('#marketsIntro').textContent = m.intro || '';
+    var row = $('#marketRow');
+    row.innerHTML = photos.map(function (p, i) {
+      return '<figure class="snap" data-i="' + i + '" tabindex="0" role="button" aria-label="View larger: ' + esc(p.caption || p.alt || 'market photo') + '">' +
+        '<img src="' + esc(p.image) + '" alt="' + esc(p.alt || p.caption || 'Liz at a vendor market') + '" loading="lazy" decoding="async" width="300" height="300">' +
+        (p.caption ? '<figcaption>' + esc(p.caption) + '</figcaption>' : '') + '</figure>';
+    }).join('');
+    var imgs = photos.map(function (p) { return { src: p.image, alt: p.alt || p.caption || '' }; });
+    $all('.snap', row).forEach(function (f) {
+      function go() { openImages(imgs, +f.getAttribute('data-i')); }
+      f.addEventListener('click', go);
+      f.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
   }
 
   /* ---------- Quote of the day ---------- */
@@ -210,17 +310,154 @@
     var d = new Date();
     var day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
     var i = day % list.length;
+    quoteState.list = list; quoteState.i = i;
     box.textContent = list[i];
     if (!btn) return;
     if (list.length < 2) { btn.hidden = true; return; }
     btn.addEventListener('click', function () {
       var next = i;
       while (next === i) next = Math.floor(Math.random() * list.length);
-      i = next;
+      i = next; quoteState.i = i;
       box.classList.add('fade');
       setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); }, 250);
     });
   }
+
+  /* ---------- Hero slideshow ---------- */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function renderHero(hero) {
+    var scene = $('#heroScene'), dots = $('#heroDots');
+    var slides = ((hero && hero.slides) || []).filter(function (s) { return s.image; });
+    if (!scene || !slides.length) return;
+    scene.innerHTML = slides.map(function (s, i) {
+      return '<img class="slide' + (i === 0 ? ' is-on' : '') + '" src="' + esc(s.image) + '" alt="' + esc(s.alt || '') + '"' +
+        (i ? ' loading="lazy" aria-hidden="true"' : ' fetchpriority="high"') + ' width="864" height="1080">';
+    }).join('');
+    var imgs = $all('img', scene), cur = 0, timer;
+    if (slides.length < 2) return;
+    dots.innerHTML = slides.map(function (s, i) {
+      return '<button type="button" aria-label="Show artwork ' + (i + 1) + '"' + (i === 0 ? ' aria-current="true"' : '') + '></button>';
+    }).join('');
+    var btns = $all('button', dots);
+    function show(i) {
+      imgs[cur].classList.remove('is-on'); imgs[cur].setAttribute('aria-hidden', 'true'); btns[cur].removeAttribute('aria-current');
+      cur = (i + imgs.length) % imgs.length;
+      imgs[cur].classList.add('is-on'); imgs[cur].removeAttribute('aria-hidden'); btns[cur].setAttribute('aria-current', 'true');
+    }
+    function start() { if (!reduceMotion) { clearInterval(timer); timer = setInterval(function () { show(cur + 1); }, 5500); } }
+    btns.forEach(function (b, i) { b.addEventListener('click', function () { show(i); start(); }); });
+    scene.addEventListener('mouseenter', function () { clearInterval(timer); });
+    scene.addEventListener('mouseleave', start);
+    start();
+  }
+
+  /* ---------- Studio ---------- */
+  function renderStudio(studio) {
+    var sec = $('#studio'), row = $('#studioRow');
+    var items = ((studio && studio.items) || []).filter(function (s) { return s.image; });
+    if (!sec || !items.length) return;
+    sec.hidden = false;
+    row.innerHTML = items.map(function (s) {
+      return '<a class="studio-card" href="' + esc(s.url || '#') + '">' +
+        '<img src="' + esc(s.image) + '" alt="' + esc(s.caption || 'Behind the scenes in the studio') + '" loading="lazy" decoding="async" width="300" height="466">' +
+        '<span class="play-s" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 4 L20 12 L7 20 Z" fill="#231d1a"/></svg></span>' +
+        (s.caption ? '<span class="cap">' + esc(s.caption) + '</span>' : '') + '</a>';
+    }).join('');
+    externalize(row);
+  }
+
+  /* ---------- Newsletter ---------- */
+  function renderLetter(n) {
+    var form = $('#letterForm');
+    if (!form) return;
+    if (!n || n.show === false) { $('#letter').hidden = true; return; }
+    var user = (n.buttondown_username || '').trim();
+    if (user) {
+      form.action = 'https://buttondown.com/api/emails/embed-subscribe/' + encodeURIComponent(user);
+    } else {
+      form.addEventListener('submit', function (e) { e.preventDefault(); });
+      $('#letterBtn').disabled = true;
+      $('#letterEmail').disabled = true;
+      $('#letterNote').hidden = false;
+    }
+  }
+
+  /* ---------- Footer scenes ---------- */
+  function renderFooter(f) {
+    var box = $('#footScenes');
+    var scenes = ((f && f.scenes) || []).filter(function (s) { return s.image; });
+    if (!box || !scenes.length) return;
+    if (f.color) $('footer.site').style.background = f.color;
+    var mid = Math.floor(scenes.length / 2);
+    box.innerHTML = scenes.map(function (s, i) {
+      return '<img class="' + (i === mid ? 'ghosts' : 'scene-card') + '" src="' + esc(s.image) + '" alt="' + esc(s.alt || '') + '" loading="lazy" decoding="async">';
+    }).join('');
+    if (f.leaves === false) $all('.leaf').forEach(function (l) { l.remove(); });
+  }
+
+  /* ---------- Send a reminder ---------- */
+  function hash(str) { var x = 5381; for (var i = 0; i < str.length; i++) x = ((x << 5) + x + str.charCodeAt(i)) | 0; return (x >>> 0).toString(36); }
+  var quoteState = { list: [], i: 0 };
+  function setupShare(share) {
+    var dlg = $('#shareDialog'), btn = $('#qshare');
+    if (!dlg || !btn) return;
+    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
+    if (!art.length) { btn.hidden = true; return; }
+    var sel = $('#shareArt'), pic = $('#sharePic'), from = $('#shareFrom'), status = $('#shareStatus');
+    sel.innerHTML = art.map(function (a, i) { return '<option value="' + i + '">' + esc(a.label || ('Doodle ' + (i + 1))) + '</option>'; }).join('');
+    function quote() { return quoteState.list[quoteState.i] || ''; }
+    function link() {
+      var u = location.origin + '/?r=' + hash(quote()) + '&a=' + sel.value;
+      var f = from.value.trim(); if (f) u += '&from=' + encodeURIComponent(f);
+      return u;
+    }
+    function message() {
+      var f = from.value.trim();
+      return (f ? f + ' sent you a little reminder' : 'A little reminder for you') + ':\n\n"' + quote() + '"\n\nSee it here: ' + link();
+    }
+    function refresh() {
+      pic.src = art[+sel.value].image; pic.alt = art[+sel.value].label || '';
+      $('#shareQuote').textContent = quote();
+      $('#shareText').href = 'sms:?&body=' + encodeURIComponent(message());
+      $('#shareEmail').href = 'mailto:?subject=' + encodeURIComponent('A little reminder for you') + '&body=' + encodeURIComponent(message());
+      status.textContent = '';
+    }
+    sel.addEventListener('change', refresh); from.addEventListener('input', refresh);
+    $('#shareCopy').addEventListener('click', function () {
+      var text = link();
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+        status.textContent = 'Link copied. Paste it anywhere!';
+      }).catch(function () { status.textContent = text; });
+    });
+    if (navigator.share) {
+      var nat = $('#shareNative'); nat.hidden = false;
+      nat.addEventListener('click', function () {
+        navigator.share({ title: 'A little reminder for you', text: '"' + quote() + '"', url: link() }).catch(function () {});
+      });
+    }
+    btn.addEventListener('click', function () { refresh(); dlg.showModal(); });
+    window.__openShare = function () { refresh(); dlg.showModal(); };
+  }
+  function checkGift(share) {
+    var q = new URLSearchParams(location.search);
+    if (!q.get('r')) return;
+    var dlg = $('#giftDialog'); if (!dlg) return;
+    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
+    var idx = quoteState.list.map(hash).indexOf(q.get('r'));
+    var text = idx > -1 ? quoteState.list[idx] : quoteState.list[quoteState.i];
+    if (idx > -1) { quoteState.i = idx; $('#qotd').textContent = text; }
+    var a = art[+q.get('a')] || art[0];
+    if (a) { $('#giftPic').src = a.image; $('#giftPic').alt = a.label || ''; } else { $('#giftPic').hidden = true; }
+    var from = (q.get('from') || '').slice(0, 40);
+    $('#giftFrom').textContent = from ? from + ' sent you a little reminder' : 'Someone sent you a little reminder';
+    $('#giftQuote').textContent = text;
+    $('#giftBack').addEventListener('click', function () { dlg.close(); if (window.__openShare) window.__openShare(); });
+    history.replaceState(null, '', location.pathname + location.hash);
+    dlg.showModal();
+  }
+  $all('dialog.sheet').forEach(function (d) {
+    d.addEventListener('click', function (e) { if (e.target === d || e.target.hasAttribute('data-close')) d.close(); });
+  });
 
   /* ---------- Footer leaves ---------- */
   function leaves() {
@@ -262,7 +499,11 @@
     if (site) {
       bind(site);
       if (site.book) renderPreviews(site.book);
-      if (site.book && site.book.event_show === false && $('#event')) $('#event').hidden = true;
+      renderReviews(site.shop && site.shop.reviews);
+      renderEvents(site.events);
+      renderClients(site.brand);
+      renderMarkets(site.markets);
+      if ($('#events') && $('#eventList').hidden && $('#markets').hidden) $('#events').hidden = true;
       if (site.book && !site.book.bonus_url && $('#bonus')) $('#bonus').hidden = true;
       var other = $('#otherLinks');
       if (other && site.book && Array.isArray(site.book.other_links)) {
@@ -272,7 +513,12 @@
         }).join('');
       }
     }
-    if (prints) renderPrints(prints, site && site.shop && site.shop.etsy_url);
+    if (site) {
+      renderHero(site.hero); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
+      setupShare(site.share);
+      if (page === 'home') checkGift(site.share);
+    }
+    if (prints) renderPrints(prints, site && site.shop && site.shop.etsy_url, site && site.shop && site.shop.max_prints, site && site.shop && site.shop.moods, site && site.shop && site.shop.moods_label);
     if (page === 'home') renderFeaturedWork(portfolio);
     if (page === 'portfolio') renderPortfolio(portfolio);
     externalize(document);

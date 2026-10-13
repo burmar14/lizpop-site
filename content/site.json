@@ -4,12 +4,56 @@
     "headline": "Funny little drawings with a lot of",
     "highlight": "heart.",
     "intro": "Hi, I'm Liz. I draw soft little reminders for big feelings and hard days. Pick one for your wall, or for someone who needs it.",
-    "sticker": "take it easy :)",
-    "note": "1,400+ sales on Etsy and a lot of happy walls."
+    "note": "1,400+ sales on Etsy and a lot of happy walls.",
+    "slides": [
+      {
+        "image": "/images/art/trust-grass.webp",
+        "alt": "Liz's pink character resting in the green grass among yellow flowers, with the words I trust that I am where I am supposed to be and that good things always come to me"
+      },
+      {
+        "image": "/images/art/glad-you-are-here.webp",
+        "alt": "Three colorful characters dancing with birds, ladybugs and strawberries, with the words I am so glad you are here"
+      },
+      {
+        "image": "/images/art/amazing-things.webp",
+        "alt": "A girl and her cat riding a giant bird through a sunset sky, with the words I trust I am where I am meant to be"
+      },
+      {
+        "image": "/images/art/heart-glow-45.webp",
+        "alt": "The pink character hugging itself around a glowing green heart"
+      },
+      {
+        "image": "/images/art/still-whole.webp",
+        "alt": "Swirling tulips and stars around the words You are still whole no matter what phase you're in"
+      }
+    ]
   },
   "shop": {
     "etsy_url": "https://www.etsy.com/shop/LizPopArtShop",
-    "prints_intro": "A few favorites from the shop. Tap any print to see it on Etsy."
+    "prints_intro": "A few favorites from the shop. Tap any print to see it on Etsy.",
+    "max_prints": 12,
+    "reviews": [
+      {
+        "text": "Great quality print and fast shipping.",
+        "name": "Holly"
+      },
+      {
+        "text": "Super cute and arrived surprisingly very fast!!",
+        "name": "McKenna"
+      },
+      {
+        "text": "Love this print so much. Great addition to my gallery wall.",
+        "name": "Hannah"
+      }
+    ],
+    "moods": [
+      "Calm",
+      "Brave",
+      "Healing",
+      "Philly",
+      "Gift for a friend"
+    ],
+    "moods_label": "Shop by feeling"
   },
   "book": {
     "kicker": "Out October 20, preorder now",
@@ -31,10 +75,6 @@
     ],
     "bonus_text": "Preordered already? Grab your free coloring book.",
     "bonus_url": "",
-    "event_show": true,
-    "event_title": "Come say hi at Main Point Books",
-    "event_text": "Book signing and a chance to meet in person.",
-    "event_url": "https://www.eventbrite.com/e/liz-karcewski-little-doodles-for-big-feelings-tickets-1998672944580?aff=author",
     "previews": [
       {
         "image": "/images/uploads/book-spread-grass.webp",
@@ -71,7 +111,7 @@
       },
       {
         "value": "420+",
-        "label": "posts and videos shared"
+        "label": "posts, reels and animations"
       },
       {
         "value": "Philly",
@@ -80,17 +120,147 @@
     ],
     "rep_text": "Brand partnerships are handled by my management team.",
     "rep_email": "lizpopart@sixteenth.com",
-    "media_kit": ""
+    "media_kit": "",
+    "clients": [
+      "World Health Organization",
+      "BetterHelp",
+      "Logitech",
+      "Astropad",
+      "Sky: Children of the Light",
+      "Be The People",
+      "Independent therapists"
+    ],
+    "clients_label": "Worked with"
   },
   "about": {
-    "photo": "",
+    "photo": "/images/markets/blue-tent.webp",
     "photo_caption": "the artist :)",
     "body": "I'm an artist and illustrator based in Philly. I draw funny little characters going through very real feelings, and somehow a lot of you feel them too.\n\nYou can find my prints on Etsy, my book wherever books are sold, and me at markets around the city. Thanks so much for stopping by!"
   },
   "social": {
     "instagram": "https://www.instagram.com/lizpop_art/",
-    "tiktok": "https://www.tiktok.com/t/ZTRNAGKhY/",
+    "tiktok": "https://www.tiktok.com/@lizpopart",
     "coffee": "https://www.buymeacoffee.com/lkarcewski"
   },
-  "quotes_label": "Today's little reminder"
+  "quotes_label": "Today's little reminder",
+  "events_intro": "Markets, signings, and other places to meet in person.",
+  "events": [
+    {
+      "title": "Book signing at Main Point Books",
+      "date": "",
+      "when": "",
+      "place": "",
+      "details": "Signing copies of Little Doodles for Big Feelings. Come say hi!",
+      "url": "https://www.eventbrite.com/e/liz-karcewski-little-doodles-for-big-feelings-tickets-1998672944580?aff=author",
+      "link_label": "Get tickets",
+      "show": true
+    }
+  ],
+  "markets": {
+    "title": "At the markets",
+    "intro": "You can usually find me with a table full of prints at markets around Philly.",
+    "photos": [
+      {
+        "image": "/images/markets/fishtown.webp",
+        "caption": "Fishtown Music & Arts",
+        "alt": "Liz waving in front of her Liz Pop Art market tent"
+      },
+      {
+        "image": "/images/markets/2nd-street.webp",
+        "caption": "2nd Street Festival",
+        "alt": "Framed Philly prints on Liz's market table"
+      },
+      {
+        "image": "/images/markets/blue-tent.webp",
+        "caption": "Summer market",
+        "alt": "Liz smiling beside her print table under a blue tent"
+      },
+      {
+        "image": "/images/markets/indoor-market.webp",
+        "caption": "Indoor market",
+        "alt": "Liz sitting at her print table in front of a mosaic wall"
+      }
+    ]
+  },
+  "share": {
+    "button": "Send this reminder to someone",
+    "heading": "Send a little reminder",
+    "intro": "Pick a doodle to go with it. They'll get a link to today's reminder and your note.",
+    "art": [
+      {
+        "label": "Pink guy in the grass",
+        "image": "/images/art/trust-grass.webp"
+      },
+      {
+        "label": "So glad you are here",
+        "image": "/images/art/glad-you-are-here.webp"
+      },
+      {
+        "label": "Amazing things are meant for me",
+        "image": "/images/art/amazing-things.webp"
+      },
+      {
+        "label": "Glowing heart",
+        "image": "/images/art/heart-glow-45.webp"
+      },
+      {
+        "label": "Still whole",
+        "image": "/images/art/still-whole.webp"
+      },
+      {
+        "label": "A new magical chapter",
+        "image": "/images/art/magical-chapter.webp"
+      }
+    ]
+  },
+  "newsletter": {
+    "title": "A little reminder, once a month",
+    "text": "One new doodle and a kind word in your inbox each month. Plus first dibs on new prints and market dates. No spam, ever.",
+    "button": "Sign me up",
+    "buttondown_username": ""
+  },
+  "studio": {
+    "title": "From the studio",
+    "intro": "A peek at where the doodles happen. More behind-the-scenes on Instagram and TikTok.",
+    "items": [
+      {
+        "image": "/images/studio/art-office.webp",
+        "caption": "My little art office",
+        "url": "https://www.instagram.com/lizpop_art/reel/DTzEkF5jFdF/"
+      },
+      {
+        "image": "/images/studio/drawing.webp",
+        "caption": "Doodling between emails",
+        "url": "https://www.instagram.com/lizpop_art/reel/DUE0nMZER0E/"
+      },
+      {
+        "image": "/images/work/astropad.webp",
+        "caption": "Doodle with me",
+        "url": "https://www.instagram.com/lizpop_art/reel/Dd4nIjzv2nJ/"
+      },
+      {
+        "image": "/images/markets/booth-banner.webp",
+        "caption": "Market day setup",
+        "url": "https://www.instagram.com/lizpop_art/reel/DQCRBiCkeaW/"
+      }
+    ]
+  },
+  "footer": {
+    "scenes": [
+      {
+        "image": "/images/art/magical-chapter.webp",
+        "alt": "Witchy doodles: a moth, crystals, a black cat and a spell book around the words A new magical chapter in your life is about to start"
+      },
+      {
+        "image": "/images/ghosts.webp",
+        "alt": "Liz's shadow character holding hands with two ghosts as autumn leaves fall"
+      },
+      {
+        "image": "/images/art/autumn-hill.webp",
+        "alt": "A small figure on an orange hill watching leaves blow off an autumn tree"
+      }
+    ],
+    "leaves": true,
+    "color": "#e08c3c"
+  }
 }

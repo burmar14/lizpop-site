@@ -1,12 +1,100 @@
 {
   "items": [
-    { "title": "You are made of all the beautiful things", "image": "https://i.etsystatic.com/26867705/r/il/787eb4/6214493455/il_1080xN.6214493455_levx.jpg", "alt": "You are made of all the beautiful things print by Liz", "etsy_url": "https://www.etsy.com/listing/1771358709/you-are-made-of-all-the-beautiful-things", "show": true },
-    { "title": "Home", "image": "https://i.etsystatic.com/26867705/r/il/1dbc05/6498731744/il_1080xN.6498731744_fvdp.jpg", "alt": "Home print by Liz", "etsy_url": "https://www.etsy.com/listing/1814320989/home", "show": true },
-    { "title": "Peaceful Life", "image": "https://i.etsystatic.com/26867705/r/il/1a5f0b/8549482029/il_1080xN.8549482029_kqt3.jpg", "alt": "Peaceful Life print by Liz", "etsy_url": "https://www.etsy.com/listing/4572346276/peaceful-life", "show": true },
-    { "title": "Take Up Space", "image": "https://i.etsystatic.com/26867705/r/il/8bc578/5334894076/il_1080xN.5334894076_64yo.jpg", "alt": "Take Up Space print by Liz", "etsy_url": "https://www.etsy.com/listing/1561331500/take-up-space", "show": true },
-    { "title": "Philadelphia Wildlife", "image": "https://i.etsystatic.com/26867705/r/il/5f9786/5407192197/il_1080xN.5407192197_8yc9.jpg", "alt": "Philadelphia Wildlife print by Liz", "etsy_url": "https://www.etsy.com/listing/1566287760/philadelphia-wildlife", "show": true },
-    { "title": "Take it Easy", "image": "https://i.etsystatic.com/26867705/r/il/992c67/5359281016/il_1080xN.5359281016_kbga.jpg", "alt": "Take it Easy print by Liz", "etsy_url": "https://www.etsy.com/listing/1580515889/take-it-easy", "show": true },
-    { "title": "Shadow man", "image": "https://i.etsystatic.com/26867705/r/il/bfd71e/5383082793/il_1080xN.5383082793_jpeu.jpg", "alt": "Shadow man print by Liz", "etsy_url": "https://www.etsy.com/listing/1487033824/shadow-man", "show": true },
-    { "title": "Important reminders from the Universe", "image": "https://i.etsystatic.com/26867705/r/il/8c8372/5965056102/il_1080xN.5965056102_l96b.jpg", "alt": "Important reminders from the Universe print by Liz", "etsy_url": "https://www.etsy.com/listing/1725423453/important-reminders-from-the-universe", "show": true }
+    {
+      "title": "You are made of all the beautiful things",
+      "image": "https://i.etsystatic.com/26867705/r/il/787eb4/6214493455/il_1080xN.6214493455_levx.jpg",
+      "alt": "You are made of all the beautiful things print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/1771358709/you-are-made-of-all-the-beautiful-things",
+      "show": true,
+      "moods": [
+        "Healing",
+        "Gift for a friend"
+      ]
+    },
+    {
+      "title": "Home",
+      "image": "https://i.etsystatic.com/26867705/r/il/1dbc05/6498731744/il_1080xN.6498731744_fvdp.jpg",
+      "alt": "Home print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/1814320989/home",
+      "show": true,
+      "moods": [
+        "Calm",
+        "Gift for a friend"
+      ]
+    },
+    {
+      "title": "Peaceful Life",
+      "image": "https://i.etsystatic.com/26867705/r/il/1a5f0b/8549482029/il_1080xN.8549482029_kqt3.jpg",
+      "alt": "Peaceful Life print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/4572346276/peaceful-life",
+      "show": true,
+      "moods": [
+        "Calm"
+      ]
+    },
+    {
+      "title": "Take Up Space",
+      "image": "https://i.etsystatic.com/26867705/r/il/8bc578/5334894076/il_1080xN.5334894076_64yo.jpg",
+      "alt": "Take Up Space print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/1561331500/take-up-space",
+      "show": true,
+      "moods": [
+        "Brave"
+      ]
+    },
+    {
+      "title": "Birds Fans",
+      "image": "/images/art/birds-fans.webp",
+      "alt": "Cats in Eagles jerseys surrounded by little blue birds",
+      "etsy_url": "https://www.etsy.com/listing/4347607445/birds-fans",
+      "etsy_id": 4347607445,
+      "moods": [
+        "Philly",
+        "Gift for a friend"
+      ],
+      "show": true
+    },
+    {
+      "title": "Philadelphia Wildlife",
+      "image": "https://i.etsystatic.com/26867705/r/il/5f9786/5407192197/il_1080xN.5407192197_8yc9.jpg",
+      "alt": "Philadelphia Wildlife print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/1566287760/philadelphia-wildlife",
+      "show": true,
+      "moods": [
+        "Philly",
+        "Gift for a friend"
+      ]
+    },
+    {
+      "title": "Take it Easy",
+      "image": "https://i.etsystatic.com/26867705/r/il/992c67/5359281016/il_1080xN.5359281016_kbga.jpg",
+      "alt": "Take it Easy print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/1580515889/take-it-easy",
+      "show": true,
+      "moods": [
+        "Calm"
+      ]
+    },
+    {
+      "title": "Shadow man",
+      "image": "https://i.etsystatic.com/26867705/r/il/bfd71e/5383082793/il_1080xN.5383082793_jpeu.jpg",
+      "alt": "Shadow man print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/1487033824/shadow-man",
+      "show": true,
+      "moods": [
+        "Healing"
+      ]
+    },
+    {
+      "title": "Important reminders from the Universe",
+      "image": "https://i.etsystatic.com/26867705/r/il/8c8372/5965056102/il_1080xN.5965056102_l96b.jpg",
+      "alt": "Important reminders from the Universe print by Liz",
+      "etsy_url": "https://www.etsy.com/listing/1725423453/important-reminders-from-the-universe",
+      "show": true,
+      "moods": [
+        "Brave",
+        "Healing"
+      ]
+    }
   ]
 }

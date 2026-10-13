@@ -56,7 +56,7 @@ collections:
   - name: prints
     label: Prints
     icon: palette
-    description: Prints shown on the home page. Each one links to its Etsy listing.
+    description: New Etsy listings are added here automatically every morning. Reorder them, edit the text, or switch off "Show on site".
     files:
       - name: prints
         label: Print wall
@@ -73,7 +73,9 @@ collections:
               - { name: image, label: Image, widget: image, hint: "A photo of the print. Upload or paste an image link." }
               - { name: alt, label: Image description, widget: string, hint: "What's in the picture, for people using screen readers. Example: Pink character napping in the grass." }
               - { name: etsy_url, label: Etsy listing link, widget: string, required: false, hint: "Leave blank to link to the whole shop." }
+              - { name: moods, label: Feelings, widget: list, required: false, hint: "Which Shop by feeling buttons this print shows under. Use the same words as the list in Page text and links > Shop." }
               - { name: show, label: Show on site, widget: boolean, default: true }
+              - { name: etsy_id, label: Etsy ID (set automatically), widget: hidden }
 
   - name: portfolio
     label: Brand portfolio
@@ -96,17 +98,18 @@ collections:
               - name: type
                 label: Type
                 widget: select
-                default: video
+                default: influencer
                 options:
-                  - { label: Video, value: video }
-                  - { label: Illustration, value: artwork }
+                  - { label: Influencer video, value: influencer }
+                  - { label: Animation, value: animation }
+                  - { label: Illustration, value: illustration }
               - { name: thumbnail, label: Cover image, widget: image, hint: "For videos, a screenshot from the video works well. Tall (4:5) looks best." }
               - { name: alt, label: Cover image description, widget: string }
               - name: video_url
                 label: Video link
                 widget: string
                 required: false
-                hint: "YouTube, YouTube Shorts and Vimeo links play right on the site. Instagram and TikTok links open in a new tab."
+                hint: "Paste the Instagram, TikTok, YouTube or Vimeo link. YouTube and Vimeo play on the site; Instagram and TikTok open in a new tab."
               - name: orientation
                 label: Video shape
                 widget: select
@@ -144,15 +147,87 @@ collections:
               - { name: headline, label: Headline, widget: string }
               - { name: highlight, label: Pink highlighted word, widget: string }
               - { name: intro, label: Intro, widget: text }
-              - { name: sticker, label: Yellow sticker text, widget: string, required: false }
+              - name: slides
+                label: Rotating artwork
+                label_singular: Artwork
+                widget: list
+                summary: "{{fields.alt}}"
+                hint: "These fade from one to the next at the top of the home page. Tall pieces (4:5) look best."
+                fields:
+                  - { name: image, label: Image, widget: image }
+                  - { name: alt, label: Description, widget: string }
               - { name: note, label: Small note under buttons, widget: string, required: false }
           - { name: quotes_label, label: Label above the daily quote, widget: string }
+          - name: share
+            label: Send a reminder
+            widget: object
+            fields:
+              - { name: button, label: Button text, widget: string }
+              - { name: heading, label: Popup heading, widget: string }
+              - { name: intro, label: Popup intro, widget: string }
+              - name: art
+                label: Doodles people can send
+                label_singular: Doodle
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: Name in the dropdown, widget: string }
+                  - { name: image, label: Image, widget: image }
+          - name: studio
+            label: From the studio
+            widget: object
+            fields:
+              - { name: title, label: Heading, widget: string }
+              - { name: intro, label: Intro, widget: string }
+              - name: items
+                label: Studio clips
+                label_singular: Clip
+                widget: list
+                summary: "{{fields.caption}}"
+                fields:
+                  - { name: image, label: Cover image, widget: image }
+                  - { name: caption, label: Caption, widget: string }
+                  - { name: url, label: Link to the reel or TikTok, widget: string }
+          - name: newsletter
+            label: Monthly email
+            widget: object
+            fields:
+              - { name: title, label: Heading, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: button, label: Button text, widget: string }
+              - { name: buttondown_username, label: Buttondown username, widget: string, required: false, hint: "Make a free account at buttondown.com and put the username here. The signup form turns on once this is filled in." }
+          - name: footer
+            label: Footer art (swap by season)
+            widget: object
+            fields:
+              - { name: color, label: Background color, widget: color }
+              - { name: leaves, label: Falling leaves, widget: boolean, default: true }
+              - name: scenes
+                label: Footer pieces
+                label_singular: Piece
+                widget: list
+                hint: "The middle one sways front and center. Two or three pieces look best."
+                summary: "{{fields.alt}}"
+                fields:
+                  - { name: image, label: Image, widget: image }
+                  - { name: alt, label: Description, widget: string }
           - name: shop
             label: Shop
             widget: object
             fields:
               - { name: etsy_url, label: Etsy shop link, widget: string }
               - { name: prints_intro, label: Line under "Prints for your walls", widget: string }
+              - { name: moods_label, label: Label for feeling buttons, widget: string, default: Shop by feeling }
+              - { name: moods, label: Feeling buttons, widget: list, hint: "For example: Calm, Brave, Healing, Philly, Gift for a friend" }
+              - name: reviews
+                label: Customer reviews
+                label_singular: Review
+                widget: list
+                summary: "{{fields.name}}: {{fields.text}}"
+                fields:
+                  - { name: text, label: Review, widget: string, hint: "Copy a short line from a real Etsy review." }
+                  - { name: name, label: First name, widget: string, required: false }
+              - { name: max_prints, label: How many prints to show on the home page, widget: number, value_type: int, default: 12, min: 4, max: 40 }
           - name: book
             label: Book
             widget: object
@@ -174,10 +249,6 @@ collections:
                   - { name: url, label: Link, widget: string }
               - { name: bonus_text, label: Preorder bonus text, widget: string, required: false }
               - { name: bonus_url, label: Preorder bonus form link, widget: string, required: false, hint: "Leave blank to hide the bonus line." }
-              - { name: event_show, label: Show event, widget: boolean, default: true }
-              - { name: event_title, label: Event title, widget: string, required: false }
-              - { name: event_text, label: Event details, widget: string, required: false }
-              - { name: event_url, label: Event tickets link, widget: string, required: false }
               - name: previews
                 label: Peek inside (book pages)
                 label_singular: Page
@@ -185,6 +256,39 @@ collections:
                 fields:
                   - { name: image, label: Image, widget: image }
                   - { name: alt, label: Description, widget: string }
+          - { name: events_intro, label: Line under "Come say hi", widget: string }
+          - name: events
+            label: Events and markets
+            label_singular: Event
+            widget: list
+            summary: "{{fields.date}} {{fields.title}}"
+            add_to_top: true
+            hint: "Events with a date disappear from the site automatically the day after."
+            fields:
+              - { name: title, label: Event name, widget: string }
+              - { name: date, label: Date, widget: datetime, time_format: false, format: "YYYY-MM-DD", required: false, hint: "Leave blank if the date isn't set yet." }
+              - { name: when, label: Custom time text, widget: string, required: false, hint: "Optional. For example: Sat Nov 8, 11am to 4pm. Shown instead of the date." }
+              - { name: place, label: Where, widget: string, required: false }
+              - { name: details, label: Details, widget: string, required: false }
+              - { name: url, label: Link, widget: string, required: false }
+              - { name: link_label, label: Button text, widget: string, required: false, default: Details }
+              - { name: show, label: Show on site, widget: boolean, default: true }
+          - name: markets
+            label: Market photos
+            widget: object
+            fields:
+              - { name: title, label: Heading, widget: string }
+              - { name: intro, label: Intro line, widget: string, required: false }
+              - name: photos
+                label: Photos
+                label_singular: Photo
+                widget: list
+                summary: "{{fields.caption}}"
+                add_to_top: true
+                fields:
+                  - { name: image, label: Photo, widget: image }
+                  - { name: caption, label: Caption, widget: string, required: false, hint: "Short, like: Clark Park, fall 2025" }
+                  - { name: alt, label: Photo description, widget: string, required: false }
           - name: brand
             label: Brand work info
             widget: object
@@ -200,6 +304,8 @@ collections:
                 fields:
                   - { name: value, label: Number, widget: string }
                   - { name: label, label: Label, widget: string }
+              - { name: clients_label, label: Label above client names, widget: string, default: Worked with }
+              - { name: clients, label: Clients and brands, widget: list, hint: "Shown as a row of names on the home page and portfolio. First ones show first." }
               - { name: rep_text, label: Management line, widget: string }
               - { name: rep_email, label: Partnerships email, widget: string }
               - { name: media_kit, label: Media kit (PDF), widget: file, required: false }

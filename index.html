@@ -15,10 +15,10 @@
 <meta name="theme-color" content="#66a05a">
 <link rel="icon" type="image/png" href="/images/favicon.png">
 <link rel="apple-touch-icon" href="/images/favicon.png">
-<link rel="preload" as="image" href="/images/hero.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/images/art/trust-grass.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Shantell+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">
 {
@@ -84,13 +84,12 @@
         <p class="note" data-text="hero.note" data-hide-empty>1,400+ sales on Etsy and a lot of happy walls.</p>
       </div>
       <div class="hero-art">
-        <div class="scene">
-          <img src="/images/hero.webp" width="1080" height="1080" fetchpriority="high" alt="Liz's pink character lying back in the green grass among yellow flowers">
-          <svg class="flower f1" viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg>
-          <svg class="flower f2" viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg>
-          <svg class="flower f3" viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg>
+        <div class="scene" id="heroScene" aria-roledescription="carousel" aria-label="Liz's art">
+          <img class="slide is-on" src="/images/art/trust-grass.webp" width="874" height="1092" fetchpriority="high" alt="Liz's pink character resting in the green grass among yellow flowers">
         </div>
-        <div class="sticker" data-text="hero.sticker" data-hide-empty>take it easy :)</div>
+        <img class="doodle d-sparkle" src="/images/doodle-sparkle.png" alt="" aria-hidden="true">
+        <img class="doodle d-ladybug" src="/images/doodle-ladybug.png" alt="" aria-hidden="true">
+        <div class="dots" id="heroDots" role="group" aria-label="Choose artwork"></div>
       </div>
     </div>
   </section>
@@ -101,7 +100,11 @@
         <div class="tape"></div>
         <p class="label" id="qotdLabel" data-text="quotes_label">Today's little reminder</p>
         <blockquote id="qotd">You must learn to proceed with uncertainty.</blockquote>
-        <button type="button" class="another" id="qnext">another one, please</button>
+        <div class="q-actions">
+          <button type="button" class="btn btn-pink" id="qshare" data-text="share.button">Send this reminder to someone</button>
+          <button type="button" class="another" id="qnext">another one, please</button>
+        </div>
+        <img class="doodle d-card" src="/images/doodle-strawberry.png" alt="" aria-hidden="true">
       </div>
     </div>
   </section>
@@ -112,13 +115,15 @@
         <h2>Prints for your walls</h2>
         <p data-text="shop.prints_intro">A few favorites from the shop. Tap any print to see it on Etsy.</p>
       </div>
+      <div class="filters moods" id="moods" role="group" aria-label="Shop by feeling" hidden></div>
       <div class="grid" id="printGrid">
         <noscript><p>See all prints on <a href="https://www.etsy.com/shop/LizPopArtShop">Etsy</a>.</p></noscript>
       </div>
       <div class="prints-foot">
-        <p style="margin:0;color:var(--ink-soft)">New prints land in the shop first.</p>
+        <p style="margin:0;color:var(--ink-soft)">1,400+ orders shipped from the shop.</p>
         <a class="btn btn-pink" href="https://www.etsy.com/shop/LizPopArtShop" data-href="shop.etsy_url">Browse the whole shop</a>
       </div>
+      <div class="reviews" id="reviews" aria-label="What customers say"></div>
     </div>
   </section>
 
@@ -138,20 +143,41 @@
             <span id="otherLinks"></span>
           </div>
           <p class="bonus" id="bonus"><span data-text="book.bonus_text">Preordered already? Grab your free coloring book.</span> <a href="#" data-href="book.bonus_url">Claim it here</a></p>
-
-          <div class="event" id="event">
-            <div>
-              <h3 data-text="book.event_title">Come say hi at Main Point Books</h3>
-              <p data-text="book.event_text">Book signing and a chance to meet in person.</p>
-            </div>
-            <a class="btn btn-pink" href="https://www.eventbrite.com/e/liz-karcewski-little-doodles-for-big-feelings-tickets-1998672944580?aff=author" data-href="book.event_url">Get tickets</a>
-          </div>
         </div>
       </div>
 
       <div class="peek" id="peek">
         <h3>Peek inside</h3>
         <div class="peek-row" id="peekRow"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="events" id="events">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Come say hi</h2>
+        <p data-text="events_intro">Markets, signings, and other places to meet in person.</p>
+      </div>
+      <div class="event-list" id="eventList"></div>
+      <div class="markets" id="markets" hidden>
+        <h3 id="marketsTitle">At the markets</h3>
+        <p id="marketsIntro"></p>
+        <div class="snap-row" id="marketRow"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="studio" id="studio" hidden>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-text="studio.title">From the studio</h2>
+        <p data-text="studio.intro">A peek at where the doodles happen.</p>
+      </div>
+      <div class="studio-row" id="studioRow"></div>
+      <div class="btn-row" style="margin-top:30px">
+        <a class="btn btn-green" href="https://www.instagram.com/lizpop_art/" data-href="social.instagram">Follow on Instagram</a>
+        <a class="btn" href="https://www.tiktok.com/@lizpopart" data-href="social.tiktok">Watch on TikTok</a>
       </div>
     </div>
   </section>
@@ -176,6 +202,7 @@
           <div class="stat"><b>Philly</b><span>based</span></div>
         </div>
       </div>
+      <div class="clients" data-clients></div>
       <div class="pgrid" id="featuredWork" style="margin-top:56px" hidden></div>
     </div>
   </section>
@@ -194,9 +221,27 @@
         </div>
         <div class="btn-row">
           <a class="btn btn-green" href="https://www.instagram.com/lizpop_art/" data-href="social.instagram">Instagram</a>
-          <a class="btn" href="https://www.tiktok.com/t/ZTRNAGKhY/" data-href="social.tiktok" data-hide-empty>TikTok</a>
+          <a class="btn" href="https://www.tiktok.com/@lizpopart" data-href="social.tiktok" data-hide-empty>TikTok</a>
           <a class="btn btn-yellow" href="https://www.buymeacoffee.com/lkarcewski" data-href="social.coffee" data-hide-empty>Buy me a coffee</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="letter" id="letter">
+    <div class="wrap">
+      <div class="letter-card">
+        <img class="doodle d-letter" src="/images/doodle-ladybug.png" alt="" aria-hidden="true">
+        <div>
+          <h2 data-text="newsletter.title">A little reminder, once a month</h2>
+          <p data-text="newsletter.text">One new doodle and a kind word in your inbox each month.</p>
+        </div>
+        <form class="letter-form" id="letterForm" method="post" target="_blank">
+          <label class="sr-only" for="letterEmail">Email address</label>
+          <input type="email" name="email" id="letterEmail" placeholder="you@email.com" required autocomplete="email">
+          <button class="btn btn-yellow" type="submit" id="letterBtn"><span data-text="newsletter.button">Sign me up</span></button>
+          <p class="letter-note" id="letterNote" hidden>The list opens soon. Check back!</p>
+        </form>
       </div>
     </div>
   </section>
@@ -205,7 +250,9 @@
 
 <footer class="site">
   <div class="ghost-band" id="ghostBand">
-    <img class="ghosts" src="/images/ghosts.webp" width="758" height="624" loading="lazy" decoding="async" alt="Liz's shadow character holding hands with two ghosts as autumn leaves fall">
+    <div class="scenes" id="footScenes">
+      <img class="ghosts" src="/images/ghosts.webp" width="758" height="624" loading="lazy" decoding="async" alt="Liz's shadow character holding hands with two ghosts as autumn leaves fall">
+    </div>
   </div>
   <div class="foot">
     <div class="wrap">
@@ -215,12 +262,49 @@
         <li><a href="#book">The book</a></li>
         <li><a href="/portfolio/">Brand work</a></li>
         <li><a href="https://www.instagram.com/lizpop_art/" data-href="social.instagram">Instagram</a></li>
-        <li><a href="https://www.tiktok.com/t/ZTRNAGKhY/" data-href="social.tiktok">TikTok</a></li>
+        <li><a href="https://www.tiktok.com/@lizpopart" data-href="social.tiktok">TikTok</a></li>
       </ul>
       <small>&copy; <span data-year>2026</span> Liz Karcewski. All art drawn by Liz. Please don't reuse it without asking.</small>
     </div>
   </div>
 </footer>
+
+<dialog class="sheet" id="shareDialog" aria-labelledby="shareTitle">
+  <button class="close" type="button" data-close aria-label="Close">&times;</button>
+  <h2 id="shareTitle" data-text="share.heading">Send a little reminder</h2>
+  <p class="muted" data-text="share.intro">Pick a doodle to go with it.</p>
+  <div class="share-preview">
+    <img id="sharePic" src="/images/art/trust-grass.webp" alt="">
+    <blockquote id="shareQuote"></blockquote>
+  </div>
+  <div class="field">
+    <label for="shareArt">Doodle to send</label>
+    <select id="shareArt"></select>
+  </div>
+  <div class="field">
+    <label for="shareFrom">From (optional)</label>
+    <input id="shareFrom" type="text" maxlength="40" placeholder="Your first name" autocomplete="given-name">
+  </div>
+  <div class="share-actions">
+    <a class="btn btn-pink" id="shareText" href="#">Text it</a>
+    <a class="btn btn-yellow" id="shareEmail" href="#">Email it</a>
+    <button class="btn" type="button" id="shareCopy">Copy link</button>
+    <button class="btn" type="button" id="shareNative" hidden>More options</button>
+  </div>
+  <p class="muted small" id="shareStatus" role="status"></p>
+</dialog>
+
+<dialog class="sheet gift" id="giftDialog" aria-labelledby="giftTitle">
+  <button class="close" type="button" data-close aria-label="Close">&times;</button>
+  <p class="kicker" id="giftFrom">Someone sent you a little reminder</p>
+  <img id="giftPic" src="/images/art/trust-grass.webp" alt="">
+  <blockquote id="giftQuote" class="gift-quote"></blockquote>
+  <h2 id="giftTitle" class="sr-only">A little reminder for you</h2>
+  <div class="share-actions">
+    <button class="btn btn-pink" type="button" data-close>Look around</button>
+    <button class="btn btn-yellow" type="button" id="giftBack">Send one back</button>
+  </div>
+</dialog>
 
 <dialog class="viewer" id="viewer" aria-label="Viewer">
   <button class="close" type="button" aria-label="Close">&times;</button>

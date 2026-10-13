@@ -38,6 +38,18 @@ Don't upload video files to the repo; GitHub isn't built for large files.
 - Instagram and TikTok links open in a new tab (their embeds slow pages down and track visitors).
 - For each video, upload a cover image (a screenshot from the video works).
 
+## Automatic Etsy sync
+
+Every morning (about 6:23am Eastern) GitHub pulls Liz's active Etsy listings:
+- New listings are added to the top of the Prints list and shown on the site.
+- Listings that are no longer on Etsy are removed.
+- Edits made in the admin panel (titles, order, hiding) are kept.
+- The home page shows the first 12 shown prints (change this under Page text and links > Shop).
+
+To run it right away: repo **Actions** tab > **Sync and deploy** > **Run workflow**.
+
+It needs two repo secrets (**Settings > Secrets and variables > Actions**): `ETSY_API_KEY` and `ETSY_SHARED_SECRET`, from Liz's app at etsy.com/developers/your-apps. Without them the sync just skips.
+
 ## Files
 
 - `index.html` home page, `portfolio/index.html` brand portfolio, `404.html` not-found page
@@ -45,4 +57,13 @@ Don't upload video files to the repo; GitHub isn't built for large files.
 - `assets/site.css`, `assets/site.js` styles and page logic
 - `admin/` the admin panel (Sveltia CMS) and its settings in `config.yml`
 - `images/uploads/` everything uploaded through the admin panel
+- `scripts/sync_etsy.py` and `.github/workflows/deploy.yml` the Etsy sync and deploy steps
 - `CNAME` keeps the lizpop.art domain connected. Don't delete it.
+
+## Liz's font (Ugly Dave)
+
+Headers and accents use "Ugly Dave". Add the font file as `assets/fonts/UglyDave.woff2` (or `.otf`/`.ttf`) and the site switches to it automatically. Until then it uses Sniglet, a similar free font. Check that the font's license allows web use.
+
+## Monthly email
+
+Make a free account at buttondown.com, then paste the username in the admin under Page text and links > Monthly email. The signup form turns on as soon as it's saved.

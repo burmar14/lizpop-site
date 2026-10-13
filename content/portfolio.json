@@ -1,3 +1,174 @@
 {
-  "items": []
+  "items": [
+    {
+      "title": "Drawing my verse for “Gotta Be Us”",
+      "client": "Be The People",
+      "type": "influencer",
+      "thumbnail": "/images/work/be-the-people.webp",
+      "video_url": "https://www.instagram.com/lizpop_art/reel/Dagz6F5RSpd/",
+      "description": "A paid partnership for Be The People's creator campaign. I put my own spin on their song by doing what I do best: drawing it.",
+      "tags": [
+        "community",
+        "music"
+      ],
+      "featured": true,
+      "link_url": "",
+      "alt": "Be The People: Drawing my verse for “Gotta Be Us”",
+      "orientation": "vertical",
+      "show": true
+    },
+    {
+      "title": "World Mental Health Day",
+      "client": "World Health Organization",
+      "type": "animation",
+      "thumbnail": "/images/work/who-depression.webp",
+      "video_url": "https://www.instagram.com/reel/DPoSZCJlSzW/",
+      "description": "An animated illustration for WHO's World Mental Health Day post on depression and reaching out for support.",
+      "tags": [
+        "mental health",
+        "animation"
+      ],
+      "featured": true,
+      "link_url": "",
+      "alt": "World Health Organization: World Mental Health Day",
+      "orientation": "vertical",
+      "show": true
+    },
+    {
+      "title": "Thrive, not just survive",
+      "client": "BetterHelp",
+      "type": "illustration",
+      "thumbnail": "/images/work/betterhelp-thrive.webp",
+      "video_url": "",
+      "link_url": "https://www.instagram.com/p/DLnL6U1pNm-/",
+      "description": "A full illustration about honoring the people who came before us, made in partnership with BetterHelp.",
+      "tags": [
+        "mental health",
+        "community"
+      ],
+      "featured": true,
+      "alt": "BetterHelp: Thrive, not just survive",
+      "orientation": "vertical",
+      "show": true
+    },
+    {
+      "title": "Paper-feel drawing on iPad",
+      "client": "Astropad",
+      "type": "influencer",
+      "thumbnail": "/images/work/astropad.webp",
+      "video_url": "https://www.instagram.com/lizpop_art/reel/Dd4nIjzv2nJ/",
+      "description": "A doodle-with-me reel showing how Astropad's paper-like screen protector brings back the feel of a sketchbook.",
+      "tags": [
+        "tech",
+        "art"
+      ],
+      "link_url": "",
+      "alt": "Astropad: Paper-feel drawing on iPad",
+      "orientation": "vertical",
+      "featured": false,
+      "show": true
+    },
+    {
+      "title": "Artist life with a 9 to 5",
+      "client": "Logitech",
+      "type": "influencer",
+      "thumbnail": "/images/work/logitech.webp",
+      "video_url": "https://www.instagram.com/lizpop_art/reel/DadgYpPxM5P/",
+      "description": "A day in the life juggling a day job and drawing, featuring the Logitech Wave keyboard and Lift mouse.",
+      "tags": [
+        "tech",
+        "wellness"
+      ],
+      "link_url": "",
+      "alt": "Logitech: Artist life with a 9 to 5",
+      "orientation": "vertical",
+      "featured": false,
+      "show": true
+    },
+    {
+      "title": "Finding the right therapist",
+      "client": "BetterHelp",
+      "type": "animation",
+      "thumbnail": "/images/work/betterhelp-therapist.webp",
+      "video_url": "https://www.instagram.com/lizpop_art/reel/DQxZU7fEtzD/",
+      "description": "An animated short about how a therapist can help you see yourself more clearly.",
+      "tags": [
+        "mental health",
+        "animation"
+      ],
+      "link_url": "",
+      "alt": "BetterHelp: Finding the right therapist",
+      "orientation": "vertical",
+      "featured": false,
+      "show": true
+    },
+    {
+      "title": "Let your light shine",
+      "client": "BetterHelp",
+      "type": "animation",
+      "thumbnail": "/images/work/betterhelp-pride.webp",
+      "video_url": "https://www.instagram.com/betterhelp/reel/DLAqcNoP6eh/",
+      "description": "A Pride Month animation for BetterHelp about showing up as your whole self.",
+      "tags": [
+        "mental health",
+        "pride"
+      ],
+      "link_url": "",
+      "alt": "BetterHelp: Let your light shine",
+      "orientation": "vertical",
+      "featured": false,
+      "show": true
+    },
+    {
+      "title": "Sitting with our shadows",
+      "client": "Option B",
+      "type": "animation",
+      "thumbnail": "/images/work/option-b-holidays.webp",
+      "video_url": "https://www.instagram.com/lizpop_art/reel/DSne8YakYQU/",
+      "description": "A holiday animation with Option B for anyone carrying grief or hard feelings through the season.",
+      "tags": [
+        "grief",
+        "animation"
+      ],
+      "link_url": "",
+      "alt": "Option B: Sitting with our shadows",
+      "orientation": "vertical",
+      "featured": false,
+      "show": true
+    },
+    {
+      "title": "If the holidays feel heavy",
+      "client": "BetterHelp",
+      "type": "illustration",
+      "thumbnail": "/images/work/betterhelp-holidays.webp",
+      "video_url": "",
+      "link_url": "https://www.instagram.com/p/DSi4ySVkeLK/",
+      "description": "A holiday illustration for BetterHelp about loss, changed relationships and giving yourself grace.",
+      "tags": [
+        "mental health",
+        "holidays"
+      ],
+      "alt": "BetterHelp: If the holidays feel heavy",
+      "orientation": "vertical",
+      "featured": false,
+      "show": true
+    },
+    {
+      "title": "Designapalooza strap design contest",
+      "client": "Chaco",
+      "type": "influencer",
+      "thumbnail": "/images/work/chaco.webp",
+      "video_url": "https://www.instagram.com/lizpop_art/reel/DNyK7SI4lSu/",
+      "description": "Inviting fellow artists to enter Chaco's sandal strap design competition.",
+      "tags": [
+        "art",
+        "community"
+      ],
+      "link_url": "",
+      "alt": "Chaco: Designapalooza strap design contest",
+      "orientation": "vertical",
+      "featured": false,
+      "show": true
+    }
+  ]
 }
