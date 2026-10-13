@@ -193,7 +193,7 @@
     }
     function message() {
       var f = from.value.trim();
-      return (f ? f + ' sent you a little reminder' : 'A little reminder for you') + ':\n\n"' + quote() + '"\n\nSee it here: ' + link();
+      return (f ? f + ' sent you a little reminder' : 'Someone sent you a little reminder') + '. See it here: ' + link();
     }
     function refresh() {
       pic.src = art[+sel.value].image; pic.alt = art[+sel.value].label || '';
@@ -212,7 +212,7 @@
     if (navigator.share) {
       var nat = $('#shareNative'); nat.hidden = false;
       nat.addEventListener('click', function () {
-        navigator.share({ title: 'A little reminder for you', text: '"' + quote() + '"', url: link() }).catch(function () {});
+        navigator.share({ title: 'A little reminder for you', text: 'A little reminder for you. See it here:', url: link() }).catch(function () {});
       });
     }
     btn.addEventListener('click', function () { refresh(); dlg.showModal(); });

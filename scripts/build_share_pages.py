@@ -5,8 +5,8 @@ og:title and og:image without running any site code. Giving each pairing its own
 lets the preview show the chosen reminder and doodle. The page then forwards visitors
 to the home page, which opens the "someone sent you a reminder" card.
 
-Run after changing quotes or shareable doodles:  python3 scripts/build_share_pages.py
-(The deploy workflow also runs it automatically.)
+Run build_share_cards.py first (it draws the preview pictures), then this, after changing quotes or
+shareable doodles. The deploy workflow also runs this one automatically.
 """
 import html
 import json
@@ -46,8 +46,12 @@ def main():
         qid = quote_id(text)
         for ai, a in enumerate(art):
             slug = f"{qid}-{ai}"
-            pic = a.get("preview") or a["image"]
-            img = pic if pic.startswith("http") else SITE + pic
+            # A drawn card (build_share_cards.py) if there is one, else the plain doodle.
+            if os.path.exists(os.path.join(ROOT, "images", "share", "cards", slug + ".jpg")):
+                img = f"{SITE}/images/share/cards/{slug}.jpg"
+            else:
+                pic = a.get("preview") or a["image"]
+                img = pic if pic.startswith("http") else SITE + pic
             t = html.escape(text, quote=True)
             page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -56,8 +60,8 @@ def main():
 <title>{t}</title>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Liz Pop Art">
-<meta property="og:title" content="{t}">
-<meta property="og:description" content="A little reminder for you, drawn by Liz Pop Art.">
+<meta property="og:title" content="A little reminder for you">
+<meta property="og:description" content="Drawn by Liz Pop Art.">
 <meta property="og:image" content="{html.escape(img, quote=True)}">
 <meta property="og:url" content="{SITE}/r/{slug}/">
 <meta name="twitter:card" content="summary_large_image">
