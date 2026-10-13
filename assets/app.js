@@ -442,6 +442,22 @@
   }
 
   /* ---------- Portfolio and brand work ---------- */
+  // The yellow highlight steps along the topic chips, one at a time (it stays on the first one for reduced motion).
+  function rotateChips() {
+    $all('.chips').forEach(function (ul) {
+      var items = $all('li', ul), n = 0;
+      if (items.length < 2) return;
+      ul.classList.add('is-rotating');
+      items[0].classList.add('is-lit');
+      if (reduceMotion) return;
+      setInterval(function () {
+        items[n].classList.remove('is-lit');
+        n = (n + 1) % items.length;
+        items[n].classList.add('is-lit');
+      }, 2400);
+    });
+  }
+
   var TYPE_LABEL = { influencer: 'Influencer video', animation: 'Animation', illustration: 'Illustration', video: 'Video', artwork: 'Illustration' };
   function isVideoItem(it) { return !!it.video_url && it.type !== 'illustration' && it.type !== 'artwork'; }
   function cardHTML(item, i) {
@@ -731,6 +747,7 @@
     var site = res[0], prints = res[1], portfolio = res[2], quotes = res[3];
     if (site) {
       bind(site);
+      rotateChips();
       if (site.book) renderPreviews(site.book);
       renderReviews(site.shop && site.shop.reviews);
       renderEvents(site.events);

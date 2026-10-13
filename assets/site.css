@@ -73,7 +73,9 @@ h3 { font-size: 1.3rem; font-weight: 600; }
   font-family: var(--hand); font-weight: 600; font-size: .95rem;
   background: var(--paper); border: 2px solid var(--ink); border-radius: var(--wobble); padding: 6px 14px;
 }
-.chips li:first-child { background: var(--yellow); }
+.chips li { transition: background .3s ease, transform .3s ease; }
+.chips:not(.is-rotating) li:first-child, .chips li.is-lit { background: var(--yellow); }
+.chips li.is-lit { transform: rotate(-2deg) scale(1.06); }
 
 /* accessibility */
 .skip { position: absolute; left: -9999px; top: 8px; z-index: 100; background: var(--yellow); padding: 8px 14px; border: 2px solid var(--ink); font-family: var(--hand); }
