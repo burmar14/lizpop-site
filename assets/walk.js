@@ -18,9 +18,9 @@
   var CHARS = [
     { id: 'pink', label: 'Pink', h: 104, lift: 0 },
     { id: 'orange', label: 'Orange', h: 84, lift: 0 },
-    { id: 'blue', label: 'Blue', h: 74, lift: 14 }
+    { id: 'blue', label: 'Blue', h: 74, lift: 14, flip: true }
   ];
-  var FRIEND = { id: 'shadow', h: 132, lift: 0 };   // waits at the end of the hill, with an empty pot
+  var FRIEND = { id: 'shadow', h: 132, lift: 0, flip: true };   // waits at the end of the hill, with an empty pot
   // the flowers she drew, whole: stem, leaves and all. They are shrunk down to fit the bouquet.
   var FLOWERS = [
     { img: 'tulip-red-1', h: 52, stem: '#357a7c' }, { img: 'tulip-yel-1', h: 32, stem: '#168a45' }, { img: 'tulip-red-2', h: 50, stem: '#357a7c' },
@@ -217,17 +217,21 @@
     if (S.friend) {
       fb = Math.max(0, Math.sin(S.t * 3.2)) * 7 * U * (happy ? 1.8 : 0.5);
       var fs = friendChar.h * U / 330, fy = groundY() - fb - friendChar.lift * U;
-      pot = { x: S.friend.x + (110 - 92.5) * fs, y: fy + (94 - 330) * fs };
+      pot = { x: S.friend.x - (110 - 92.5) * fs, y: fy + (94 - 330) * fs };   // his pot is on the side facing the walker
       if (happy) drawBouquet(pot.x, pot.y, 0.55, true);          // the flowers stand in his pot, behind its front
-      pic(friendChar.id, S.friend.x, fy, friendChar.h, happy ? Math.sin(S.t * 5) * 0.035 : Math.sin(S.t * 2) * 0.02);
+      pic(friendChar.id, S.friend.x, fy, friendChar.h, happy ? Math.sin(S.t * 5) * 0.035 : Math.sin(S.t * 2) * 0.02, -1, 1);
     }
     // the walker: little bob, a squash when landing, and a lift for the floaty blue one
     var bob = S.mode === 'walk' && S.slow <= 0 ? Math.sin(S.t * 6) * 1.8 * U : 0, sq = S.squash > 0 ? 1 - 0.1 * S.squash : 1;
-    pic(chosen.id, playerX(), groundY() + S.py - chosen.lift * U + bob - (chosen.lift ? Math.sin(S.t * 2.2) * 5 * U : 0), chosen.h, Math.sin(S.t * 3) * 0.035, 1 / sq, sq);
+    pic(chosen.id, playerX(), groundY() + S.py - chosen.lift * U + bob - (chosen.lift ? Math.sin(S.t * 2.2) * 5 * U : 0), chosen.h, Math.sin(S.t * 3) * 0.035, (chosen.flip ? -1 : 1) / sq, sq);
     // gift on its way to the friend
     if (S.mode === 'gift' || S.mode === 'done') {
       var k = Math.min(1, S.gift), ease = k * k * (3 - 2 * k);
-      if (k < 1) drawBouquet(64 * U + (pot.x - 64 * U) * ease, 128 * U + (pot.y - 128 * U) * ease - Math.sin(ease * Math.PI) * 34 * U, 1 - 0.45 * ease, false);
+      if (k < 1) {
+        var gx = 64 * U + (pot.x - 64 * U) * ease, gy = 128 * U + (pot.y - 128 * U) * ease - Math.sin(ease * Math.PI) * 70 * U;
+        drawBouquet(gx, gy, 1 + 0.25 * Math.sin(ease * Math.PI) - 0.45 * ease, false);
+        if (!reduceMotion && Math.random() < 0.55) sparkle(gx + (Math.random() - .5) * 20 * U, gy - 20 * U, 1);
+      }
       else {
         for (var h = 0; h < 4; h++) drawHeart(S.friend.x + Math.sin(S.t * 1.8 + h * 1.7) * 34 * U, groundY() - (friendChar.h + 4 + ((S.t * 22 + h * 22) % 56)) * U, 1.3 * U, 0.9);
         drawBubble(S.friend.x, groundY() - fb - (friendChar.h + 14) * U, 'Aw thanks!');
@@ -304,8 +308,8 @@
     }
     // the hand-over
     if (S.mode === 'gift') {
-      S.gift += dt * 0.6;
-      if (S.gift >= 2.6 && !S.shown) { S.shown = true; S.mode = 'done'; showEnd(); }
+      S.gift += dt * 0.5;
+      if (S.gift >= 3 && !S.shown) { S.shown = true; S.mode = 'done'; showEnd(); }
     }
     // little effects
     S.drops.forEach(function (d) { d.x += d.vx * dt * U / 1; d.y += d.vy * dt * U; d.vy += 520 * dt; d.a -= dt * 1.4; });
