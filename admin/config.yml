@@ -173,6 +173,7 @@ collections:
                 fields:
                   - { name: label, label: Name in the dropdown, widget: string }
                   - { name: image, label: Image, widget: image }
+                  - { name: preview, label: Text preview image (set automatically), widget: hidden }
           - name: loved
             label: Most loved (top animations)
             widget: object
@@ -190,6 +191,21 @@ collections:
                   - { name: title, label: Title, widget: string }
                   - { name: views, label: Views, widget: string, required: false, hint: "Like 10.9M" }
                   - { name: url, label: Link to the reel, widget: string }
+                  - { name: show, label: Show on site, widget: boolean, default: true }
+              - { name: tabs, label: Tab names, widget: list, required: false, hint: "First tab shows the pieces above, second shows the videos below." }
+              - { name: videos_intro, label: Intro for the videos tab, widget: string, required: false }
+              - name: videos
+                label: Influencer videos
+                label_singular: Video
+                widget: list
+                summary: "{{fields.views}} {{fields.title}}"
+                hint: "Brand partnerships and real-life videos. Order them by views, biggest first."
+                fields:
+                  - { name: image, label: Cover image, widget: image }
+                  - { name: title, label: Title, widget: string }
+                  - { name: brand, label: Brand (if a partnership), widget: string, required: false }
+                  - { name: views, label: Views, widget: string, required: false }
+                  - { name: url, label: Link to the video, widget: string }
                   - { name: show, label: Show on site, widget: boolean, default: true }
           - name: studio
             label: From the studio

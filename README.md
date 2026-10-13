@@ -54,7 +54,7 @@ It needs two repo secrets (**Settings > Secrets and variables > Actions**): `ETS
 
 - `index.html` home page, `portfolio/index.html` brand portfolio, `404.html` not-found page
 - `content/*.json` all editable content (what the admin panel edits)
-- `assets/site.css`, `assets/site.js` styles and page logic
+- `assets/site.css`, `assets/app.js` styles and page logic
 - `admin/` the admin panel (Sveltia CMS) and its settings in `config.yml`
 - `images/uploads/` everything uploaded through the admin panel
 - `scripts/sync_etsy.py` and `.github/workflows/deploy.yml` the Etsy sync and deploy steps
@@ -71,3 +71,7 @@ Make a free account at buttondown.com, then paste the username in the admin unde
 ## Footer characters
 
 The footer's waving characters, birds, daisy and strawberry are cut from Liz's "I am so glad you are here" piece (in `images/cast/`). Tapping a character makes it hop and changes the speech bubble. To swap in new drawings, replace the PNGs in `images/cast/` with transparent PNGs of the same names. Bubble lines, sky color, and the old framed-art style are under Page text and links > Footer in the admin.
+
+## Reminder link previews
+
+When someone texts a reminder, the link points to a small page in `r/` so the text preview shows that reminder and doodle. After adding or editing quotes or shareable doodles, run `python3 scripts/build_share_pages.py` (or let the deploy workflow do it) so new combinations get preview pages. Until then, older links still work.

@@ -143,7 +143,7 @@
     "clients_label": "Worked with"
   },
   "about": {
-    "photo": "/images/markets/blue-tent.webp",
+    "photo": "/images/markets/fishtown.webp",
     "photo_caption": "the artist :)",
     "body": "I'm an artist and illustrator based in Philly. I draw funny little characters going through very real feelings, and somehow a lot of you feel them too.\n\nYou can find my prints on Etsy, my book wherever books are sold, and me at markets around the city. Thanks so much for stopping by!"
   },
@@ -182,13 +182,13 @@
       },
       {
         "image": "/images/markets/blue-tent.webp",
-        "caption": "Summer market",
+        "caption": "Fishtown summer market",
         "alt": "Liz smiling beside her print table under a blue tent"
       },
       {
         "image": "/images/markets/indoor-market.webp",
-        "caption": "Indoor market",
-        "alt": "Liz sitting at her print table in front of a mosaic wall"
+        "caption": "Magic Gardens Market",
+        "alt": "Liz at her print table in front of the mosaic walls at Philadelphia's Magic Gardens"
       }
     ]
   },
@@ -199,35 +199,43 @@
     "art": [
       {
         "label": "Just relax my friend",
-        "image": "/images/hits/just-relax-45.webp"
+        "image": "/images/hits/just-relax-45.webp",
+        "preview": "/images/share/just-relax-45.jpg"
       },
       {
         "label": "Cosmic dance",
-        "image": "/images/hits/cosmic-dance-45.webp"
+        "image": "/images/hits/cosmic-dance-45.webp",
+        "preview": "/images/share/cosmic-dance-45.jpg"
       },
       {
         "label": "Healthy love exists",
-        "image": "/images/hits/healthy-love-45.webp"
+        "image": "/images/hits/healthy-love-45.webp",
+        "preview": "/images/share/healthy-love-45.jpg"
       },
       {
         "label": "Big flower hug",
-        "image": "/images/hits/flower-hug-pink-45.webp"
+        "image": "/images/hits/flower-hug-pink-45.webp",
+        "preview": "/images/share/flower-hug-pink-45.jpg"
       },
       {
         "label": "Dancing in the meadow",
-        "image": "/images/hits/dancing-meadow-45.webp"
+        "image": "/images/hits/dancing-meadow-45.webp",
+        "preview": "/images/share/dancing-meadow-45.jpg"
       },
       {
         "label": "You can do anything",
-        "image": "/images/hits/do-anything-45.webp"
+        "image": "/images/hits/do-anything-45.webp",
+        "preview": "/images/share/do-anything-45.jpg"
       },
       {
         "label": "So glad you are here",
-        "image": "/images/art/glad-you-are-here.webp"
+        "image": "/images/art/glad-you-are-here.webp",
+        "preview": "/images/share/glad-you-are-here.jpg"
       },
       {
         "label": "A new magical chapter",
-        "image": "/images/art/magical-chapter.webp"
+        "image": "/images/art/magical-chapter.webp",
+        "preview": "/images/share/magical-chapter.jpg"
       }
     ]
   },
@@ -341,6 +349,60 @@
         "title": "It will all be ok",
         "views": "2.3M",
         "url": "https://www.instagram.com/lizpop_art/reel/C2p8cfQpMAl/"
+      }
+    ],
+    "tabs": [
+      "Animations",
+      "Influencer videos"
+    ],
+    "videos_intro": "Real-life videos, brand partnerships and studio days, ranked by views.",
+    "videos": [
+      {
+        "image": "/images/work/logitech.webp",
+        "title": "Artist life with a 9 to 5",
+        "brand": "Logitech",
+        "views": "200K",
+        "url": "https://www.instagram.com/lizpop_art/reel/DadgYpPxM5P/"
+      },
+      {
+        "image": "/images/work/sky-starry-night.webp",
+        "title": "Dear Van Gogh: my Starry Night",
+        "brand": "Sky: Children of the Light",
+        "views": "92.2K",
+        "url": "https://www.instagram.com/lizpop_art/reel/DdEpCqGxWqI/"
+      },
+      {
+        "image": "/images/studio/art-office.webp",
+        "title": "My little art office",
+        "views": "27.4K",
+        "url": "https://www.instagram.com/lizpop_art/reel/DTzEkF5jFdF/"
+      },
+      {
+        "image": "/images/work/chaco.webp",
+        "title": "Designapalooza strap contest",
+        "brand": "Chaco",
+        "views": "17.2K",
+        "url": "https://www.instagram.com/lizpop_art/reel/DNyK7SI4lSu/"
+      },
+      {
+        "image": "/images/studio/drawing.webp",
+        "title": "Doodling between emails",
+        "views": "13.8K",
+        "url": "https://www.instagram.com/lizpop_art/reel/DUE0nMZER0E/"
+      },
+      {
+        "image": "/images/work/be-the-people.webp",
+        "title": "Drawing my verse for “Gotta Be Us”",
+        "brand": "Be The People",
+        "views": "6.8K",
+        "url": "https://www.instagram.com/lizpop_art/reel/Dagz6F5RSpd/"
+      },
+      {
+        "image": "/images/work/astropad.webp",
+        "title": "Paper-feel drawing on iPad",
+        "brand": "Astropad",
+        "views": "5.8K",
+        "url": "https://www.instagram.com/lizpop_art/reel/Dd4nIjzv2nJ/"
       }
     ]
   }

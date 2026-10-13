@@ -1,8 +1,12 @@
-/* Liz Pop Art: loads content/*.json (edited through /admin) and renders the page. */
+/* Liz Pop Art: loads content/*.json (edited through /admin) and renders the page.
+   Sections: helpers, content loading, viewer, hero, reminder and sharing, prints, portfolio,
+   book and events, most loved and studio, newsletter, footer, boot. */
 (function () {
   'use strict';
 
   var page = document.body.getAttribute('data-page');
+
+  /* ---------- Helpers ---------- */
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -12,10 +16,6 @@
   function get(obj, path) {
     return path.split('.').reduce(function (o, k) { return o == null ? o : o[k]; }, obj);
   }
-  function load(name) {
-    return fetch('/content/' + name + '.json', { cache: 'no-cache' })
-      .then(function (r) { if (!r.ok) throw new Error(name); return r.json(); });
-  }
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
@@ -24,6 +24,13 @@
     $all('a[href^="http"]', root).forEach(function (a) {
       if (a.hostname !== location.hostname) { a.target = '_blank'; a.rel = 'noopener'; }
     });
+  }
+
+  /* ---------- Content loading ---------- */
+
+  function load(name) {
+    return fetch('/content/' + name + '.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(name); return r.json(); });
   }
 
   // Simple bindings: data-text="book.title", data-href="book.amazon_url", data-src="book.cover".
@@ -106,7 +113,133 @@
     viewer.showModal();
   }
 
-  /* ---------- Renderers ---------- */
+  /* ---------- Hero slideshow ---------- */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function renderHero(hero) {
+    var scene = $('#heroScene'), dots = $('#heroDots');
+    var slides = ((hero && hero.slides) || []).filter(function (s) { return s.image; });
+    if (!scene || !slides.length) return;
+    // Shuffle the whole lineup every visit, and never open on the same piece as last time.
+    var first = 0;
+    if (slides.length > 1) {
+      var last = '';
+      try { last = localStorage.getItem('lp-hero') || ''; } catch (e) {}
+      for (var k = slides.length - 1; k > 0; k--) {
+        var j = Math.floor(Math.random() * (k + 1)), t = slides[k]; slides[k] = slides[j]; slides[j] = t;
+      }
+      if (slides[0].image === last) { var t2 = slides[0]; slides[0] = slides[1]; slides[1] = t2; }
+      try { localStorage.setItem('lp-hero', slides[0].image); } catch (e) {}
+    }
+    scene.innerHTML = slides.map(function (s, i) {
+      return '<img class="slide' + (i === first ? ' is-on' : '') + '" src="' + esc(s.image) + '" alt="' + esc(s.alt || '') + '"' +
+        (i === first ? ' fetchpriority="high"' : ' loading="lazy" aria-hidden="true"') + ' width="864" height="1080">';
+    }).join('');
+    var imgs = $all('img', scene), cur = first, timer;
+    if (slides.length < 2) return;
+    dots.innerHTML = slides.map(function (s, i) {
+      return '<button type="button" aria-label="Show artwork ' + (i + 1) + '"' + (i === first ? ' aria-current="true"' : '') + '></button>';
+    }).join('');
+    var btns = $all('button', dots);
+    function show(i) {
+      imgs[cur].classList.remove('is-on'); imgs[cur].setAttribute('aria-hidden', 'true'); btns[cur].removeAttribute('aria-current');
+      cur = (i + imgs.length) % imgs.length;
+      imgs[cur].classList.add('is-on'); imgs[cur].removeAttribute('aria-hidden'); btns[cur].setAttribute('aria-current', 'true');
+    }
+    function start() { if (!reduceMotion) { clearInterval(timer); timer = setInterval(function () { show(cur + 1); }, 5500); } }
+    btns.forEach(function (b, i) { b.addEventListener('click', function () { show(i); start(); }); });
+    scene.addEventListener('mouseenter', function () { clearInterval(timer); });
+    scene.addEventListener('mouseleave', start);
+    start();
+  }
+
+  /* ---------- Reminder and sharing ---------- */
+  // Everyone sees the same quote on a given day; it changes at local midnight.
+  function renderQuotes(data) {
+    var box = $('#qotd'), btn = $('#qnext');
+    if (!box) return;
+    var list = (data.items || []).filter(function (q) { return q.show !== false && q.text; }).map(function (q) { return q.text; });
+    if (!list.length) { box.closest('section').hidden = true; return; }
+    var d = new Date();
+    var day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
+    var i = day % list.length;
+    quoteState.list = list; quoteState.i = i;
+    box.textContent = list[i];
+    if (!btn) return;
+    if (list.length < 2) { btn.hidden = true; return; }
+    btn.addEventListener('click', function () {
+      var next = i;
+      while (next === i) next = Math.floor(Math.random() * list.length);
+      i = next; quoteState.i = i;
+      box.classList.add('fade');
+      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); }, 250);
+    });
+  }
+
+  function hash(str) { var x = 5381; for (var i = 0; i < str.length; i++) x = ((x << 5) + x + str.charCodeAt(i)) | 0; return (x >>> 0).toString(36); }
+  var quoteState = { list: [], i: 0 };
+  function setupShare(share) {
+    var dlg = $('#shareDialog'), btn = $('#qshare');
+    if (!dlg || !btn) return;
+    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
+    if (!art.length) { btn.hidden = true; return; }
+    var sel = $('#shareArt'), pic = $('#sharePic'), from = $('#shareFrom'), status = $('#shareStatus');
+    sel.innerHTML = art.map(function (a, i) { return '<option value="' + i + '">' + esc(a.label || ('Doodle ' + (i + 1))) + '</option>'; }).join('');
+    function quote() { return quoteState.list[quoteState.i] || ''; }
+    function link() {
+      // Short preview page so texts show this reminder and doodle as the link preview.
+      var u = location.origin + '/r/' + hash(quote()) + '-' + sel.value + '/';
+      var f = from.value.trim(); if (f) u += '?from=' + encodeURIComponent(f);
+      return u;
+    }
+    function message() {
+      var f = from.value.trim();
+      return (f ? f + ' sent you a little reminder' : 'A little reminder for you') + ':\n\n"' + quote() + '"\n\nSee it here: ' + link();
+    }
+    function refresh() {
+      pic.src = art[+sel.value].image; pic.alt = art[+sel.value].label || '';
+      $('#shareQuote').textContent = quote();
+      $('#shareText').href = 'sms:?&body=' + encodeURIComponent(message());
+      $('#shareEmail').href = 'mailto:?subject=' + encodeURIComponent('A little reminder for you') + '&body=' + encodeURIComponent(message());
+      status.textContent = '';
+    }
+    sel.addEventListener('change', refresh); from.addEventListener('input', refresh);
+    $('#shareCopy').addEventListener('click', function () {
+      var text = link();
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+        status.textContent = 'Link copied. Paste it anywhere!';
+      }).catch(function () { status.textContent = text; });
+    });
+    if (navigator.share) {
+      var nat = $('#shareNative'); nat.hidden = false;
+      nat.addEventListener('click', function () {
+        navigator.share({ title: 'A little reminder for you', text: '"' + quote() + '"', url: link() }).catch(function () {});
+      });
+    }
+    btn.addEventListener('click', function () { refresh(); dlg.showModal(); });
+    window.__openShare = function () { refresh(); dlg.showModal(); };
+  }
+  function checkGift(share) {
+    var q = new URLSearchParams(location.search);
+    if (!q.get('r')) return;
+    var dlg = $('#giftDialog'); if (!dlg) return;
+    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
+    var idx = quoteState.list.map(hash).indexOf(q.get('r'));
+    var text = idx > -1 ? quoteState.list[idx] : quoteState.list[quoteState.i];
+    if (idx > -1) { quoteState.i = idx; $('#qotd').textContent = text; }
+    var a = art[+q.get('a')] || art[0];
+    if (a) { $('#giftPic').src = a.image; $('#giftPic').alt = a.label || ''; } else { $('#giftPic').hidden = true; }
+    var from = (q.get('from') || '').slice(0, 40);
+    $('#giftFrom').textContent = from ? from + ' sent you a little reminder' : 'Someone sent you a little reminder';
+    $('#giftQuote').textContent = text;
+    $('#giftBack').addEventListener('click', function () { dlg.close(); if (window.__openShare) window.__openShare(); });
+    history.replaceState(null, '', location.pathname + location.hash);
+    dlg.showModal();
+  }
+  $all('dialog.sheet').forEach(function (d) {
+    d.addEventListener('click', function (e) { if (e.target === d || e.target.hasAttribute('data-close')) d.close(); });
+  });
+
+  /* ---------- Prints ---------- */
   function renderPrints(data, etsyUrl, max, moods, moodsLabel) {
     var grid = $('#printGrid');
     if (!grid) return;
@@ -133,7 +266,7 @@
       externalize(grid);
     }
     function printHTML(p) {
-      return '<a class="print" href="' + esc(p.etsy_url || etsyUrl) + '">' +
+      return '<a class="print-card" href="' + esc(p.etsy_url || etsyUrl) + '">' +
         '<div class="tape"></div><div class="frame">' +
         '<div class="img-box"><img src="' + esc(p.image) + '" alt="' + esc(p.alt || p.title) + '" loading="lazy" decoding="async" width="400" height="500"></div>' +
         '<div class="title">' + esc(p.title) + '</div><div class="cue">See on Etsy</div></div></a>';
@@ -141,27 +274,13 @@
     draw('');
   }
 
-  function renderPreviews(book) {
-    var row = $('#peekRow');
-    if (!row) return;
-    var list = (book.previews || []).filter(function (p) { return p.image; });
-    if (!list.length) { $('#peek').hidden = true; return; }
-    row.innerHTML = list.map(function (p, i) {
-      return '<button type="button" data-i="' + i + '" aria-label="View larger: ' + esc(p.alt) + '">' +
-        '<img src="' + esc(p.image) + '" alt="' + esc(p.alt) + '" loading="lazy" decoding="async" width="420" height="280"></button>';
-    }).join('');
-    var imgs = list.map(function (p) { return { src: p.image, alt: p.alt }; });
-    $all('button', row).forEach(function (b) {
-      b.addEventListener('click', function () { openImages(imgs, +b.getAttribute('data-i')); });
-    });
-  }
-
+  /* ---------- Portfolio and brand work ---------- */
   var TYPE_LABEL = { influencer: 'Influencer video', animation: 'Animation', illustration: 'Illustration', video: 'Video', artwork: 'Illustration' };
   function isVideoItem(it) { return !!it.video_url && it.type !== 'illustration' && it.type !== 'artwork'; }
   function cardHTML(item, i) {
     var isVideo = isVideoItem(item);
     var tags = (item.tags || []).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('');
-    return '<article class="pcard" data-type="' + esc(item.type) + '">' +
+    return '<article class="work-card" data-type="' + esc(item.type) + '">' +
       '<button type="button" class="thumb" data-i="' + i + '" aria-label="' + (isVideo ? 'Watch video: ' : 'View artwork: ') + esc(item.title) + '">' +
       (TYPE_LABEL[item.type] ? '<span class="badge t-' + esc(item.type) + '">' + TYPE_LABEL[item.type] + '</span>' : '') +
       (item.thumbnail
@@ -233,7 +352,31 @@
     wireCards(grid, items);
   }
 
-  /* ---------- Reviews and events ---------- */
+  function renderClients(brand) {
+    $all('[data-clients]').forEach(function (box) {
+      var list = (brand && brand.clients) || [];
+      if (!list.length) { box.hidden = true; return; }
+      box.innerHTML = '<div class="label">' + esc(brand.clients_label || 'Worked with') + '</div><ul>' +
+        list.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>';
+    });
+  }
+
+  /* ---------- Book previews, reviews, events and markets ---------- */
+  function renderPreviews(book) {
+    var row = $('#peekRow');
+    if (!row) return;
+    var list = (book.previews || []).filter(function (p) { return p.image; });
+    if (!list.length) { $('#peek').hidden = true; return; }
+    row.innerHTML = list.map(function (p, i) {
+      return '<button type="button" data-i="' + i + '" aria-label="View larger: ' + esc(p.alt) + '">' +
+        '<img src="' + esc(p.image) + '" alt="' + esc(p.alt) + '" loading="lazy" decoding="async" width="420" height="280"></button>';
+    }).join('');
+    var imgs = list.map(function (p) { return { src: p.image, alt: p.alt }; });
+    $all('button', row).forEach(function (b) {
+      b.addEventListener('click', function () { openImages(imgs, +b.getAttribute('data-i')); });
+    });
+  }
+
   function renderReviews(list) {
     var box = $('#reviews');
     if (!box) return;
@@ -269,15 +412,6 @@
     externalize(box);
   }
 
-  function renderClients(brand) {
-    $all('[data-clients]').forEach(function (box) {
-      var list = (brand && brand.clients) || [];
-      if (!list.length) { box.hidden = true; return; }
-      box.innerHTML = '<div class="label">' + esc(brand.clients_label || 'Worked with') + '</div><ul>' +
-        list.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>';
-    });
-  }
-
   function renderMarkets(m) {
     var box = $('#markets');
     if (!box) return;
@@ -288,96 +422,56 @@
     $('#marketsIntro').textContent = m.intro || '';
     var row = $('#marketRow');
     row.innerHTML = photos.map(function (p, i) {
-      return '<figure class="snap" data-i="' + i + '" tabindex="0" role="button" aria-label="View larger: ' + esc(p.caption || p.alt || 'market photo') + '">' +
+      return '<figure class="market-photo" data-i="' + i + '" tabindex="0" role="button" aria-label="View larger: ' + esc(p.caption || p.alt || 'market photo') + '">' +
         '<img src="' + esc(p.image) + '" alt="' + esc(p.alt || p.caption || 'Liz at a vendor market') + '" loading="lazy" decoding="async" width="300" height="300">' +
         (p.caption ? '<figcaption>' + esc(p.caption) + '</figcaption>' : '') + '</figure>';
     }).join('');
     var imgs = photos.map(function (p) { return { src: p.image, alt: p.alt || p.caption || '' }; });
-    $all('.snap', row).forEach(function (f) {
+    $all('.market-photo', row).forEach(function (f) {
       function go() { openImages(imgs, +f.getAttribute('data-i')); }
       f.addEventListener('click', go);
       f.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
     });
   }
 
-  /* ---------- Quote of the day ---------- */
-  // Everyone sees the same quote on a given day; it changes at local midnight.
-  function renderQuotes(data) {
-    var box = $('#qotd'), btn = $('#qnext');
-    if (!box) return;
-    var list = (data.items || []).filter(function (q) { return q.show !== false && q.text; }).map(function (q) { return q.text; });
-    if (!list.length) { box.closest('section').hidden = true; return; }
-    var d = new Date();
-    var day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
-    var i = day % list.length;
-    quoteState.list = list; quoteState.i = i;
-    box.textContent = list[i];
-    if (!btn) return;
-    if (list.length < 2) { btn.hidden = true; return; }
-    btn.addEventListener('click', function () {
-      var next = i;
-      while (next === i) next = Math.floor(Math.random() * list.length);
-      i = next; quoteState.i = i;
-      box.classList.add('fade');
-      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); }, 250);
-    });
-  }
-
-  /* ---------- Hero slideshow ---------- */
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function renderHero(hero) {
-    var scene = $('#heroScene'), dots = $('#heroDots');
-    var slides = ((hero && hero.slides) || []).filter(function (s) { return s.image; });
-    if (!scene || !slides.length) return;
-    // Shuffle the whole lineup every visit, and never open on the same piece as last time.
-    var first = 0;
-    if (slides.length > 1) {
-      var last = '';
-      try { last = localStorage.getItem('lp-hero') || ''; } catch (e) {}
-      for (var k = slides.length - 1; k > 0; k--) {
-        var j = Math.floor(Math.random() * (k + 1)), t = slides[k]; slides[k] = slides[j]; slides[j] = t;
-      }
-      if (slides[0].image === last) { var t2 = slides[0]; slides[0] = slides[1]; slides[1] = t2; }
-      try { localStorage.setItem('lp-hero', slides[0].image); } catch (e) {}
-    }
-    scene.innerHTML = slides.map(function (s, i) {
-      return '<img class="slide' + (i === first ? ' is-on' : '') + '" src="' + esc(s.image) + '" alt="' + esc(s.alt || '') + '"' +
-        (i === first ? ' fetchpriority="high"' : ' loading="lazy" aria-hidden="true"') + ' width="864" height="1080">';
-    }).join('');
-    var imgs = $all('img', scene), cur = first, timer;
-    if (slides.length < 2) return;
-    dots.innerHTML = slides.map(function (s, i) {
-      return '<button type="button" aria-label="Show artwork ' + (i + 1) + '"' + (i === first ? ' aria-current="true"' : '') + '></button>';
-    }).join('');
-    var btns = $all('button', dots);
-    function show(i) {
-      imgs[cur].classList.remove('is-on'); imgs[cur].setAttribute('aria-hidden', 'true'); btns[cur].removeAttribute('aria-current');
-      cur = (i + imgs.length) % imgs.length;
-      imgs[cur].classList.add('is-on'); imgs[cur].removeAttribute('aria-hidden'); btns[cur].setAttribute('aria-current', 'true');
-    }
-    function start() { if (!reduceMotion) { clearInterval(timer); timer = setInterval(function () { show(cur + 1); }, 5500); } }
-    btns.forEach(function (b, i) { b.addEventListener('click', function () { show(i); start(); }); });
-    scene.addEventListener('mouseenter', function () { clearInterval(timer); });
-    scene.addEventListener('mouseleave', start);
-    start();
-  }
-
-  /* ---------- Most loved ---------- */
+  /* ---------- Most loved and studio ---------- */
   function renderLoved(loved) {
-    var sec = $('#loved'), row = $('#lovedRow');
-    var items = ((loved && loved.items) || []).filter(function (s) { return s.image && s.show !== false; });
-    if (!sec || !items.length) return;
+    var sec = $('#loved'), row = $('#lovedRow'), tabs = $('#lovedTabs'), intro = $('#lovedIntro');
+    if (!sec || !loved) return;
+    function clean(list) { return (list || []).filter(function (s) { return s.image && s.show !== false; }); }
+    var sets = [
+      { label: (loved.tabs && loved.tabs[0]) || 'Animations', items: clean(loved.items), intro: loved.intro },
+      { label: (loved.tabs && loved.tabs[1]) || 'Influencer videos', items: clean(loved.videos), intro: loved.videos_intro || loved.intro }
+    ].filter(function (t) { return t.items.length; });
+    if (!sets.length) return;
     sec.hidden = false;
-    row.innerHTML = items.map(function (s) {
-      return '<a class="hit" href="' + esc(s.url || '#') + '">' +
-        '<div class="pic"><img src="' + esc(s.image) + '" alt="' + esc(s.title || 'Animation by Liz') + '" loading="lazy" decoding="async" width="300" height="466">' +
-        (s.views ? '<span class="views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="#231d1a"/></svg>' + esc(s.views) + '<span class="sr-only"> views</span></span>' : '') +
-        '</div>' + (s.title ? '<div class="t">' + esc(s.title) + '</div>' : '') + '</a>';
-    }).join('');
-    externalize(row);
+    function draw(k) {
+      var set = sets[k];
+      if (intro && set.intro) intro.textContent = set.intro;
+      row.innerHTML = set.items.map(function (s) {
+        return '<a class="loved-card" href="' + esc(s.url || '#') + '">' +
+          '<div class="pic"><img src="' + esc(s.image) + '" alt="' + esc(s.title || 'Video by Liz') + '" loading="lazy" decoding="async" width="300" height="466">' +
+          (s.brand ? '<span class="brand">' + esc(s.brand) + '</span>' : '') +
+          (s.views ? '<span class="views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="#231d1a"/></svg>' + esc(s.views) + '<span class="sr-only"> views</span></span>' : '') +
+          '</div>' + (s.title ? '<div class="t">' + esc(s.title) + '</div>' : '') + '</a>';
+      }).join('');
+      externalize(row);
+    }
+    if (sets.length > 1 && tabs) {
+      tabs.hidden = false;
+      tabs.innerHTML = sets.map(function (t, i) {
+        return '<button type="button" class="chip" role="tab" aria-selected="' + (i === 0) + '" data-k="' + i + '">' + esc(t.label) + '</button>';
+      }).join('');
+      $all('button', tabs).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          $all('button', tabs).forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
+          btn.setAttribute('aria-selected', 'true'); draw(+btn.getAttribute('data-k'));
+        });
+      });
+    }
+    draw(0);
   }
 
-  /* ---------- Studio ---------- */
   function renderStudio(studio) {
     var sec = $('#studio'), row = $('#studioRow');
     var items = ((studio && studio.items) || []).filter(function (s) { return s.image; });
@@ -408,7 +502,7 @@
     }
   }
 
-  /* ---------- Footer: waving characters (default) or framed scenes ---------- */
+  /* ---------- Footer: waving characters, scenes, falling leaves ---------- */
   function setupCast(f) {
     var cast = $('#cast'); if (!cast) return;
     if (f && f.style === 'scenes') { cast.hidden = true; $('#ghostBand').hidden = false; return; }
@@ -431,7 +525,7 @@
     var box = $('#footScenes');
     var scenes = ((f && f.scenes) || []).filter(function (s) { return s.image; });
     if (!box || !scenes.length) return;
-    if (f.color) $('footer.site').style.background = f.color;
+    if (f.color) $('.site-footer').style.background = f.color;
     var mid = Math.floor(scenes.length / 2);
     box.innerHTML = scenes.map(function (s, i) {
       return '<img class="' + (i === mid ? 'ghosts' : 'scene-card') + '" src="' + esc(s.image) + '" alt="' + esc(s.alt || '') + '" loading="lazy" decoding="async">';
@@ -439,71 +533,6 @@
     if (f.leaves === false) $all('.leaf').forEach(function (l) { l.remove(); });
   }
 
-  /* ---------- Send a reminder ---------- */
-  function hash(str) { var x = 5381; for (var i = 0; i < str.length; i++) x = ((x << 5) + x + str.charCodeAt(i)) | 0; return (x >>> 0).toString(36); }
-  var quoteState = { list: [], i: 0 };
-  function setupShare(share) {
-    var dlg = $('#shareDialog'), btn = $('#qshare');
-    if (!dlg || !btn) return;
-    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
-    if (!art.length) { btn.hidden = true; return; }
-    var sel = $('#shareArt'), pic = $('#sharePic'), from = $('#shareFrom'), status = $('#shareStatus');
-    sel.innerHTML = art.map(function (a, i) { return '<option value="' + i + '">' + esc(a.label || ('Doodle ' + (i + 1))) + '</option>'; }).join('');
-    function quote() { return quoteState.list[quoteState.i] || ''; }
-    function link() {
-      var u = location.origin + '/?r=' + hash(quote()) + '&a=' + sel.value;
-      var f = from.value.trim(); if (f) u += '&from=' + encodeURIComponent(f);
-      return u;
-    }
-    function message() {
-      var f = from.value.trim();
-      return (f ? f + ' sent you a little reminder' : 'A little reminder for you') + ':\n\n"' + quote() + '"\n\nSee it here: ' + link();
-    }
-    function refresh() {
-      pic.src = art[+sel.value].image; pic.alt = art[+sel.value].label || '';
-      $('#shareQuote').textContent = quote();
-      $('#shareText').href = 'sms:?&body=' + encodeURIComponent(message());
-      $('#shareEmail').href = 'mailto:?subject=' + encodeURIComponent('A little reminder for you') + '&body=' + encodeURIComponent(message());
-      status.textContent = '';
-    }
-    sel.addEventListener('change', refresh); from.addEventListener('input', refresh);
-    $('#shareCopy').addEventListener('click', function () {
-      var text = link();
-      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
-        status.textContent = 'Link copied. Paste it anywhere!';
-      }).catch(function () { status.textContent = text; });
-    });
-    if (navigator.share) {
-      var nat = $('#shareNative'); nat.hidden = false;
-      nat.addEventListener('click', function () {
-        navigator.share({ title: 'A little reminder for you', text: '"' + quote() + '"', url: link() }).catch(function () {});
-      });
-    }
-    btn.addEventListener('click', function () { refresh(); dlg.showModal(); });
-    window.__openShare = function () { refresh(); dlg.showModal(); };
-  }
-  function checkGift(share) {
-    var q = new URLSearchParams(location.search);
-    if (!q.get('r')) return;
-    var dlg = $('#giftDialog'); if (!dlg) return;
-    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
-    var idx = quoteState.list.map(hash).indexOf(q.get('r'));
-    var text = idx > -1 ? quoteState.list[idx] : quoteState.list[quoteState.i];
-    if (idx > -1) { quoteState.i = idx; $('#qotd').textContent = text; }
-    var a = art[+q.get('a')] || art[0];
-    if (a) { $('#giftPic').src = a.image; $('#giftPic').alt = a.label || ''; } else { $('#giftPic').hidden = true; }
-    var from = (q.get('from') || '').slice(0, 40);
-    $('#giftFrom').textContent = from ? from + ' sent you a little reminder' : 'Someone sent you a little reminder';
-    $('#giftQuote').textContent = text;
-    $('#giftBack').addEventListener('click', function () { dlg.close(); if (window.__openShare) window.__openShare(); });
-    history.replaceState(null, '', location.pathname + location.hash);
-    dlg.showModal();
-  }
-  $all('dialog.sheet').forEach(function (d) {
-    d.addEventListener('click', function (e) { if (e.target === d || e.target.hasAttribute('data-close')) d.close(); });
-  });
-
-  /* ---------- Footer leaves ---------- */
   function leaves() {
     var band = $('#cast') && !$('#cast').hidden ? $('#cast') : $('#ghostBand');
     if (!band || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -520,6 +549,7 @@
     }
   }
 
+  /* ---------- Broken image fallback ---------- */
   // If a linked image ever fails (for example an Etsy photo link changes), hide it and keep the soft tile.
   document.addEventListener('error', function (e) {
     var t = e.target;

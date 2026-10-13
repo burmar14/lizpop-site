@@ -1,25 +1,34 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Basics -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Liz Pop Art | Funny little drawings with a lot of heart</title>
 <meta name="description" content="Prints, the book Little Doodles for Big Feelings, and brand partnerships from Philly artist and illustrator Liz Karcewski (@lizpop_art).">
 <link rel="canonical" href="https://lizpop.art/">
+<meta name="theme-color" content="#66a05a">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/images/favicon.png">
+
+<!-- Social preview -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lizpop.art/">
 <meta property="og:title" content="Liz Pop Art">
 <meta property="og:description" content="Funny little drawings with a lot of heart. Prints, a new book, and brand work by Liz Karcewski.">
 <meta property="og:image" content="https://lizpop.art/images/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#66a05a">
-<link rel="icon" type="image/png" href="/images/favicon.png">
-<link rel="apple-touch-icon" href="/images/favicon.png">
-<link rel="preload" as="image" href="/images/hits/just-relax-45.webp" fetchpriority="high">
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=13">
+
+<!-- Styles (first hero picture loads early so the page paints fast) -->
+<link rel="preload" as="image" href="/images/hits/just-relax-45.webp" fetchpriority="high">
+<link rel="stylesheet" href="/assets/site.css?v=16">
+
+<!-- Info for Google -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -56,7 +65,8 @@
 <body data-page="home">
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="site">
+<!-- Header -->
+<header class="site-header">
   <nav class="nav" aria-label="Main">
     <a class="logo" href="/" aria-label="Liz Pop Art home">liz<span>pop</span></a>
     <div class="nav-links">
@@ -72,7 +82,8 @@
 
 <main id="main">
 
-  <section class="hero">
+  <!-- Hero -->
+  <section class="hero-banner">
     <div class="wrap hero-grid">
       <div>
         <div class="kicker" data-text="hero.kicker">Emotional doodler from Philly</div>
@@ -85,48 +96,50 @@
         <p class="note" data-text="hero.note" data-hide-empty>1,400+ sales on Etsy and a lot of happy walls.</p>
       </div>
       <div class="hero-art">
-        <div class="scene" id="heroScene" aria-roledescription="carousel" aria-label="Liz's art">
+        <div class="hero-frame" id="heroScene" aria-roledescription="carousel" aria-label="Liz's art">
           <img class="slide is-on" src="/images/hits/just-relax-45.webp" width="599" height="749" fetchpriority="high" alt="Liz's pink character resting in the green grass among yellow flowers">
         </div>
-        <img class="doodle d-sparkle" src="/images/doodle-sparkle.png?v=2" alt="" aria-hidden="true">
+        <img class="doodle d-sparkle" src="/images/doodle-sparkle.png?v=2" alt="">
         <div class="dots" id="heroDots" role="group" aria-label="Choose artwork"></div>
       </div>
     </div>
   </section>
 
-  <section class="qotd" aria-labelledby="qotdLabel">
+  <!-- Today's reminder -->
+  <section class="reminder" aria-labelledby="qotdLabel">
     <div class="wrap">
-      <div class="note-card">
+      <div class="reminder-card">
         <div class="tape"></div>
         <p class="label" id="qotdLabel" data-text="quotes_label">Today's little reminder</p>
         <blockquote id="qotd">You must learn to proceed with uncertainty.</blockquote>
-        <div class="q-actions">
-          <button type="button" class="btn btn-yellow" id="qnext">
+        <button type="button" class="btn btn-yellow" id="qnext">
             <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Another one, please
-          </button>
-        </div>
-        <div class="q-send">
+          Another one, please
+        </button>
+        <div class="reminder-send">
           <button type="button" class="send-link" id="qshare">
             <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
             <span data-text="share.button">Send this reminder to someone</span>
           </button>
         </div>
-        <img class="doodle d-card" src="/images/doodle-sparkle.png?v=2" alt="" aria-hidden="true">
+        <img class="doodle d-card" src="/images/doodle-sparkle.png?v=2" alt="">
       </div>
     </div>
   </section>
 
+  <!-- Most loved (filled in from the admin content) -->
   <section class="loved" id="loved" hidden>
     <div class="wrap">
       <div class="section-head">
-        <h2 class="with-bug"><span data-text="loved.title">Most loved</span><img class="bug" src="/images/doodle-ladybug.png" alt="" aria-hidden="true"></h2>
-        <p data-text="loved.intro">The little animations that found their way to millions of people.</p>
+        <h2 class="with-bug"><span data-text="loved.title">Most loved</span><img class="bug" src="/images/doodle-ladybug.png" alt=""></h2>
+        <p id="lovedIntro" data-text="loved.intro">The little animations that found their way to millions of people.</p>
       </div>
-      <div class="loved-row" id="lovedRow"></div>
+      <div class="filters loved-tabs" id="lovedTabs" role="tablist" aria-label="Most loved" hidden></div>
+      <div class="loved-row" id="lovedRow" role="tabpanel"></div>
     </div>
   </section>
 
+  <!-- Etsy prints -->
   <section class="prints" id="prints">
     <div class="wrap">
       <div class="section-head">
@@ -134,21 +147,22 @@
         <p data-text="shop.prints_intro">A few favorites from the shop. Tap any print to see it on Etsy.</p>
       </div>
       <div class="filters moods" id="moods" role="group" aria-label="Shop by feeling" hidden></div>
-      <div class="grid" id="printGrid">
+      <div class="print-grid" id="printGrid">
         <noscript><p>See all prints on <a href="https://www.etsy.com/shop/LizPopArtShop">Etsy</a>.</p></noscript>
       </div>
       <div class="prints-foot">
-        <p style="margin:0;color:var(--ink-soft)">1,400+ orders shipped from the shop.</p>
+        <p class="prints-count">1,400+ orders shipped from the shop.</p>
         <a class="btn btn-pink" href="https://www.etsy.com/shop/LizPopArtShop" data-href="shop.etsy_url">Browse the whole shop</a>
       </div>
       <div class="reviews" id="reviews" aria-label="What customers say"></div>
     </div>
   </section>
 
-  <section class="book" id="book">
+  <!-- Book preorder -->
+  <section class="book-feature" id="book">
     <div class="wrap">
       <div class="book-grid">
-        <div class="cover">
+        <div class="book-cover">
           <img src="https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9781324112181_p0.jpg?v=1787303752" data-src="book.cover" width="600" height="800" loading="lazy" decoding="async" alt="Cover of Little Doodles for Big Feelings by Liz Karcewski">
         </div>
         <div>
@@ -171,6 +185,7 @@
     </div>
   </section>
 
+  <!-- Events and markets -->
   <section class="events" id="events">
     <div class="wrap">
       <div class="section-head">
@@ -181,11 +196,12 @@
       <div class="markets" id="markets" hidden>
         <h3 id="marketsTitle">At the markets</h3>
         <p id="marketsIntro"></p>
-        <div class="snap-row" id="marketRow"></div>
+        <div class="market-row" id="marketRow"></div>
       </div>
     </div>
   </section>
 
+  <!-- From the studio (filled in from the admin content) -->
   <section class="studio" id="studio" hidden>
     <div class="wrap">
       <div class="section-head">
@@ -193,14 +209,15 @@
         <p data-text="studio.intro">A peek at where the doodles happen.</p>
       </div>
       <div class="studio-row" id="studioRow"></div>
-      <div class="btn-row" style="margin-top:30px">
+      <div class="btn-row studio-links">
         <a class="btn btn-green" href="https://www.instagram.com/lizpop_art/" data-href="social.instagram">Follow on Instagram</a>
         <a class="btn" href="https://www.tiktok.com/@lizpopart" data-href="social.tiktok">Watch on TikTok</a>
       </div>
     </div>
   </section>
 
-  <section class="work" id="work">
+  <!-- Brand work -->
+  <section class="brand-section" id="work">
     <div class="wrap">
       <div class="work-grid">
         <div>
@@ -221,11 +238,12 @@
         </div>
       </div>
       <div class="clients" data-clients></div>
-      <div class="pgrid" id="featuredWork" style="margin-top:56px" hidden></div>
+      <div class="work-cards featured-work" id="featuredWork" hidden></div>
     </div>
   </section>
 
-  <section id="about">
+  <!-- About Liz -->
+  <section class="bio-section" id="about">
     <div class="wrap about-grid">
       <div class="polaroid">
         <div class="img-box"><img src="/images/hero.webp" data-src="about.photo" width="400" height="500" loading="lazy" decoding="async" alt="Liz in her studio"></div>
@@ -246,10 +264,11 @@
     </div>
   </section>
 
+  <!-- Newsletter -->
   <section class="letter" id="letter">
     <div class="wrap">
       <div class="letter-card">
-        <img class="doodle d-letter" src="/images/doodle-ladybug.png" alt="" aria-hidden="true">
+        <img class="doodle d-letter" src="/images/doodle-ladybug.png" alt="">
         <div>
           <h2 data-text="newsletter.title">A little reminder, once a month</h2>
           <p data-text="newsletter.text">One new doodle and a kind word in your inbox each month.</p>
@@ -266,25 +285,26 @@
 
 </main>
 
-<footer class="site">
+<!-- Footer pals -->
+<footer class="site-footer">
   <div class="cast" id="cast" aria-label="Liz's characters waving hello">
     <svg class="hill" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 64 C 180 26, 340 30, 520 52 S 860 92, 1040 58 S 1300 22, 1440 48 L1440 120 L0 120 Z" fill="#7fb36b" stroke="#231d1a" stroke-width="3"/></svg>
-    <img class="c-float blue" src="/images/cast/blue.png" alt="" aria-hidden="true">
-    <img class="c-fly bird-a" src="/images/cast/bird-left.png" alt="" aria-hidden="true">
-    <img class="c-fly bird-b" src="/images/cast/bird-right.png" alt="" aria-hidden="true">
+    <img class="c-float blue" src="/images/cast/blue.png" alt="">
+    <img class="c-fly bird-a" src="/images/cast/bird-left.png" alt="">
+    <img class="c-fly bird-b" src="/images/cast/bird-right.png" alt="">
     <div class="c-stage">
-      <img class="c-deco daisy" src="/images/cast/daisy.png" alt="" aria-hidden="true">
+      <img class="c-deco daisy" src="/images/cast/daisy.png" alt="">
       <button type="button" class="c-pal orange" aria-label="Say hi to the orange guy"><img src="/images/cast/orange.png" alt=""></button>
       <div class="c-bubble" id="castBubble">so glad you're here!</div>
       <button type="button" class="c-pal pink" aria-label="Say hi to the pink guy"><img src="/images/cast/pink.png" alt=""></button>
-      <img class="c-deco berry" src="/images/cast/strawberry.png" alt="" aria-hidden="true">
+      <img class="c-deco berry" src="/images/cast/strawberry.png" alt="">
     </div>
-    <img class="c-crawl" src="/images/doodle-ladybug.png" alt="" aria-hidden="true">
+    <img class="c-crawl" src="/images/doodle-ladybug.png" alt="">
   </div>
   <div class="ghost-band" id="ghostBand" hidden>
     <div class="scenes" id="footScenes"></div>
   </div>
-  <div class="foot">
+  <div class="footer-links">
     <div class="wrap">
       <h3>Thanks for stopping by!</h3>
       <ul>
@@ -299,6 +319,7 @@
   </div>
 </footer>
 
+<!-- Pop-ups: send a reminder, received reminder, image and video viewer -->
 <dialog class="sheet" id="shareDialog" aria-labelledby="shareTitle">
   <button class="close" type="button" data-close aria-label="Close">&times;</button>
   <h2 id="shareTitle" data-text="share.heading">Send a little reminder</h2>
@@ -341,13 +362,6 @@
   <div class="viewer-body"></div>
 </dialog>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="flower" viewBox="0 0 40 40">
-    <g fill="#ffd94a" stroke="#c9a514" stroke-width="1"><ellipse cx="20" cy="9" rx="7" ry="9"/><ellipse cx="31" cy="17" rx="8" ry="7" transform="rotate(20 31 17)"/><ellipse cx="27" cy="30" rx="7" ry="8" transform="rotate(-25 27 30)"/><ellipse cx="12" cy="30" rx="7" ry="8" transform="rotate(25 12 30)"/><ellipse cx="9" cy="17" rx="8" ry="7" transform="rotate(-15 9 17)"/></g>
-    <circle cx="20" cy="20" r="4" fill="#e8893a"/>
-  </symbol>
-</svg>
-
-<script src="/assets/site.js?v=13" defer></script>
+<script src="/assets/app.js?v=16" defer></script>
 </body>
 </html>

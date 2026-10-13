@@ -1,29 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Basics -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Brand Work | Liz Pop Art</title>
 <meta name="description" content="Illustration and influencer-style video work by Liz Karcewski (@lizpop_art) for brands and organizations, with a focus on mental health, art, tech, community, and events.">
 <link rel="canonical" href="https://lizpop.art/portfolio/">
+<meta name="theme-color" content="#66a05a">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/images/favicon.png">
+
+<!-- Social preview -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lizpop.art/portfolio/">
 <meta property="og:title" content="Brand Work | Liz Pop Art">
 <meta property="og:description" content="Illustrated stories and influencer-style videos for brands, by Liz Karcewski.">
 <meta property="og:image" content="https://lizpop.art/images/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#66a05a">
-<link rel="icon" type="image/png" href="/images/favicon.png">
-<link rel="apple-touch-icon" href="/images/favicon.png">
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=13">
+
+<!-- Styles -->
+<link rel="stylesheet" href="/assets/site.css?v=16">
 </head>
 <body data-page="portfolio">
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="site">
+<!-- Header -->
+<header class="site-header">
   <nav class="nav" aria-label="Main">
     <a class="logo" href="/" aria-label="Liz Pop Art home">liz<span>pop</span></a>
     <div class="nav-links">
@@ -37,6 +45,7 @@
 </header>
 
 <main id="main">
+  <!-- Intro -->
   <section class="page-hero">
     <div class="wrap work-grid">
       <div>
@@ -55,24 +64,26 @@
     </div>
   </section>
 
-  <section style="padding-top:20px">
+  <!-- Work grid -->
+  <section class="portfolio-work">
     <div class="wrap">
-      <div class="clients" data-clients style="margin:0 0 40px"></div>
+      <div class="clients" data-clients></div>
       <div class="filters" id="filters" role="group" aria-label="Filter work">
         <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
         <button type="button" class="chip" data-filter="influencer" aria-pressed="false">Influencer videos</button>
         <button type="button" class="chip" data-filter="animation" aria-pressed="false">Animation</button>
         <button type="button" class="chip" data-filter="illustration" aria-pressed="false">Illustration</button>
       </div>
-      <div class="pgrid" id="portfolioGrid">
+      <div class="work-cards" id="portfolioGrid">
         <noscript><p>Turn on JavaScript to see the portfolio, or visit <a href="https://www.instagram.com/lizpop_art/">Instagram</a>.</p></noscript>
       </div>
     </div>
   </section>
 
-  <section style="padding-top:0">
+  <!-- Contact -->
+  <section class="portfolio-contact">
     <div class="wrap">
-      <div class="rep">
+      <div class="rep-card">
         <div>
           <h2>Want to work together?</h2>
           <p data-text="brand.rep_text">Brand partnerships are handled by my management team.</p>
@@ -87,25 +98,26 @@
   </section>
 </main>
 
-<footer class="site">
+<!-- Footer pals -->
+<footer class="site-footer">
   <div class="cast" id="cast" aria-label="Liz's characters waving hello">
     <svg class="hill" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 64 C 180 26, 340 30, 520 52 S 860 92, 1040 58 S 1300 22, 1440 48 L1440 120 L0 120 Z" fill="#7fb36b" stroke="#231d1a" stroke-width="3"/></svg>
-    <img class="c-float blue" src="/images/cast/blue.png" alt="" aria-hidden="true">
-    <img class="c-fly bird-a" src="/images/cast/bird-left.png" alt="" aria-hidden="true">
-    <img class="c-fly bird-b" src="/images/cast/bird-right.png" alt="" aria-hidden="true">
+    <img class="c-float blue" src="/images/cast/blue.png" alt="">
+    <img class="c-fly bird-a" src="/images/cast/bird-left.png" alt="">
+    <img class="c-fly bird-b" src="/images/cast/bird-right.png" alt="">
     <div class="c-stage">
-      <img class="c-deco daisy" src="/images/cast/daisy.png" alt="" aria-hidden="true">
+      <img class="c-deco daisy" src="/images/cast/daisy.png" alt="">
       <button type="button" class="c-pal orange" aria-label="Say hi to the orange guy"><img src="/images/cast/orange.png" alt=""></button>
       <div class="c-bubble" id="castBubble">so glad you're here!</div>
       <button type="button" class="c-pal pink" aria-label="Say hi to the pink guy"><img src="/images/cast/pink.png" alt=""></button>
-      <img class="c-deco berry" src="/images/cast/strawberry.png" alt="" aria-hidden="true">
+      <img class="c-deco berry" src="/images/cast/strawberry.png" alt="">
     </div>
-    <img class="c-crawl" src="/images/doodle-ladybug.png" alt="" aria-hidden="true">
+    <img class="c-crawl" src="/images/doodle-ladybug.png" alt="">
   </div>
   <div class="ghost-band" id="ghostBand" hidden>
     <div class="scenes" id="footScenes"></div>
   </div>
-  <div class="foot">
+  <div class="footer-links">
     <div class="wrap">
       <h3>Thanks for stopping by!</h3>
       <ul>
@@ -119,11 +131,12 @@
   </div>
 </footer>
 
+<!-- Image and video viewer -->
 <dialog class="viewer" id="viewer" aria-label="Viewer">
   <button class="close" type="button" aria-label="Close">&times;</button>
   <div class="viewer-body"></div>
 </dialog>
 
-<script src="/assets/site.js?v=13" defer></script>
+<script src="/assets/app.js?v=16" defer></script>
 </body>
 </html>

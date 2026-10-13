@@ -1,0 +1,76 @@
+# Builds and publishes lizpop.art.
+# - Every push to main (including saves from the admin panel) redeploys the site.
+# - Every morning it also pulls new Etsy listings into the print wall, then deploys.
+# - You can run it by hand from the repo's Actions tab ("Run workflow").
+
+name: Sync and deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 10 * * *"   # about 6:23am Eastern
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Sync Etsy listings
+        if: github.event_name != 'push'
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - if: github.event_name != 'push'
+        env:
+          ETSY_API_KEY: ${{ secrets.ETSY_API_KEY }}
+          ETSY_SHARED_SECRET: ${{ secrets.ETSY_SHARED_SECRET }}
+        run: |
+          pip install --quiet pillow
+          python scripts/sync_etsy.py
+
+      - name: Save synced changes
+        if: github.event_name != 'push'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "lizpop-sync"
+            git config user.email "actions@users.noreply.github.com"
+            git add content images
+            git commit -m "Sync new Etsy listings"
+            git push
+          else
+            echo "Nothing new."
+          fi
+
+      - name: Build share preview pages
+        run: python3 scripts/build_share_pages.py
+
+      - name: Prepare site files
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'scripts' --exclude 'README.md' ./ _site/
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
