@@ -502,7 +502,7 @@
       '<button type="button" class="thumb" data-i="' + i + '" aria-label="' + (isVideo ? 'Watch video: ' : 'View artwork: ') + esc(item.title) + '">' +
       (TYPE_LABEL[item.type] ? '<span class="badge t-' + esc(item.type) + '">' + TYPE_LABEL[item.type] + '</span>' : '') +
       (item.thumbnail
-        ? '<img src="' + esc(item.thumbnail) + '" alt="' + esc(item.alt || item.title) + '" loading="lazy" decoding="async" width="400" height="500">'
+        ? '<img src="' + esc(item.thumbnail) + '" alt="' + esc(item.alt || item.title) + '" loading="lazy" decoding="async" width="' + (item._w || 400) + '" height="' + (item._h || 500) + '">'
         : '<span class="nameplate" aria-hidden="true">' + esc(item.client || item.title) + '</span>') +
       (isVideo ? '<span class="play" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M7 4 L20 12 L7 20 Z" fill="#231d1a"/></svg></span>' : '') +
       '</button><div class="body">' +
@@ -527,6 +527,19 @@
     externalize(root);
   }
 
+  // Find each thumbnail's real shape first, so the masonry lays out once and nothing jumps while pictures load.
+  function preloadSizes(items) {
+    return Promise.all(items.map(function (it) {
+      return new Promise(function (done) {
+        if (!it.thumbnail) return done();
+        var im = new Image(), timer = setTimeout(done, 3000);
+        im.onload = function () { it._w = im.naturalWidth; it._h = im.naturalHeight; clearTimeout(timer); done(); };
+        im.onerror = done;
+        im.src = it.thumbnail;
+      });
+    }));
+  }
+
   function renderPortfolio(data) {
     var grid = $('#portfolioGrid');
     if (!grid) return;
@@ -540,11 +553,11 @@
       });
       grid.innerHTML = items.length ? items.map(cardHTML).join('')
         : '<div class="empty">' + (workTopic ? 'Nothing tagged ' + esc(workTopic) + ' in this view yet.' : 'New work is on the way. In the meantime, see my latest videos on Instagram.') + '</div>';
-      if (!items.length) grid.style.display = 'block'; else grid.style.display = '';
+      grid.style.columnCount = items.length ? '' : '1';
       wireCards(grid, items);
     }
     redrawWork = draw;
-    draw();
+    preloadSizes(all).then(draw);
     if (filters) {
       var kinds = 0;
       $all('button', filters).forEach(function (b) {
