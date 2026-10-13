@@ -178,63 +178,76 @@
 
   /* ---------- Reminder and sharing ---------- */
   // Everyone sees the same quote on a given day; it changes at local midnight.
-  function renderQuotes(data, share) {
-    var box = $('#qotd'), btn = $('#qnext'), chips = $('#moodChips'), artImg = $('#moodArt');
+  // Everyone sees the same quote on a given day; it changes at local midnight.
+  function renderQuotes(data) {
+    var box = $('#qotd'), btn = $('#qnext');
     if (!box) return;
-    var items = (data.items || []).filter(function (q) { return q.show !== false && q.text; });
-    var list = items.map(function (q) { return q.text; });
+    var list = (data.items || []).filter(function (q) { return q.show !== false && q.text; }).map(function (q) { return q.text; });
     if (!list.length) { box.closest('section').hidden = true; return; }
     var d = new Date();
     var day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
     var i = day % list.length;
     quoteState.list = list; quoteState.i = i;
-    var pool = list.map(function (t, n) { return n; });   // which reminders "another one" can pick from
-    var arts = ((share && share.art) || []).filter(function (a) { return a.image; });
-    function swapArt() {
-      if (!artImg || !arts.length) return;
-      var n = Math.floor(Math.random() * arts.length);
-      artImg.src = arts[n].image; artImg.alt = arts[n].label || '';
-      quoteState.art = n;   // so "send this" starts on the doodle you are looking at
-    }
-    function show(n) {
-      i = n; quoteState.i = n;
-      box.classList.add('fade');
-      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); swapArt(); }, 250);
-    }
-    function pick() {
-      var choices = pool.filter(function (n) { return n !== i; });
-      return choices.length ? choices[Math.floor(Math.random() * choices.length)] : i;
-    }
-    box.textContent = list[i]; swapArt();
-    if (chips) {
-      var moods = (data.moods || []).filter(function (m) { return items.some(function (q) { return (q.moods || []).indexOf(m) > -1; }); });
-      if (moods.length) {
-        chips.hidden = false;
-        chips.innerHTML = '<button type="button" class="chip" aria-pressed="true" data-m="">Anything</button>' +
-          moods.map(function (m) { return '<button type="button" class="chip" aria-pressed="false" data-m="' + esc(m) + '">' + esc(m) + '</button>'; }).join('');
-        $all('button', chips).forEach(function (b) {
-          b.addEventListener('click', function () {
-            $all('button', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-            b.setAttribute('aria-pressed', 'true');
-            var m = b.getAttribute('data-m');
-            pool = list.map(function (t, n) { return n; }).filter(function (n) { return !m || (items[n].moods || []).indexOf(m) > -1; });
-            show(pick());
-          });
-        });
-      }
-    }
+    box.textContent = list[i];
+    var send = $('#qshare');
+    if (send) send.addEventListener('click', function () { quoteState.i = i; quoteState.art = null; });
     if (!btn) return;
     if (list.length < 2) { btn.hidden = true; return; }
-    btn.addEventListener('click', function () { show(pick()); });
+    btn.addEventListener('click', function () {
+      var next = i;
+      while (next === i) next = Math.floor(Math.random() * list.length);
+      i = next; quoteState.i = i;
+      box.classList.add('fade');
+      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); }, 250);
+    });
+  }
+
+  // The "how are you feeling" builder on the Extras page: pick a feeling, get a matching reminder and doodle.
+  function renderMoodBuilder(data, share) {
+    var chips = $('#moodChips'), result = $('#moodResult');
+    if (!chips || !result) return;
+    var items = (data.items || []).filter(function (q) { return q.show !== false && q.text; });
+    var list = items.map(function (q) { return q.text; });
+    var moods = (data.moods || []).filter(function (m) { return items.some(function (q) { return (q.moods || []).indexOf(m) > -1; }); });
+    if (!moods.length) { $('#mood').hidden = true; return; }
+    quoteState.list = quoteState.list.length ? quoteState.list : list;
+    var arts = ((share && share.art) || []).filter(function (a) { return a.image; });
+    var quote = $('#moodQuote'), pic = $('#moodArt'), pool = [], cur = -1, artIndex = null;
+    function pick() {
+      var choices = pool.filter(function (n) { return n !== cur; });
+      return choices.length ? choices[Math.floor(Math.random() * choices.length)] : cur;
+    }
+    function show(n) {
+      cur = n;
+      quote.classList.add('fade');
+      setTimeout(function () { quote.textContent = list[n]; quote.classList.remove('fade'); }, result.hidden ? 0 : 250);
+      if (arts.length) {
+        artIndex = Math.floor(Math.random() * arts.length);
+        pic.src = arts[artIndex].image; pic.alt = arts[artIndex].label || '';
+      } else pic.hidden = true;
+      result.hidden = false;
+    }
+    chips.innerHTML = moods.map(function (m) { return '<button type="button" class="chip" aria-pressed="false" data-m="' + esc(m) + '">' + esc(m) + '</button>'; }).join('');
+    $all('button', chips).forEach(function (b) {
+      b.addEventListener('click', function () {
+        $all('button', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        b.setAttribute('aria-pressed', 'true');
+        var m = b.getAttribute('data-m');
+        pool = list.map(function (t, n) { return n; }).filter(function (n) { return (items[n].moods || []).indexOf(m) > -1; });
+        show(pick());
+      });
+    });
+    $('#moodNext').addEventListener('click', function () { show(pick()); });
+    $('#moodShare').addEventListener('click', function () { quoteState.i = cur; quoteState.art = artIndex; });
   }
 
   function hash(str) { var x = 5381; for (var i = 0; i < str.length; i++) x = ((x << 5) + x + str.charCodeAt(i)) | 0; return (x >>> 0).toString(36); }
   var quoteState = { list: [], i: 0, art: null };
   function setupShare(share) {
-    var dlg = $('#shareDialog'), btn = $('#qshare');
-    if (!dlg || !btn) return;
+    var dlg = $('#shareDialog'), btns = $all('#qshare, #moodShare');
+    if (!dlg || !btns.length) return;
     var art = ((share && share.art) || []).filter(function (a) { return a.image; });
-    if (!art.length) { btn.hidden = true; return; }
+    if (!art.length) { btns.forEach(function (b) { b.hidden = true; }); return; }
     var sel = $('#shareArt'), pic = $('#sharePic'), from = $('#shareFrom'), status = $('#shareStatus');
     sel.innerHTML = art.map(function (a, i) { return '<option value="' + i + '">' + esc(a.label || ('Doodle ' + (i + 1))) + '</option>'; }).join('');
     function quote() { return quoteState.list[quoteState.i] || ''; }
@@ -269,7 +282,7 @@
       });
     }
     function open() { if (quoteState.art !== null && art[quoteState.art]) sel.value = quoteState.art; refresh(); dlg.showModal(); }
-    btn.addEventListener('click', open);
+    btns.forEach(function (b) { b.addEventListener('click', open); });
     window.__openShare = open;
   }
   function checkGift(share) {
@@ -695,7 +708,7 @@
     }
     if (site) {
       rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
-      if (quotes) renderQuotes(quotes, site.share);
+      if (quotes) { renderQuotes(quotes); renderMoodBuilder(quotes, site.share); }
       renderNature(site.extras); setupPause(site.share);
       setupShare(site.share);
       if (page === 'home') checkGift(site.share);

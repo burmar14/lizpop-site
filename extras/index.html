@@ -25,7 +25,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
 <!-- Styles -->
-<link rel="stylesheet" href="/assets/site.css?v=19">
+<link rel="stylesheet" href="/assets/site.css?v=20">
 </head>
 <body data-page="extras">
 <a class="skip" href="#main">Skip to content</a>
@@ -57,7 +57,29 @@
     </div>
   </section>
 
-  <!-- Reminder for how you feel -->
+  <!-- Today's reminder -->
+  <section class="reminder" aria-labelledby="qotdLabel">
+    <div class="wrap">
+      <div class="reminder-card">
+        <div class="tape"></div>
+        <p class="label" id="qotdLabel" data-text="quotes_label">Today's little reminder</p>
+        <blockquote id="qotd">You must learn to proceed with uncertainty.</blockquote>
+        <button type="button" class="btn btn-yellow" id="qnext">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Another one, please
+        </button>
+        <div class="reminder-send">
+          <button type="button" class="send-link" id="qshare">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+            <span data-text="share.button">Send this reminder to someone</span>
+          </button>
+        </div>
+        <img class="doodle d-card" src="/images/doodle-sparkle.png?v=2" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- Build one by feeling -->
   <section class="mood" id="mood">
     <div class="wrap">
       <div class="section-head">
@@ -65,19 +87,19 @@
         <p data-text="extras.mood_intro">Pick one and I'll hand you a little reminder to match.</p>
       </div>
       <div class="filters" id="moodChips" role="group" aria-label="Pick a feeling" hidden></div>
-      <div class="reminder-card">
+      <div class="reminder-card mood-result" id="moodResult" hidden>
         <div class="tape"></div>
         <p class="label">A little reminder for you</p>
         <img class="mood-art" id="moodArt" src="/images/art/trust-grass.webp" alt="" width="240" height="300">
-        <blockquote id="qotd">You must learn to proceed with uncertainty.</blockquote>
-        <button type="button" class="btn btn-yellow" id="qnext">
+        <blockquote id="moodQuote"></blockquote>
+        <button type="button" class="btn btn-yellow" id="moodNext">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Another one, please
         </button>
         <div class="reminder-send">
-          <button type="button" class="send-link" id="qshare">
+          <button type="button" class="send-link" id="moodShare">
             <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
-            <span data-text="share.button">Send this reminder to someone</span>
+            <span>Send this reminder to someone</span>
           </button>
         </div>
       </div>
@@ -217,6 +239,6 @@
 </dialog>
 <!-- @/dialogs -->
 
-<script src="/assets/app.js?v=19" defer></script>
+<script src="/assets/app.js?v=20" defer></script>
 </body>
 </html>
