@@ -11,7 +11,7 @@
 }
 .walk-pick[hidden], .walk-end[hidden] { display: none; }
 .walk-pick h2 { font-size: clamp(1.5rem, 3.4vw, 2.2rem); margin: 0; }
-.walk-chars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; width: min(560px, 100%); }
+.walk-chars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: min(460px, 100%); }
 .walk-char {
   display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px 8px; cursor: pointer;
   background: var(--paper); border: 2.5px solid var(--ink); border-radius: 16px 20px 16px 22px; box-shadow: 3px 3px 0 var(--ink);
@@ -26,10 +26,9 @@
 .walk-bar { display: flex; justify-content: center; gap: 14px; margin-top: 26px; }
 @media (max-width: 640px) {
   #walkCanvas { aspect-ratio: 4 / 5; }
-  .walk-chars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .walk-pick { gap: 10px; padding: 14px; }
   .walk-chars { gap: 8px; }
   .walk-char { padding: 6px 4px 5px; }
-  .walk-char img { height: 56px; }
+  .walk-char img { height: 62px; }
   .walk-stage { border-radius: 16px; box-shadow: 5px 5px 0 var(--ink); }
 }

@@ -16,21 +16,22 @@
   var W = 0, H = 0, U = 1, DPR = 1; // canvas size in css pixels, and one "design unit" (H / 360)
   var SPEED = 70;                   // how fast the hill scrolls, in design units per second
   var CHARS = [
-    { id: 'pink', label: 'Pink', h: 118, lift: 0 },
-    { id: 'orange', label: 'Orange', h: 96, lift: 0 },
-    { id: 'blue', label: 'Blue', h: 84, lift: 16 },
-    { id: 'shadow', label: 'Shadow', h: 122, lift: 0 }
+    { id: 'pink', label: 'Pink', h: 104, lift: 0 },
+    { id: 'orange', label: 'Orange', h: 84, lift: 0 },
+    { id: 'blue', label: 'Blue', h: 74, lift: 14 }
   ];
+  var FRIEND = { id: 'shadow', h: 132, lift: 0 };   // waits at the end of the hill, with an empty pot
+  // the flowers she drew, whole: stem, leaves and all. They are shrunk down to fit the bouquet.
   var FLOWERS = [
-    { img: 'tulip-red-1', h: 104 }, { img: 'tulip-yel-1', h: 56 }, { img: 'tulip-red-2', h: 96 },
-    { img: 'daisy', h: 56 }, { img: 'tulip-yel-2', h: 60 }, { img: 'tulip-yel-3', h: 58 }
+    { img: 'tulip-red-1', h: 52, stem: '#357a7c' }, { img: 'tulip-yel-1', h: 32, stem: '#168a45' }, { img: 'tulip-red-2', h: 50, stem: '#357a7c' },
+    { img: 'daisy', h: 34, stem: '#b9c5a2' }, { img: 'tulip-yel-2', h: 32, stem: '#168a45' }, { img: 'tulip-yel-3', h: 32, stem: '#168a45' }
   ];
   var LADYBUG_LINES = ['keep going', 'you are doing great', 'small steps count', 'take your time', 'I am glad you are here'];
   var quotes = [], shareArt = 0, ladyLines = LADYBUG_LINES.slice();
 
   var IMG = {};
   var NAMES = ['pink', 'orange', 'blue', 'shadow', 'tulip-red-1', 'tulip-red-2', 'tulip-yel-1', 'tulip-yel-2', 'tulip-yel-3',
-    'daisy', 'strawberry', 'ladybug', 'sparkle', 'bird-left', 'bird-right'];
+    'daisy', 'strawberry', 'ladybug', 'sparkle'];
 
   /* ---------- Art ---------- */
   function loadArt() {
@@ -54,13 +55,13 @@
 
   /* ---------- World ---------- */
   var S = null;       // the current walk
-  var chosen = CHARS[0], friendChar = CHARS[1];
+  var chosen = CHARS[0], friendChar = FRIEND;
   var grass = [], clouds = [];
 
   function newWalk() {
     S = {
       mode: 'walk', t: 0, scroll: 0, step: 0,
-      got: 0, treats: 0, flowers: [],
+      got: 0, treats: 0, boost: 0, flowers: [],
       px: 0, py: 0, vy: 0, squash: 0, slow: 0, hopped: false,
       items: [], spawnIn: 0.8, sinceFlower: 0, ladyIn: 7, lady: null,
       drops: [], bits: [], gift: 0, friend: null, endIn: 0, shown: false
@@ -76,10 +77,10 @@
     S.sinceFlower++;
     var type = (S.sinceFlower >= 2 && r < 0.62) || S.sinceFlower >= 4 ? 'flower' : (r < 0.8 ? 'puddle' : 'treat');
     if (type === 'flower') S.sinceFlower = 0;
-    var it = { type: type, x: W + 120 * U, got: false, hit: false };
-    if (type === 'flower') { var f = FLOWERS[Math.floor(Math.random() * FLOWERS.length)]; it.img = f.img; it.h = f.h; }
+    var it = { type: type, x: W + 120 * U, got: false, hit: false, id: Math.random() * 6 };
+    if (type === 'flower') { var f = FLOWERS[Math.floor(Math.random() * FLOWERS.length)]; it.img = f.img; it.h = f.h; it.stem = f.stem; }
     if (type === 'puddle') { it.w = 118 + Math.random() * 40; }
-    if (type === 'treat') { it.img = 'strawberry'; it.h = 40; it.lift = 92 + Math.random() * 20; }
+    if (type === 'treat') { it.img = 'strawberry'; it.h = 34; it.lift = 84 + Math.random() * 16; }
     S.items.push(it);
     S.spawnIn = gap;
   }
@@ -113,11 +114,10 @@
     var top = mix([169, 214, 245], [246, 182, 160], p), low = mix([254, 246, 220], [255, 224, 170], p);
     var g = ctx.createLinearGradient(0, 0, 0, groundY()); g.addColorStop(0, rgb(top)); g.addColorStop(1, rgb(low));
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    var sx = W * 0.8, sy = H * (0.2 + 0.26 * p);
-    ctx.fillStyle = '#ffd94a'; ctx.strokeStyle = INK; ctx.lineWidth = 3 * U;
-    ctx.beginPath(); ctx.arc(sx, sy, 24 * U, 0, 7); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#f590c9'; ctx.globalAlpha = 0.7; ctx.beginPath(); ctx.ellipse(sx - 9 * U, sy + 5 * U, 5 * U, 3 * U, 0, 0, 7); ctx.ellipse(sx + 9 * U, sy + 5 * U, 5 * U, 3 * U, 0, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
-    ctx.strokeStyle = INK; ctx.lineWidth = 2 * U; ctx.beginPath(); ctx.arc(sx - 8 * U, sy - 2 * U, 4 * U, 0.15 * Math.PI, 0.85 * Math.PI); ctx.arc(sx + 8 * U, sy - 2 * U, 4 * U, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+    // the sun peeks in from the top right corner (a flat placeholder until her painted sun is added)
+    var sr = 84 * U;
+    ctx.fillStyle = '#e0b43c'; ctx.strokeStyle = INK; ctx.lineWidth = 3 * U;
+    ctx.beginPath(); ctx.arc(W + 8 * U, -8 * U, sr, 0, 7); ctx.fill(); ctx.stroke();
   }
   function drawClouds() {
     clouds.forEach(function (c) {
@@ -162,26 +162,36 @@
     ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.globalAlpha = a; ctx.fillStyle = '#f590c9'; ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(0, 6); ctx.bezierCurveTo(-14, -4, -8, -14, 0, -6); ctx.bezierCurveTo(8, -14, 14, -4, 0, 6); ctx.fill(); ctx.stroke(); ctx.restore();
   }
-  // The bouquet in the corner grows with every flower gathered. At the end it travels to the friend.
-  function drawBouquet(bx, by, scale, spread) {
-    var n = S.flowers.length;
-    for (var i = 0; i < n; i++) {
-      var t = n === 1 ? 0.5 : i / (n - 1), ang = (-0.62 + 1.24 * t) * spread;
-      pic(S.flowers[i].img, bx, by, S.flowers[i].h * 0.62 * scale, ang);
-    }
-    if (n) {
-      ctx.fillStyle = '#f590c9'; ctx.strokeStyle = INK; ctx.lineWidth = 2 * U;
-      ctx.beginPath(); ctx.ellipse(bx - 9 * U * scale, by - 2 * U, 10 * U * scale, 6 * U * scale, -0.4, 0, 7); ctx.ellipse(bx + 9 * U * scale, by - 2 * U, 10 * U * scale, 6 * U * scale, 0.4, 0, 7); ctx.fill(); ctx.stroke();
-      ctx.beginPath(); ctx.arc(bx, by - 2 * U, 4 * U * scale, 0, 7); ctx.fillStyle = '#ffd94a'; ctx.fill(); ctx.stroke();
+  // The bouquet grows with every flower gathered: the whole flowers fan out from one point, small and tidy,
+  // with paper and a bow at the bottom. `inPot` draws just the flowers (no paper) for the friend's pot.
+  var SLOTS = [0, 1, -1, 2, -2, 3, -3, 4];
+  function drawBouquet(bx, by, scale, inPot) {
+    var n = S.flowers.length, k = 0.78 * scale;
+    var order = []; for (var i = 0; i < n; i++) order.push(i);
+    order.sort(function (a, b) { return Math.abs(SLOTS[b]) - Math.abs(SLOTS[a]); });   // outer flowers first, middle on top
+    order.forEach(function (i) {
+      var f = S.flowers[i], a = SLOTS[i] * 0.17 * (inPot ? 0.62 : 1), len = (30 - 2.5 * Math.abs(SLOTS[i])) * U * scale;
+      var ex = bx + Math.sin(a) * len, ey = by - Math.cos(a) * len;
+      ctx.strokeStyle = f.stem || '#357a7c'; ctx.lineWidth = 3 * U * scale; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(bx, by - 2 * U); ctx.lineTo(ex, ey + 2 * U); ctx.stroke();
+      pic(f.img, ex, ey, (34 + f.h * 0.8) * k * (1 - 0.035 * Math.abs(SLOTS[i])), a);
+    });
+    if (n && !inPot) {
+      var w = 15 * U * scale;
+      ctx.fillStyle = '#fffdf7'; ctx.strokeStyle = INK; ctx.lineWidth = 2 * U; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(bx - w, by - 13 * U * scale); ctx.lineTo(bx + w, by - 13 * U * scale); ctx.lineTo(bx + 3 * U * scale, by + 9 * U * scale); ctx.lineTo(bx - 3 * U * scale, by + 9 * U * scale); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#f590c9';
+      ctx.beginPath(); ctx.ellipse(bx - 6 * U * scale, by - 5 * U * scale, 6 * U * scale, 3.4 * U * scale, -0.35, 0, 7); ctx.ellipse(bx + 6 * U * scale, by - 5 * U * scale, 6 * U * scale, 3.4 * U * scale, 0.35, 0, 7); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(bx, by - 5 * U * scale, 2.4 * U * scale, 0, 7); ctx.fillStyle = '#ffd94a'; ctx.fill(); ctx.stroke();
     }
   }
   function drawHud() {
-    var x = 64 * U, y = 118 * U;
+    var x = 64 * U, y = 128 * U;
     ctx.fillStyle = 'rgba(255,253,247,.8)'; ctx.strokeStyle = INK; ctx.lineWidth = 2.5 * U;
-    ctx.beginPath(); ctx.roundRect ? ctx.roundRect(12 * U, 12 * U, 104 * U, 112 * U, 14 * U) : ctx.rect(12 * U, 12 * U, 104 * U, 112 * U); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect ? ctx.roundRect(12 * U, 12 * U, 104 * U, 128 * U, 14 * U) : ctx.rect(12 * U, 12 * U, 104 * U, 128 * U); ctx.fill(); ctx.stroke();
     ctx.fillStyle = INK; ctx.font = '600 ' + 13 * U + 'px "Comic Sans MS","Comic Neue",cursive'; ctx.textAlign = 'center';
     ctx.fillText(S.got + ' of ' + NEED, 64 * U, 32 * U); ctx.textAlign = 'left';
-    if (S.mode !== 'gift' && S.mode !== 'done') drawBouquet(x, y, 1, 1);
+    if (S.mode !== 'gift' && S.mode !== 'done') drawBouquet(x, y, 1, false);
   }
   function drawBubble(x, y, text) {
     ctx.font = '700 ' + 14 * U + 'px "Comic Sans MS","Comic Neue",cursive';
@@ -201,20 +211,27 @@
     if (S.friend) drawTree(S.friend.x + 10 * U);
     S.items.forEach(function (it) {
       if (it.type === 'puddle') drawPuddle(it.x, it.w, it.hit);
-      else if (!it.got) { var sway = Math.sin(S.t * 2 + it.x * 0.02) * 0.04; pic(it.img, it.x, groundY() - (it.lift || 0) * U + (it.type === 'treat' ? Math.sin(S.t * 2.4 + it.x) * 4 * U : 0), it.h, sway); }
+      else if (!it.got) { var sway = it.type === 'treat' ? 0.05 : Math.sin(S.t * 1.4 + it.id) * 0.03; pic(it.img, it.x, groundY() - (it.lift || 0) * U, it.h, sway); }
     });
+    var happy = (S.mode === 'gift' || S.mode === 'done') && S.gift >= 1, pot = null, fb = 0;
     if (S.friend) {
-      var fb = Math.max(0, Math.sin(S.t * 3.2)) * 7 * U * (S.mode === 'gift' || S.mode === 'done' ? 1.6 : 0.6);
-      pic(friendChar.id, S.friend.x, groundY() - fb - friendChar.lift * U, friendChar.h * 0.95, Math.sin(S.t * 2) * 0.03);
+      fb = Math.max(0, Math.sin(S.t * 3.2)) * 7 * U * (happy ? 1.8 : 0.5);
+      var fs = friendChar.h * U / 330, fy = groundY() - fb - friendChar.lift * U;
+      pot = { x: S.friend.x + (110 - 92.5) * fs, y: fy + (94 - 330) * fs };
+      if (happy) drawBouquet(pot.x, pot.y, 0.55, true);          // the flowers stand in his pot, behind its front
+      pic(friendChar.id, S.friend.x, fy, friendChar.h, happy ? Math.sin(S.t * 5) * 0.035 : Math.sin(S.t * 2) * 0.02);
     }
     // the walker: little bob, a squash when landing, and a lift for the floaty blue one
     var bob = S.mode === 'walk' && S.slow <= 0 ? Math.sin(S.t * 6) * 1.8 * U : 0, sq = S.squash > 0 ? 1 - 0.1 * S.squash : 1;
     pic(chosen.id, playerX(), groundY() + S.py - chosen.lift * U + bob - (chosen.lift ? Math.sin(S.t * 2.2) * 5 * U : 0), chosen.h, Math.sin(S.t * 3) * 0.035, 1 / sq, sq);
     // gift on its way to the friend
     if (S.mode === 'gift' || S.mode === 'done') {
-      var k = Math.min(1, S.gift), ease = k * k * (3 - 2 * k), fx = S.friend.x - 34 * U;
-      drawBouquet(64 * U + (fx - 64 * U) * ease, 118 * U + (groundY() - 40 * U - 118 * U) * ease - Math.sin(ease * Math.PI) * 30 * U, 1 + 0.5 * ease, 1);
-      if (k >= 1) for (var h = 0; h < 4; h++) drawHeart(S.friend.x + Math.sin(S.t * 1.8 + h * 1.7) * 30 * U, groundY() - (90 + ((S.t * 22 + h * 24) % 70)) * U, 1.3 * U / 1.0, 0.9);
+      var k = Math.min(1, S.gift), ease = k * k * (3 - 2 * k);
+      if (k < 1) drawBouquet(64 * U + (pot.x - 64 * U) * ease, 128 * U + (pot.y - 128 * U) * ease - Math.sin(ease * Math.PI) * 34 * U, 1 - 0.45 * ease, false);
+      else {
+        for (var h = 0; h < 4; h++) drawHeart(S.friend.x + Math.sin(S.t * 1.8 + h * 1.7) * 34 * U, groundY() - (friendChar.h + 4 + ((S.t * 22 + h * 22) % 56)) * U, 1.3 * U, 0.9);
+        drawBubble(S.friend.x, groundY() - fb - (friendChar.h + 14) * U, 'Aw thanks!');
+      }
     }
     // ladybug and its message
     if (S.lady) {
@@ -235,7 +252,7 @@
   function update(dt) {
     S.t += dt;
     var walking = S.mode === 'walk', ending = S.mode === 'end';
-    var speed = (S.slow > 0 ? 0.55 : 1) * SPEED * U;
+    var speed = (S.slow > 0 ? 0.55 : S.boost > 0 ? 1.6 : 1) * SPEED * U;
     // scrolling (a step at a time when motion is reduced)
     var move = 0;
     if (S.mode === 'walk' || S.mode === 'end') {
@@ -254,7 +271,7 @@
     // hopping
     S.vy += 760 * U * dt; S.py += S.vy * dt;
     if (S.py >= 0) { if (S.vy > 60 * U) S.squash = 1; S.py = 0; S.vy = 0; S.hopped = false; }
-    S.squash = Math.max(0, S.squash - dt * 6); S.slow = Math.max(0, S.slow - dt);
+    S.squash = Math.max(0, S.squash - dt * 6); S.slow = Math.max(0, S.slow - dt); S.boost = Math.max(0, S.boost - dt);
     // spawning
     if (walking) {
       S.spawnIn -= (reduceMotion ? move / (SPEED * U) : dt);
@@ -268,10 +285,10 @@
     S.items.forEach(function (it) {
       var near = Math.abs(it.x - px) < (it.type === 'puddle' ? it.w * U * 0.42 : 34 * U);
       if (it.type === 'flower' && !it.got && near && S.mode === 'walk') {
-        it.got = true; S.got++; S.flowers.push({ img: it.img, h: it.h }); sparkle(it.x, groundY() - it.h * U * 0.7, 5); chime(S.got);
+        it.got = true; S.got++; S.flowers.push({ img: it.img, h: it.h, stem: it.stem }); sparkle(it.x, groundY() - it.h * U * 0.7, 5); chime(S.got);
         say('Picked a flower. ' + S.got + ' of ' + NEED + '.');
       } else if (it.type === 'treat' && !it.got && near && Math.abs((groundY() - it.lift * U) - (groundY() + S.py - 40 * U)) < 54 * U) {
-        it.got = true; S.treats++; sparkle(it.x, groundY() - it.lift * U, 6); chime(1);
+        it.got = true; S.treats++; S.boost = 2.2; S.slow = 0; sparkle(it.x, groundY() - it.lift * U, 6); chime(1); say('A strawberry. A little burst of speed.');
       } else if (it.type === 'puddle' && near && !it.hit) {
         it.hit = true;
         if (S.py > -16 * U) { S.slow = 0.9; splash(it.x, groundY() + 8 * U); }
@@ -282,8 +299,8 @@
     if (S.lady) {
       S.lady.x -= (reduceMotion ? 30 : 46) * U * dt; S.lady.t += dt; S.lady.y += Math.sin(S.lady.t * 2) * 0.25 * U;
       if (!S.lady.said && S.lady.x < px + 160 * U) { S.lady.say = ladyLines[Math.floor(Math.random() * ladyLines.length)]; S.lady.said = true; say('A ladybug says: ' + S.lady.say); }
-      if (S.lady.said && S.lady.x < px - 200 * U) S.lady = null;
-      else if (S.lady.x < -40 * U) S.lady = null;
+      if (S.lady.said && S.lady.x < px + 10 * U) S.lady.y -= 70 * U * dt;      // after saying it, up and away
+      if (S.lady && (S.lady.y < -30 * U || S.lady.x < -40 * U)) S.lady = null;
     }
     // the hand-over
     if (S.mode === 'gift') {
@@ -326,8 +343,6 @@
   }
   function begin() {
     $('#walkPick').classList.remove('is-open'); $('#walkPick').hidden = true; $('#walkEnd').hidden = true;
-    var others = CHARS.filter(function (c) { return c.id !== chosen.id; });
-    friendChar = others[Math.floor(Math.random() * others.length)];
     newWalk(); resize(); say('Walking. Press space or tap to hop.'); start(); cv.focus({ preventScroll: true });
   }
   function openPick() {
