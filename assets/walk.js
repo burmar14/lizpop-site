@@ -116,18 +116,10 @@
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   }
   function drawSun() {
-    // the sun peeks in from the top right corner, in sunglasses (a redraw until her painted sun is added)
-    var Q = Math.min(W * 0.27, H * 0.52) / 92, cx = W + 8 * Q, cy = -8 * Q, sr = 92 * Q;   // big, like in her painting
-    ctx.fillStyle = '#e0b43c'; ctx.beginPath(); ctx.arc(cx, cy, sr, 0, 7); ctx.fill();
-    ctx.fillStyle = 'rgba(245,144,201,.95)';
-    ctx.beginPath(); ctx.arc(cx - 84 * Q, cy + 48 * Q, 9 * Q, 0, 7); ctx.arc(cx - 6 * Q, cy + 56 * Q, 9.5 * Q, 0, 7); ctx.fill();
-    ctx.fillStyle = INK; ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(cx - 86 * Q, cy + 22 * Q, 80 * Q, 10 * Q, 5 * Q); else ctx.rect(cx - 86 * Q, cy + 22 * Q, 80 * Q, 10 * Q);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 1.6 * Q; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(cx - 74 * Q, cy + 25 * Q); ctx.lineTo(cx - 60 * Q, cy + 25 * Q); ctx.moveTo(cx - 36 * Q, cy + 25 * Q); ctx.lineTo(cx - 22 * Q, cy + 25 * Q); ctx.stroke();
-    ctx.fillStyle = '#f08a5a'; ctx.beginPath(); ctx.moveTo(cx - 52 * Q, cy + 34 * Q); ctx.lineTo(cx - 38 * Q, cy + 34 * Q); ctx.lineTo(cx - 46 * Q, cy + 52 * Q); ctx.closePath(); ctx.fill();
-    ctx.strokeStyle = '#7a4a1e'; ctx.lineWidth = 1.8 * Q; ctx.beginPath(); ctx.arc(cx - 36 * Q, cy + 60 * Q, 5 * Q, 0.1 * Math.PI, 0.9 * Math.PI); ctx.stroke();
+    // a plain gold sun peeking in from the top right corner
+    var sr = 84 * U;
+    ctx.fillStyle = '#e0b43c'; ctx.strokeStyle = INK; ctx.lineWidth = 3 * U;
+    ctx.beginPath(); ctx.arc(W + 8 * U, -8 * U, sr, 0, 7); ctx.fill(); ctx.stroke();
   }
   function drawClouds() {
     clouds.forEach(function (c) {
