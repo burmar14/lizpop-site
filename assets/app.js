@@ -157,14 +157,17 @@
     }).join('');
     var imgs = $all('img', scene), cur = first, timer;
     if (slides.length < 2) return;
-    dots.innerHTML = slides.map(function (s, i) {
-      return '<button type="button" aria-label="Show artwork ' + (i + 1) + '"' + (i === first ? ' aria-current="true"' : '') + '></button>';
-    }).join('');
+    // Dots only make sense for a handful of slides; a long lineup just fades along on its own.
+    if (slides.length <= 8) {
+      dots.innerHTML = slides.map(function (s, i) {
+        return '<button type="button" aria-label="Show artwork ' + (i + 1) + '"' + (i === first ? ' aria-current="true"' : '') + '></button>';
+      }).join('');
+    }
     var btns = $all('button', dots);
     function show(i) {
-      imgs[cur].classList.remove('is-on'); imgs[cur].setAttribute('aria-hidden', 'true'); btns[cur].removeAttribute('aria-current');
+      imgs[cur].classList.remove('is-on'); imgs[cur].setAttribute('aria-hidden', 'true'); if (btns[cur]) btns[cur].removeAttribute('aria-current');
       cur = (i + imgs.length) % imgs.length;
-      imgs[cur].classList.add('is-on'); imgs[cur].removeAttribute('aria-hidden'); btns[cur].setAttribute('aria-current', 'true');
+      imgs[cur].classList.add('is-on'); imgs[cur].removeAttribute('aria-hidden'); if (btns[cur]) btns[cur].setAttribute('aria-current', 'true');
     }
     function start() { if (!reduceMotion) { clearInterval(timer); timer = setInterval(function () { show(cur + 1); }, 5500); } }
     btns.forEach(function (b, i) { b.addEventListener('click', function () { show(i); start(); }); });

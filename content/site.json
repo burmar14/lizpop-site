@@ -72,6 +72,50 @@
       {
         "image": "/images/art/trust-grass.webp",
         "alt": "Liz's pink character resting in the grass with the words I trust that I am where I am supposed to be"
+      },
+      {
+        "image": "/images/art/mountain-face-river.webp",
+        "alt": "A sleeping face made of mountains and a waterfall, with a winding river, a rowboat, a hiker and a campfire under a starry sky. The greatest adventure you will ever embark on is the one back to yourself."
+      },
+      {
+        "image": "/images/art/get-lost-find-yourself.webp",
+        "alt": "Two mirrored figures reaching up for stars above snowy mountains, pine trees and a river with a canoe and campsites. It is time to get lost so you can find yourself all over again."
+      },
+      {
+        "image": "/images/art/not-everyone-understands.webp",
+        "alt": "A person with their hands over their heart in a field of tulips under a big sun and two sleepy faces. Not everyone will understand and that is okay."
+      },
+      {
+        "image": "/images/art/show-up-imperfectly.webp",
+        "alt": "A figure in black holding a drooping potted plant among tall red flowers. Have the courage to show up imperfectly."
+      },
+      {
+        "image": "/images/art/birds-believe.webp",
+        "alt": "A person and a cat riding a giant lavender bird through a sunset sky full of colorful birds. I choose to believe that amazing things are meant for me."
+      },
+      {
+        "image": "/images/art/hold-on-my-dear.webp",
+        "alt": "Two figures floating hand in hand across a deep blue night sky above city lights. Hold on my dear, you won't hurt like this forever."
+      },
+      {
+        "image": "/images/art/mushroom-garden.webp",
+        "alt": "Tiny people, a sleeping frog, birds and a ladybug resting among big mushrooms under a smiling sun. I see you creating a beautiful life anyway and I am so proud."
+      },
+      {
+        "image": "/images/art/deserve-to-heal.webp",
+        "alt": "A woman sitting on a red mushroom with flowers growing from her hands and clothes. You deserve to heal, you deserve to grow."
+      },
+      {
+        "image": "/images/art/rainy-day-puddles.webp",
+        "alt": "A pink character lying on a grassy hill in the rain beside puddles that reflect them. Be gentle with yourself on rainy days."
+      },
+      {
+        "image": "/images/art/universe-has-your-back.webp",
+        "alt": "A small figure curled up inside rings of blue arms covered in affirmations. You are so loved. The universe has your back."
+      },
+      {
+        "image": "/images/art/pink-flower-field.webp",
+        "alt": "A dark hooded figure peeking out from a field of big pink flowers."
       }
     ]
   },
@@ -279,6 +323,36 @@
         "label": "A new magical chapter",
         "image": "/images/art/magical-chapter.webp",
         "preview": "/images/share/magical-chapter.jpg"
+      },
+      {
+        "label": "The adventure back to yourself",
+        "image": "/images/art/mountain-face-river.webp",
+        "preview": "/images/share/mountain-face-river.jpg"
+      },
+      {
+        "label": "Not everyone will understand",
+        "image": "/images/art/not-everyone-understands.webp",
+        "preview": "/images/share/not-everyone-understands.jpg"
+      },
+      {
+        "label": "Amazing things are meant for me",
+        "image": "/images/art/birds-believe.webp",
+        "preview": "/images/share/birds-believe.jpg"
+      },
+      {
+        "label": "Hold on my dear",
+        "image": "/images/art/hold-on-my-dear.webp",
+        "preview": "/images/share/hold-on-my-dear.jpg"
+      },
+      {
+        "label": "You deserve to heal",
+        "image": "/images/art/deserve-to-heal.webp",
+        "preview": "/images/share/deserve-to-heal.jpg"
+      },
+      {
+        "label": "The universe has your back",
+        "image": "/images/art/universe-has-your-back.webp",
+        "preview": "/images/share/universe-has-your-back.jpg"
       }
     ]
   },
