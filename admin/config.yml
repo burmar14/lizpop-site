@@ -231,18 +231,33 @@ collections:
                   - { name: views, label: Views, widget: string, required: false, hint: "Like 10.9M" }
                   - { name: url, label: Link to the reel, widget: string }
                   - { name: show, label: Show on site, widget: boolean, default: true }
-              - { name: tabs, label: Tab names, widget: list, required: false, hint: "First tab shows the pieces above, second shows the videos below." }
-              - { name: videos_intro, label: Intro for the videos tab, widget: string, required: false }
+              - { name: tabs, label: Tab names on the home page, widget: list, required: false, hint: "First tab shows the pieces above, second shows the studio and fun videos below." }
+              - { name: videos_intro, label: Intro for the second tab, widget: string, required: false }
               - name: videos
-                label: Influencer videos
+                label: Studio and fun videos (home page)
                 label_singular: Video
                 widget: list
                 summary: "{{fields.views}} {{fields.title}}"
-                hint: "Brand partnerships and real-life videos. Order them by views, biggest first."
+                hint: "Just-for-fun videos with no brand. They show on the home page. Order them by views, biggest first."
                 fields:
                   - { name: image, label: Cover image, widget: image }
                   - { name: title, label: Title, widget: string }
                   - { name: brand, label: Brand (if a partnership), widget: string, required: false }
+                  - { name: views, label: Views, widget: string, required: false }
+                  - { name: url, label: Link to the video, widget: string }
+                  - { name: show, label: Show on site, widget: boolean, default: true }
+              - { name: brand_videos_title, label: Heading above the partner videos (For brands page), widget: string, required: false }
+              - { name: brand_videos_intro, label: Line under that heading, widget: string, required: false }
+              - name: brand_videos
+                label: Partner videos (For brands page)
+                label_singular: Video
+                widget: list
+                summary: "{{fields.views}} {{fields.brand}}: {{fields.title}}"
+                hint: "Videos made with brands. They show on the For brands page. Order them by views, biggest first."
+                fields:
+                  - { name: image, label: Cover image, widget: image }
+                  - { name: title, label: Title, widget: string }
+                  - { name: brand, label: Brand, widget: string }
                   - { name: views, label: Views, widget: string, required: false }
                   - { name: url, label: Link to the video, widget: string }
                   - { name: show, label: Show on site, widget: boolean, default: true }

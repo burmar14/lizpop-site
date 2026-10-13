@@ -486,10 +486,26 @@
     ],
     "tabs": [
       "Animations",
-      "Influencer videos"
+      "Studio days"
     ],
-    "videos_intro": "Real-life videos, brand partnerships and studio days, ranked by views.",
+    "videos_intro": "Little looks behind the scenes, between the animations.",
     "videos": [
+      {
+        "image": "/images/studio/art-office.webp",
+        "title": "My little art office",
+        "views": "27.4K",
+        "url": "https://www.instagram.com/lizpop_art/reel/DTzEkF5jFdF/"
+      },
+      {
+        "image": "/images/studio/drawing.webp",
+        "title": "Doodling between emails",
+        "views": "13.8K",
+        "url": "https://www.instagram.com/lizpop_art/reel/DUE0nMZER0E/"
+      }
+    ],
+    "brand_videos_title": "Partner videos",
+    "brand_videos_intro": "A few of the videos I've made with brands, ranked by views.",
+    "brand_videos": [
       {
         "image": "/images/work/logitech.webp",
         "title": "Artist life with a 9 to 5",
@@ -505,23 +521,11 @@
         "url": "https://www.instagram.com/lizpop_art/reel/DdEpCqGxWqI/"
       },
       {
-        "image": "/images/studio/art-office.webp",
-        "title": "My little art office",
-        "views": "27.4K",
-        "url": "https://www.instagram.com/lizpop_art/reel/DTzEkF5jFdF/"
-      },
-      {
         "image": "/images/work/chaco.webp",
         "title": "Designapalooza strap contest",
         "brand": "Chaco",
         "views": "17.2K",
         "url": "https://www.instagram.com/lizpop_art/reel/DNyK7SI4lSu/"
-      },
-      {
-        "image": "/images/studio/drawing.webp",
-        "title": "Doodling between emails",
-        "views": "13.8K",
-        "url": "https://www.instagram.com/lizpop_art/reel/DUE0nMZER0E/"
       },
       {
         "image": "/images/work/be-the-people.webp",

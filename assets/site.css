@@ -443,6 +443,10 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 .with-bug { display: inline-flex; align-items: center; gap: 14px; }
 .with-bug .bug { width: 44px; transform: rotate(18deg); animation: bug-wiggle 5s ease-in-out infinite; }
 @keyframes bug-wiggle { 0%, 100% { transform: rotate(18deg); } 50% { transform: rotate(6deg) translateY(-4px); } }
+.brand-videos { margin: 0 0 56px; }
+.brand-videos h2 { font-size: clamp(1.6rem, 3.4vw, 2.2rem); margin-bottom: 4px; }
+.brand-videos > p { color: var(--ink-soft); margin-bottom: 22px; }
+.loved-row.partner-row { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .loved-tabs { margin: -18px 0 30px; }
 .loved-tabs button.chip[aria-selected="true"] { background: var(--ink); color: var(--cream); }
 .loved-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px 22px; align-items: start; }

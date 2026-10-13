@@ -659,26 +659,42 @@
   }
 
   /* ---------- Most loved and studio ---------- */
+  // One card in a "most loved" style row: the cover, the brand if any, the view count, and the title.
+  function lovedCardHTML(s) {
+    return '<a class="loved-card" href="' + esc(s.url || '#') + '">' +
+      '<div class="pic"><img src="' + esc(s.image) + '" alt="' + esc(s.title || 'Video by Liz') + '" loading="lazy" decoding="async" width="300" height="466">' +
+      (s.brand ? '<span class="brand">' + esc(s.brand) + '</span>' : '') +
+      (s.views ? '<span class="views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="#231d1a"/></svg>' + esc(s.views) + '<span class="sr-only"> views</span></span>' : '') +
+      '</div>' + (s.title ? '<div class="t">' + esc(s.title) + '</div>' : '') + '</a>';
+  }
+
+  // The brand partner videos on the For brands page.
+  function renderBrandVideos(loved) {
+    var box = $('#brandVideos'), row = $('#brandVideosRow');
+    if (!box || !loved) return;
+    var list = (loved.brand_videos || []).filter(function (s) { return s.image && s.show !== false; });
+    if (!list.length) return;
+    if (loved.brand_videos_title) $('#brandVideosTitle').textContent = loved.brand_videos_title;
+    if (loved.brand_videos_intro) $('#brandVideosIntro').textContent = loved.brand_videos_intro;
+    row.innerHTML = list.map(lovedCardHTML).join('');
+    externalize(row);
+    box.hidden = false;
+  }
+
   function renderLoved(loved) {
     var sec = $('#loved'), row = $('#lovedRow'), tabs = $('#lovedTabs'), intro = $('#lovedIntro');
     if (!sec || !loved) return;
     function clean(list) { return (list || []).filter(function (s) { return s.image && s.show !== false; }); }
     var sets = [
       { label: (loved.tabs && loved.tabs[0]) || 'Animations', items: clean(loved.items), intro: loved.intro },
-      { label: (loved.tabs && loved.tabs[1]) || 'Influencer videos', items: clean(loved.videos), intro: loved.videos_intro || loved.intro }
+      { label: (loved.tabs && loved.tabs[1]) || 'Studio days', items: clean(loved.videos), intro: loved.videos_intro || loved.intro }
     ].filter(function (t) { return t.items.length; });
     if (!sets.length) return;
     sec.hidden = false;
     function draw(k) {
       var set = sets[k];
       if (intro && set.intro) intro.textContent = set.intro;
-      row.innerHTML = set.items.map(function (s) {
-        return '<a class="loved-card" href="' + esc(s.url || '#') + '">' +
-          '<div class="pic"><img src="' + esc(s.image) + '" alt="' + esc(s.title || 'Video by Liz') + '" loading="lazy" decoding="async" width="300" height="466">' +
-          (s.brand ? '<span class="brand">' + esc(s.brand) + '</span>' : '') +
-          (s.views ? '<span class="views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="#231d1a"/></svg>' + esc(s.views) + '<span class="sr-only"> views</span></span>' : '') +
-          '</div>' + (s.title ? '<div class="t">' + esc(s.title) + '</div>' : '') + '</a>';
-      }).join('');
+      row.innerHTML = set.items.map(lovedCardHTML).join('');
       externalize(row);
     }
     if (sets.length > 1 && tabs) {
@@ -815,7 +831,7 @@
       }
     }
     if (site) {
-      rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
+      rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderBrandVideos(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
       var pool = doodlePool(site);
       if (quotes) { renderQuotes(quotes, pool); renderMoodBuilder(quotes, pool); }
       renderNature(site.extras); placeDoodles(pool); setupPause(pool);
