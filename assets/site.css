@@ -454,6 +454,18 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 /* ---------- Little extras ---------- */
 .mood, .nature, .pause-teaser { padding-top: 0; }
 .mood-result { margin-top: 26px; }
+@media (min-width: 821px) {
+  /* the doodle sits beside the reminder so it fills the card */
+  .mood-result {
+    max-width: 900px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "art label" "art quote" "art next" "art send"; column-gap: 40px; align-content: center; padding: 44px 40px 34px;
+  }
+  .mood-result .label { grid-area: label; align-self: end; }
+  .mood-result .mood-art { grid-area: art; width: 100%; max-width: none; margin: 0; align-self: center; }
+  .mood-result blockquote { grid-area: quote; margin: 6px auto 20px; }
+  .mood-result #moodNext { grid-area: next; justify-self: center; align-self: center; }
+  .mood-result .reminder-send { grid-area: send; }
+}
 .mood-art {
   width: min(260px, 72%); margin: 6px auto 22px;
   border: 3px solid var(--ink); border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); transform: rotate(-2deg);
@@ -486,7 +498,7 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 .pause-actions, .pause-done .btn-row { justify-content: center; }
 .pause-thanks { font-family: var(--hand); font-weight: 800; font-size: 1.6rem; color: var(--pink-deep); }
 .pause-art {
-  width: min(260px, 72%); margin: 44px auto 0;
+  width: min(380px, 80%); margin: 44px auto 0;
   border: 3px solid var(--ink); border-radius: 10px; box-shadow: 5px 5px 0 var(--ink); transform: rotate(2deg);
 }
 
