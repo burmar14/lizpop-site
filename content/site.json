@@ -187,12 +187,19 @@
   },
   "brand": {
     "headline": "Let's make something together",
-    "intro": "I make illustrated stories and influencer-style videos for brands and organizations. Most of my work is about mental health, but I also love projects around art, tech, community spaces, and events.",
+    "intro": "I make illustrated stories and influencer-style videos for brands and organizations. Most of my work is about mental health and wellness, but I also love projects around art, tech, gaming, community spaces, and events.",
     "topics": [
       "Mental health",
+      "Wellness",
+      "Self-care",
+      "Mindfulness",
+      "Emotional wellbeing",
+      "Therapy & healing",
       "Art & creativity",
-      "Tech",
+      "Tech & gaming",
       "Community",
+      "Social impact",
+      "Seasonal campaigns",
       "Events"
     ],
     "stats": [
