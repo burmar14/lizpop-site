@@ -239,6 +239,7 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 /* ---------- Prints ---------- */
 .prints { background: var(--paper); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
 .moods { margin: -14px 0 34px; }
+#moodChips.moods { margin: 0 0 8px; }
 .moods .label { font-family: var(--hand); font-weight: 800; align-self: center; margin-right: 4px; }
 .print-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px 28px; }
 .print-card { text-decoration: none; display: block; position: relative; }

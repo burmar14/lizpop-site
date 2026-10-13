@@ -243,7 +243,8 @@
       result.hidden = false;
     }
     chips.hidden = false;
-    chips.innerHTML = moods.map(function (m) { return '<button type="button" class="chip" aria-pressed="false" data-m="' + esc(m) + '">' + esc(m) + '</button>'; }).join('');
+    chips.innerHTML = '<span class="label">I\'m feeling</span>' +
+      moods.map(function (m) { return '<button type="button" class="chip" aria-pressed="false" data-m="' + esc(m) + '">' + esc(m) + '</button>'; }).join('');
     $all('button', chips).forEach(function (b) {
       b.addEventListener('click', function () {
         $all('button', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
