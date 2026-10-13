@@ -179,7 +179,7 @@
   /* ---------- Reminder and sharing ---------- */
   // Everyone sees the same quote on a given day; it changes at local midnight.
   // Everyone sees the same quote on a given day; it changes at local midnight.
-  function renderQuotes(data, share) {
+  function renderQuotes(data, pool) {
     var box = $('#qotd'), btn = $('#qnext'), pic = $('#qArt');
     if (!box) return;
     var list = (data.items || []).filter(function (q) { return q.show !== false && q.text; }).map(function (q) { return q.text; });
@@ -190,18 +190,22 @@
     quoteState.list = list; quoteState.i = i;
     box.textContent = list[i];
     // The Extras page card also shows a doodle, which changes along with the reminder.
-    var arts = ((share && share.art) || []).filter(function (a) { return a.image; }), artIndex = null;
+    var arts = pool || [], artIndex = null;
     function swapArt() {
       if (!pic) return;
       if (!arts.length) { pic.hidden = true; return; }
       var n = artIndex;
-      while (arts.length > 1 && n === artIndex) n = Math.floor(Math.random() * arts.length);
-      artIndex = n;
+      while (arts.length > 1 && (n === artIndex || arts[n].image === last)) n = Math.floor(Math.random() * arts.length);
+      artIndex = n; last = '';
       pic.src = arts[n].image; pic.alt = arts[n].label || '';
     }
+    // On a fresh visit, start on a different doodle than last time.
+    var last = '';
+    try { last = localStorage.getItem('lp-card-art') || ''; } catch (e) {}
     swapArt();
+    try { if (pic && arts.length) localStorage.setItem('lp-card-art', arts[artIndex].image); } catch (e) {}
     var send = $('#qshare');
-    if (send) send.addEventListener('click', function () { quoteState.i = i; quoteState.art = artIndex; });
+    if (send) send.addEventListener('click', function () { quoteState.i = i; quoteState.art = artIndex === null ? null : arts[artIndex].share; });
     if (!btn) return;
     if (list.length < 2) { btn.hidden = true; return; }
     btn.addEventListener('click', function () {
@@ -214,7 +218,7 @@
   }
 
   // The "how are you feeling" builder on the Extras page: pick a feeling, get a matching reminder and doodle.
-  function renderMoodBuilder(data, share) {
+  function renderMoodBuilder(data, pool) {
     var chips = $('#moodChips'), result = $('#moodResult');
     if (!chips || !result) return;
     var items = (data.items || []).filter(function (q) { return q.show !== false && q.text; });
@@ -222,7 +226,7 @@
     var moods = (data.moods || []).filter(function (m) { return items.some(function (q) { return (q.moods || []).indexOf(m) > -1; }); });
     if (!moods.length) { $('#mood').hidden = true; return; }
     quoteState.list = quoteState.list.length ? quoteState.list : list;
-    var arts = ((share && share.art) || []).filter(function (a) { return a.image; });
+    var arts = pool || [];
     var quote = $('#moodQuote'), pic = $('#moodArt'), pool = [], cur = -1, artIndex = null;
     function pick() {
       var choices = pool.filter(function (n) { return n !== cur; });
@@ -250,7 +254,7 @@
       });
     });
     $('#moodNext').addEventListener('click', function () { show(pick()); });
-    $('#moodShare').addEventListener('click', function () { quoteState.i = cur; quoteState.art = artIndex; });
+    $('#moodShare').addEventListener('click', function () { quoteState.i = cur; quoteState.art = artIndex === null ? null : arts[artIndex].share; });
   }
 
   function hash(str) { var x = 5381; for (var i = 0; i < str.length; i++) x = ((x << 5) + x + str.charCodeAt(i)) | 0; return (x >>> 0).toString(36); }
@@ -319,6 +323,17 @@
   });
 
   /* ---------- Little extras: moon, season, breathing ---------- */
+  // Every picture Liz has on the site that can stand on its own as a doodle: the shareable ones plus the hero lineup.
+  function doodlePool(site) {
+    var seen = {}, pool = [];
+    ((site.share && site.share.art) || []).filter(function (a) { return a.image; }).forEach(function (a, i) {
+      if (!seen[a.image]) { seen[a.image] = 1; pool.push({ image: a.image, label: a.label, share: i }); }
+    });
+    ((site.hero && site.hero.slides) || []).forEach(function (sl) {
+      if (sl.image && !seen[sl.image]) { seen[sl.image] = 1; pool.push({ image: sl.image, label: sl.alt, share: null }); }
+    });
+    return pool;
+  }
   var SYNODIC = 29.530588853;
   // A simple moon drawing: dark disc, lit part on top. f runs 0 (new) to 1 and back to new.
   function moonSVG(age) {
@@ -349,9 +364,8 @@
   }
 
   // Pair a doodle with each little extra: every [data-doodle] picture gets a different one.
-  function placeDoodles(share) {
+  function placeDoodles(art) {
     var spots = $all('[data-doodle]');
-    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
     if (!spots.length) return;
     if (!art.length) { spots.forEach(function (el) { el.hidden = true; }); return; }
     var order = art.slice().sort(function () { return Math.random() - 0.5; });
@@ -362,10 +376,9 @@
   }
 
   // One minute of breathing: in for four, out for four.
-  function setupPause(share) {
+  function setupPause(art) {
     var ring = $('#breather');
     if (!ring) return;
-    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
     if (art.length) { var a = art[Math.floor(Math.random() * art.length)]; $('#pauseArt').src = a.image; $('#pauseArt').alt = a.label || ''; }
     var text = $('#breathText'), start = $('#pauseStart'), done = $('#pauseDone'), timer;
     function finish() {
@@ -734,8 +747,9 @@
     }
     if (site) {
       rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
-      if (quotes) { renderQuotes(quotes, site.share); renderMoodBuilder(quotes, site.share); }
-      renderNature(site.extras); placeDoodles(site.share); setupPause(site.share);
+      var pool = doodlePool(site);
+      if (quotes) { renderQuotes(quotes, pool); renderMoodBuilder(quotes, pool); }
+      renderNature(site.extras); placeDoodles(pool); setupPause(pool);
       setupShare(site.share);
       if (page === 'home') checkGift(site.share);
     }
