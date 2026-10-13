@@ -442,32 +442,54 @@
   }
 
   /* ---------- Portfolio and brand work ---------- */
-  // The yellow highlight steps along the topic chips, one at a time. Tap a chip to jump to it;
-  // the stepping pauses for a few seconds, then carries on from there (it stays put for reduced motion).
+  // Which brand topic is picked (empty = everything), and how to redraw the work grid when it changes.
+  var workTopic = '', redrawWork = null, resetTopic = null;
+  function setTopic(name) {
+    workTopic = name;
+    var note = $('#topicNote'), filters = $('#filters'), grid = $('#portfolioGrid');
+    if (note) {
+      note.hidden = !name;
+      if (name) {
+        note.innerHTML = 'Showing work for <b>' + esc(name) + '</b>. <button type="button" class="send-link" id="topicClear">Show everything</button>';
+        $('#topicClear').addEventListener('click', function () { if (resetTopic) resetTopic(); });
+      }
+    }
+    if (redrawWork) redrawWork();
+    if (name) {
+      var target = filters && !filters.hidden ? filters : (note || grid);
+      if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 100, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+
+  // The yellow highlight steps along the topic chips, one at a time. Tap one to jump down to the matching
+  // work; tap it again (or "Show everything") to go back to stepping. Reduced motion keeps it still.
   function rotateChips() {
     $all('.chips').forEach(function (ul) {
-      var items = $all('li', ul), n = 0, timer, pause;
+      var items = $all('li', ul), n = 0, timer, picked = -1;
       if (items.length < 2) return;
       ul.classList.add('is-rotating');
-      items.forEach(function (li, i) {
-        li.innerHTML = '<button type="button" aria-pressed="false">' + li.innerHTML + '</button>';
-        li.firstChild.addEventListener('click', function () {
-          light(i);
-          clearInterval(timer); clearTimeout(pause);
-          pause = setTimeout(step, 6000);
-        });
-      });
       function light(i) {
         items[n].classList.remove('is-lit'); items[n].firstChild.setAttribute('aria-pressed', 'false');
         n = i;
         items[n].classList.add('is-lit'); items[n].firstChild.setAttribute('aria-pressed', 'true');
       }
-      function step() {
-        light((n + 1) % items.length);
-        timer = setInterval(function () { light((n + 1) % items.length); }, 2400);
+      function startStepping() {
+        clearInterval(timer);
+        if (!reduceMotion) timer = setInterval(function () { light((n + 1) % items.length); }, 1600);
       }
+      function release() { picked = -1; setTopic(''); startStepping(); }
+      items.forEach(function (li, i) {
+        li.innerHTML = '<button type="button" aria-pressed="false">' + li.innerHTML + '</button>';
+        li.firstChild.addEventListener('click', function () {
+          if (picked === i) { release(); return; }
+          picked = i; clearInterval(timer);
+          light(i);
+          setTopic(li.textContent.trim());
+        });
+      });
+      resetTopic = release;
       light(0);
-      if (!reduceMotion) timer = setInterval(function () { light((n + 1) % items.length); }, 2400);
+      startStepping();
     });
   }
 
@@ -511,14 +533,18 @@
     var all = (data.items || []).filter(function (p) { return p.show !== false && p.title; });
     var filters = $('#filters');
 
-    function draw(kind) {
-      var items = kind === 'all' ? all : all.filter(function (p) { return p.type === kind; });
+    var kind = 'all';
+    function draw() {
+      var items = all.filter(function (p) {
+        return (kind === 'all' || p.type === kind) && (!workTopic || (p.topics || []).indexOf(workTopic) > -1);
+      });
       grid.innerHTML = items.length ? items.map(cardHTML).join('')
-        : '<div class="empty">New work is on the way. In the meantime, see my latest videos on Instagram.</div>';
+        : '<div class="empty">' + (workTopic ? 'Nothing tagged ' + esc(workTopic) + ' in this view yet.' : 'New work is on the way. In the meantime, see my latest videos on Instagram.') + '</div>';
       if (!items.length) grid.style.display = 'block'; else grid.style.display = '';
       wireCards(grid, items);
     }
-    draw('all');
+    redrawWork = draw;
+    draw();
     if (filters) {
       var kinds = 0;
       $all('button', filters).forEach(function (b) {
@@ -532,7 +558,8 @@
         b.addEventListener('click', function () {
           $all('button', filters).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
           b.setAttribute('aria-pressed', 'true');
-          draw(b.getAttribute('data-filter'));
+          kind = b.getAttribute('data-filter');
+          draw();
         });
       });
     }

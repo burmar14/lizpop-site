@@ -380,6 +380,8 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 .work-card p { font-size: .95rem; color: var(--ink-soft); margin-bottom: 10px; }
 .work-card .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .work-card .tags span { font-size: .8rem; background: var(--cream); border: 1.5px solid var(--ink); border-radius: 999px; padding: 1px 10px; }
+.topic-note { margin: -12px 0 24px; font-family: var(--hand); font-weight: 600; }
+.topic-note b { color: var(--pink-deep); }
 .empty { border: 2.5px dashed var(--ink-soft); border-radius: 18px; padding: 40px 24px; text-align: center; color: var(--ink-soft); font-family: var(--hand); font-size: 1.15rem; }
 .rep-card {
   background: var(--yellow); border: 2.5px solid var(--ink); border-radius: 20px 26px 22px 28px;

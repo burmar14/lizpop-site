@@ -130,6 +130,7 @@ collections:
               - { name: description, label: Short description, widget: text, required: false, hint: "One or two sentences on what you made and why." }
               - { name: link_url, label: Link to original post, widget: string, required: false }
               - { name: tags, label: Tags, widget: list, required: false, hint: "For example: mental health, events, tech" }
+              - { name: topics, label: Brand topics, widget: list, required: false, hint: "Which topic buttons on this page should show this piece. Spell them exactly like the topic buttons (for example Wellness, Tech & gaming)." }
               - { name: featured, label: Feature on home page, widget: boolean, default: false, hint: "Up to 3 featured projects show on the home page." }
               - { name: show, label: Show on site, widget: boolean, default: true }
 

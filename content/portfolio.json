@@ -15,7 +15,12 @@
       "link_url": "",
       "alt": "Be The People: Drawing my verse for “Gotta Be Us”",
       "orientation": "vertical",
-      "show": true
+      "show": true,
+      "topics": [
+        "Community",
+        "Social impact",
+        "Art & creativity"
+      ]
     },
     {
       "title": "Dear Van Gogh: my Starry Night",
@@ -33,7 +38,11 @@
       "alt": "Sky: Children of the Light: two of Liz's characters holding hands under a swirling Starry Night sky",
       "orientation": "vertical",
       "featured": true,
-      "show": true
+      "show": true,
+      "topics": [
+        "Tech & gaming",
+        "Art & creativity"
+      ]
     },
     {
       "title": "World Mental Health Day",
@@ -50,7 +59,13 @@
       "link_url": "",
       "alt": "World Health Organization: World Mental Health Day",
       "orientation": "vertical",
-      "show": true
+      "show": true,
+      "topics": [
+        "Mental health",
+        "Wellness",
+        "Emotional wellbeing",
+        "Social impact"
+      ]
     },
     {
       "title": "Thrive, not just survive",
@@ -67,7 +82,14 @@
       "featured": true,
       "alt": "BetterHelp: Thrive, not just survive",
       "orientation": "vertical",
-      "show": true
+      "show": true,
+      "topics": [
+        "Mental health",
+        "Wellness",
+        "Self-care",
+        "Therapy & healing",
+        "Community"
+      ]
     },
     {
       "title": "Paper-feel drawing on iPad",
@@ -84,7 +106,12 @@
       "alt": "Astropad: Paper-feel drawing on iPad",
       "orientation": "vertical",
       "featured": false,
-      "show": true
+      "show": true,
+      "topics": [
+        "Tech & gaming",
+        "Art & creativity",
+        "Workspaces & studios"
+      ]
     },
     {
       "title": "Artist life with a 9 to 5",
@@ -101,7 +128,13 @@
       "alt": "Logitech: Artist life with a 9 to 5",
       "orientation": "vertical",
       "featured": false,
-      "show": true
+      "show": true,
+      "topics": [
+        "Tech & gaming",
+        "Workspaces & studios",
+        "Wellness",
+        "Art & creativity"
+      ]
     },
     {
       "title": "Finding the right therapist",
@@ -118,7 +151,12 @@
       "alt": "BetterHelp: Finding the right therapist",
       "orientation": "vertical",
       "featured": false,
-      "show": true
+      "show": true,
+      "topics": [
+        "Mental health",
+        "Therapy & healing",
+        "Wellness"
+      ]
     },
     {
       "title": "Let your light shine",
@@ -135,7 +173,13 @@
       "alt": "BetterHelp: Let your light shine",
       "orientation": "vertical",
       "featured": false,
-      "show": true
+      "show": true,
+      "topics": [
+        "Mental health",
+        "Emotional wellbeing",
+        "Community",
+        "Social impact"
+      ]
     },
     {
       "title": "Sitting with our shadows",
@@ -152,7 +196,13 @@
       "alt": "Option B: Sitting with our shadows",
       "orientation": "vertical",
       "featured": false,
-      "show": true
+      "show": true,
+      "topics": [
+        "Mental health",
+        "Emotional wellbeing",
+        "Mindfulness",
+        "Therapy & healing"
+      ]
     },
     {
       "title": "If the holidays feel heavy",
@@ -169,7 +219,14 @@
       "alt": "BetterHelp: If the holidays feel heavy",
       "orientation": "vertical",
       "featured": false,
-      "show": true
+      "show": true,
+      "topics": [
+        "Mental health",
+        "Self-care",
+        "Mindfulness",
+        "Seasonal campaigns",
+        "Wellness"
+      ]
     },
     {
       "title": "Designapalooza strap contest",
@@ -186,7 +243,12 @@
       "alt": "Chaco: Designapalooza strap design contest",
       "orientation": "vertical",
       "featured": false,
-      "show": true
+      "show": true,
+      "topics": [
+        "Art & creativity",
+        "Community",
+        "Events"
+      ]
     }
   ]
 }
