@@ -1,0 +1,219 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+# Admin panel for lizpop.art. Every save becomes a commit in the GitHub repo,
+# so every change can be undone from the repo's history.
+
+backend:
+  name: github
+  repo: burmar14/lizpop-site
+  branch: main
+  commit_messages:
+    create: "Add {{collection}} \"{{slug}}\""
+    update: "Update {{collection}} \"{{slug}}\""
+    delete: "Delete {{collection}} \"{{slug}}\""
+    uploadMedia: "Upload \"{{path}}\""
+    deleteMedia: "Delete \"{{path}}\""
+
+site_url: https://lizpop.art
+display_url: https://lizpop.art
+
+media_folder: images/uploads
+public_folder: /images/uploads
+
+# Uploaded photos are resized and converted to WebP in the browser before they're saved,
+# so big phone photos don't slow the site down.
+media_libraries:
+  default:
+    config:
+      max_file_size: 15000000
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 82
+          width: 1800
+          height: 1800
+
+collections:
+  - name: quotes
+    label: Quotes
+    icon: format_quote
+    description: Short, lighthearted reminders. One shows on the home page each day.
+    files:
+      - name: quotes
+        label: Quote list
+        file: content/quotes.json
+        fields:
+          - name: items
+            label: Quotes
+            label_singular: Quote
+            widget: list
+            summary: "{{fields.text}}"
+            add_to_top: true
+            fields:
+              - { name: text, label: Quote, widget: string, hint: "Keep it short and kind, one or two lines." }
+              - { name: show, label: Show on site, widget: boolean, default: true }
+
+  - name: prints
+    label: Prints
+    icon: palette
+    description: Prints shown on the home page. Each one links to its Etsy listing.
+    files:
+      - name: prints
+        label: Print wall
+        file: content/prints.json
+        fields:
+          - name: items
+            label: Prints
+            label_singular: Print
+            widget: list
+            summary: "{{fields.title}}"
+            add_to_top: true
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: image, label: Image, widget: image, hint: "A photo of the print. Upload or paste an image link." }
+              - { name: alt, label: Image description, widget: string, hint: "What's in the picture, for people using screen readers. Example: Pink character napping in the grass." }
+              - { name: etsy_url, label: Etsy listing link, widget: string, required: false, hint: "Leave blank to link to the whole shop." }
+              - { name: show, label: Show on site, widget: boolean, default: true }
+
+  - name: portfolio
+    label: Brand portfolio
+    icon: work
+    description: Brand videos and illustration work shown at lizpop.art/portfolio.
+    files:
+      - name: portfolio
+        label: Portfolio projects
+        file: content/portfolio.json
+        fields:
+          - name: items
+            label: Projects
+            label_singular: Project
+            widget: list
+            summary: "{{fields.client}}: {{fields.title}}"
+            add_to_top: true
+            fields:
+              - { name: title, label: Project title, widget: string }
+              - { name: client, label: Brand or client, widget: string, required: false }
+              - name: type
+                label: Type
+                widget: select
+                default: video
+                options:
+                  - { label: Video, value: video }
+                  - { label: Illustration, value: artwork }
+              - { name: thumbnail, label: Cover image, widget: image, hint: "For videos, a screenshot from the video works well. Tall (4:5) looks best." }
+              - { name: alt, label: Cover image description, widget: string }
+              - name: video_url
+                label: Video link
+                widget: string
+                required: false
+                hint: "YouTube, YouTube Shorts and Vimeo links play right on the site. Instagram and TikTok links open in a new tab."
+              - name: orientation
+                label: Video shape
+                widget: select
+                default: vertical
+                options:
+                  - { label: "Tall (Reels, TikTok, Shorts)", value: vertical }
+                  - { label: "Wide (YouTube, Vimeo)", value: horizontal }
+              - name: gallery
+                label: Extra images (illustration projects)
+                label_singular: Image
+                widget: list
+                required: false
+                fields:
+                  - { name: image, label: Image, widget: image }
+                  - { name: alt, label: Description, widget: string, required: false }
+              - { name: description, label: Short description, widget: text, required: false, hint: "One or two sentences on what you made and why." }
+              - { name: link_url, label: Link to original post, widget: string, required: false }
+              - { name: tags, label: Tags, widget: list, required: false, hint: "For example: mental health, events, tech" }
+              - { name: featured, label: Feature on home page, widget: boolean, default: false, hint: "Up to 3 featured projects show on the home page." }
+              - { name: show, label: Show on site, widget: boolean, default: true }
+
+  - name: pages
+    label: Page text and links
+    icon: edit_note
+    files:
+      - name: site
+        label: Home page, book, brand info and links
+        file: content/site.json
+        fields:
+          - name: hero
+            label: Top of home page
+            widget: object
+            fields:
+              - { name: kicker, label: Small line above the headline, widget: string }
+              - { name: headline, label: Headline, widget: string }
+              - { name: highlight, label: Pink highlighted word, widget: string }
+              - { name: intro, label: Intro, widget: text }
+              - { name: sticker, label: Yellow sticker text, widget: string, required: false }
+              - { name: note, label: Small note under buttons, widget: string, required: false }
+          - { name: quotes_label, label: Label above the daily quote, widget: string }
+          - name: shop
+            label: Shop
+            widget: object
+            fields:
+              - { name: etsy_url, label: Etsy shop link, widget: string }
+              - { name: prints_intro, label: Line under "Prints for your walls", widget: string }
+          - name: book
+            label: Book
+            widget: object
+            fields:
+              - { name: kicker, label: Small line above the title, widget: string, hint: "Change this after release day, for example: Out now" }
+              - { name: title, label: Title, widget: string }
+              - { name: cover, label: Cover image, widget: image }
+              - { name: description, label: Description, widget: text }
+              - { name: details, label: Details line, widget: string, required: false }
+              - { name: amazon_url, label: Amazon link, widget: string }
+              - { name: amazon_label, label: Amazon button text, widget: string }
+              - name: other_links
+                label: Other places to buy
+                label_singular: Store
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: Button text, widget: string }
+                  - { name: url, label: Link, widget: string }
+              - { name: bonus_text, label: Preorder bonus text, widget: string, required: false }
+              - { name: bonus_url, label: Preorder bonus form link, widget: string, required: false, hint: "Leave blank to hide the bonus line." }
+              - { name: event_show, label: Show event, widget: boolean, default: true }
+              - { name: event_title, label: Event title, widget: string, required: false }
+              - { name: event_text, label: Event details, widget: string, required: false }
+              - { name: event_url, label: Event tickets link, widget: string, required: false }
+              - name: previews
+                label: Peek inside (book pages)
+                label_singular: Page
+                widget: list
+                fields:
+                  - { name: image, label: Image, widget: image }
+                  - { name: alt, label: Description, widget: string }
+          - name: brand
+            label: Brand work info
+            widget: object
+            fields:
+              - { name: headline, label: Headline, widget: string }
+              - { name: intro, label: Intro, widget: text }
+              - { name: topics, label: Topics, widget: list }
+              - name: stats
+                label: Stats
+                label_singular: Stat
+                widget: list
+                summary: "{{fields.value}} {{fields.label}}"
+                fields:
+                  - { name: value, label: Number, widget: string }
+                  - { name: label, label: Label, widget: string }
+              - { name: rep_text, label: Management line, widget: string }
+              - { name: rep_email, label: Partnerships email, widget: string }
+              - { name: media_kit, label: Media kit (PDF), widget: file, required: false }
+          - name: about
+            label: About
+            widget: object
+            fields:
+              - { name: photo, label: Photo of Liz, widget: image, required: false }
+              - { name: photo_caption, label: Photo caption, widget: string, required: false }
+              - { name: body, label: About text, widget: text, hint: "Leave a blank line between paragraphs." }
+          - name: social
+            label: Social links
+            widget: object
+            fields:
+              - { name: instagram, label: Instagram, widget: string }
+              - { name: tiktok, label: TikTok, widget: string, required: false }
+              - { name: coffee, label: Buy me a coffee, widget: string, required: false }

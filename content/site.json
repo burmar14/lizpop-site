@@ -1,0 +1,96 @@
+{
+  "hero": {
+    "kicker": "Emotional doodler from Philly",
+    "headline": "Funny little drawings with a lot of",
+    "highlight": "heart.",
+    "intro": "Hi, I'm Liz. I draw soft little reminders for big feelings and hard days. Pick one for your wall, or for someone who needs it.",
+    "sticker": "take it easy :)",
+    "note": "1,400+ sales on Etsy and a lot of happy walls."
+  },
+  "shop": {
+    "etsy_url": "https://www.etsy.com/shop/LizPopArtShop",
+    "prints_intro": "A few favorites from the shop. Tap any print to see it on Etsy."
+  },
+  "book": {
+    "kicker": "Out October 20, preorder now",
+    "title": "Little Doodles for Big Feelings",
+    "cover": "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9781324112181_p0.jpg?v=1787303752",
+    "description": "In Little Doodles for Big Feelings, Liz brings together fan-favorite drawings alongside never-before-seen art, paired with uplifting reminders of how loved and important we all are. Liz and her whimsical characters offer gentle wisdom about self-love, connection, and finding joy in everyday moments. Pocket-sized and full of heart, this book is the perfect pick-me-up for anyone who needs a little extra positivity.",
+    "details": "Hardcover, 128 pages, 100 illustrations. Countryman Press.",
+    "amazon_url": "https://a.co/d/0bqxwMVU",
+    "amazon_label": "Preorder on Amazon",
+    "other_links": [
+      {
+        "label": "Barnes & Noble",
+        "url": "https://www.barnesandnoble.com/w/little-doodles-for-big-feelings-liz-karcewski/1149229771?ean=9781324112181"
+      },
+      {
+        "label": "Bulk orders",
+        "url": "https://bulkbookstore.com/little-doodles-for-big-feelings-9781324112181"
+      }
+    ],
+    "bonus_text": "Preordered already? Grab your free coloring book.",
+    "bonus_url": "",
+    "event_show": true,
+    "event_title": "Come say hi at Main Point Books",
+    "event_text": "Book signing and a chance to meet in person.",
+    "event_url": "https://www.eventbrite.com/e/liz-karcewski-little-doodles-for-big-feelings-tickets-1998672944580?aff=author",
+    "previews": [
+      {
+        "image": "/images/uploads/book-spread-grass.webp",
+        "alt": "Book spread: the pink character resting in the grass with the line, I am where I am supposed to be and good things are always meant for me."
+      },
+      {
+        "image": "/images/uploads/book-spread-garden.webp",
+        "alt": "Book spread: flowers growing from a crying face, with the line, I am thankful for the tears that helped my garden bloom."
+      },
+      {
+        "image": "/images/uploads/book-spread-birds.webp",
+        "alt": "Book spread: a girl and her cat riding a giant bird at dusk, with the line, I choose to believe that amazing things are meant for me."
+      },
+      {
+        "image": "/images/uploads/book-spread-night.webp",
+        "alt": "Book spread: a little house on a hill under swirling stars, with the line, You owe it to yourself to become everything you've ever dreamed of becoming."
+      }
+    ]
+  },
+  "brand": {
+    "headline": "Let's make something together",
+    "intro": "I make illustrated stories and influencer-style videos for brands and organizations. Most of my work is about mental health, but I also love projects around art, tech, community spaces, and events.",
+    "topics": [
+      "Mental health",
+      "Art & creativity",
+      "Tech",
+      "Community",
+      "Events"
+    ],
+    "stats": [
+      {
+        "value": "175K",
+        "label": "followers on Instagram"
+      },
+      {
+        "value": "420+",
+        "label": "posts and videos shared"
+      },
+      {
+        "value": "Philly",
+        "label": "based"
+      }
+    ],
+    "rep_text": "Brand partnerships are handled by my management team.",
+    "rep_email": "lizpopart@sixteenth.com",
+    "media_kit": ""
+  },
+  "about": {
+    "photo": "",
+    "photo_caption": "the artist :)",
+    "body": "I'm an artist and illustrator based in Philly. I draw funny little characters going through very real feelings, and somehow a lot of you feel them too.\n\nYou can find my prints on Etsy, my book wherever books are sold, and me at markets around the city. Thanks so much for stopping by!"
+  },
+  "social": {
+    "instagram": "https://www.instagram.com/lizpop_art/",
+    "tiktok": "https://www.tiktok.com/t/ZTRNAGKhY/",
+    "coffee": "https://www.buymeacoffee.com/lkarcewski"
+  },
+  "quotes_label": "Today's little reminder"
+}
