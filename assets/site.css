@@ -1,12 +1,5 @@
 /* Liz Pop Art: shared styles */
-/* Liz's lettering font. Drop UglyDave.woff2 (or .ttf/.otf) into /assets/fonts/ and it takes over automatically. */
-@font-face {
-  font-family: "Ugly Dave";
-  src: url("/assets/fonts/UglyDave.woff2") format("woff2"),
-       url("/assets/fonts/UglyDave.otf") format("opentype"),
-       url("/assets/fonts/UglyDave.ttf") format("truetype");
-  font-display: swap;
-}
+/* Lettering font: Comic Sans where installed (Mac, Windows, iPhone); Comic Neue, a close match, everywhere else. */
 :root {
   --cream: #fbf6ea;
   --paper: #fffdf7;
@@ -20,7 +13,7 @@
   --yellow: #ffd94a;
   --violet: #5f6fc4;
   --orange: #e08c3c;
-  --hand: "Ugly Dave", "Sniglet", "Comic Sans MS", cursive;
+  --hand: "Comic Sans MS", "Comic Neue", "Chalkboard SE", cursive;
   --body: "Karla", system-ui, sans-serif;
   --wobble: 255px 18px 225px 18px / 18px 225px 18px 255px;
 }
@@ -375,8 +368,19 @@ footer.site { background: var(--orange); border-top: 3px solid var(--ink); overf
 }
 
 /* Quote card actions */
-.q-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: center; }
-.d-card { width: 54px; right: -18px; bottom: -22px; transform: rotate(14deg); }
+.q-actions { display: flex; justify-content: center; }
+.q-send { margin-top: 18px; padding-top: 14px; border-top: 2px dashed rgba(35,29,26,.18); display: flex; justify-content: center; }
+.btn .ico, .send-link .ico { width: 1.05em; height: 1.05em; vertical-align: -0.15em; margin-right: 6px; }
+.send-link {
+  font-family: var(--hand); font-weight: 600; font-size: 1rem; color: var(--pink-deep);
+  background: none; border: 0; padding: 6px 10px; cursor: pointer;
+  text-decoration: underline wavy var(--pink); text-underline-offset: 6px;
+}
+.send-link:hover { color: var(--ink); }
+.with-bug { display: inline-flex; align-items: center; gap: 14px; }
+.with-bug .bug { width: 44px; transform: rotate(18deg); animation: wiggle2 5s ease-in-out infinite; }
+@keyframes wiggle2 { 0%, 100% { transform: rotate(18deg); } 50% { transform: rotate(6deg) translateY(-4px); } }
+.d-card { width: 40px; right: -14px; top: -16px; transform: rotate(14deg); animation: twinkle 3.6s ease-in-out infinite; }
 
 /* Shop by feeling */
 .moods { margin: -14px 0 34px; }
@@ -454,7 +458,74 @@ dialog.gift .share-actions { justify-content: center; }
 @media (max-width: 600px) {
   .d-sparkle { right: 2px; top: -18px; width: 42px; }
   .d-ladybug { left: -6px; width: 46px; }
-  .d-card { right: 2px; width: 44px; }
+  .d-card { right: 4px; width: 34px; }
   .d-letter { right: 12px; width: 50px; }
 }
 main, .hero, .qotd { overflow-x: clip; }
+
+/* Most loved */
+.loved { padding-top: 0; }
+.loved-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px 22px; }
+@media (max-width: 900px) { .loved-row { grid-template-columns: repeat(2, 1fr); } }
+.hit { position: relative; display: block; text-decoration: none; color: var(--ink); }
+.hit .pic { position: relative; border: 2.5px solid var(--ink); border-radius: 16px 20px 18px 14px; overflow: hidden; box-shadow: 5px 5px 0 var(--ink); background: var(--ink); transition: transform .2s ease; }
+.hit:nth-child(odd) .pic { transform: rotate(-1.2deg); }
+.hit:nth-child(even) .pic { transform: rotate(1deg); }
+.hit:hover .pic, .hit:focus-visible .pic { transform: rotate(0) translateY(-6px); }
+.hit img { width: 100%; aspect-ratio: 9 / 14; object-fit: cover; }
+.hit .views {
+  position: absolute; left: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 6px;
+  background: var(--yellow); border: 2px solid var(--ink); border-radius: 999px; padding: 3px 11px;
+  font-family: var(--hand); font-weight: 800; font-size: .95rem; box-shadow: 2px 2px 0 var(--ink);
+}
+.hit .views svg { width: 15px; height: 15px; }
+.hit .t { font-family: var(--hand); font-weight: 800; font-size: 1.02rem; line-height: 1.25; margin-top: 12px; }
+.hit:first-child .views { background: var(--pink); }
+
+/* Waving characters footer (cut from Liz's "I am so glad you are here") */
+.cast { position: relative; height: 330px; overflow: hidden; background: var(--sky, #bfe0f2); }
+.cast .hill { position: absolute; left: -4px; right: -4px; bottom: -2px; width: calc(100% + 8px); height: 120px; z-index: 1; }
+.c-stage { position: absolute; left: 0; right: 0; bottom: 34px; z-index: 2; display: flex; justify-content: center; align-items: flex-end; gap: 4px; }
+.c-pal { background: none; border: 0; padding: 0; cursor: pointer; transform-origin: 50% 100%; }
+.c-pal img { display: block; height: 100%; width: auto; }
+.c-pal.orange { height: 210px; animation: wave-l 2.6s ease-in-out infinite; }
+.c-pal.pink { height: 238px; animation: wave-r 2.9s ease-in-out infinite; }
+@keyframes wave-l { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg) translateY(-6px); } }
+@keyframes wave-r { 0%, 100% { transform: rotate(5deg); } 50% { transform: rotate(-4deg) translateY(-8px); } }
+.c-pal.hop { animation: hop .7s ease-out; }
+@keyframes hop { 0% { transform: translateY(0) scale(1, 1); } 20% { transform: translateY(4px) scale(1.06, .92); } 55% { transform: translateY(-46px) scale(.96, 1.05) rotate(-6deg); } 100% { transform: translateY(0); } }
+.c-bubble {
+  align-self: flex-start; margin: 0 -10px; transform: translateY(-14px) rotate(-3deg); z-index: 3;
+  background: var(--paper); border: 2.5px solid var(--ink); border-radius: 20px 24px 22px 18px; box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--hand); font-weight: 700; font-size: 1.05rem; padding: 8px 14px; white-space: nowrap; animation: bubble 4s ease-in-out infinite;
+}
+@keyframes bubble { 0%, 100% { transform: translateY(-14px) rotate(-3deg); } 50% { transform: translateY(-22px) rotate(-1deg); } }
+.c-deco { align-self: flex-end; transform-origin: 50% 100%; animation: breeze 4.5s ease-in-out infinite; }
+.c-deco.daisy { height: 92px; margin-right: 18px; }
+.c-deco.berry { height: 70px; margin-left: 18px; animation-delay: -2s; }
+@keyframes breeze { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+.c-float.blue { position: absolute; top: 26px; left: -200px; height: 120px; z-index: 1; animation: drift-across 46s linear infinite, bob 5s ease-in-out infinite; }
+@keyframes drift-across { from { left: -220px; } to { left: calc(100% + 40px); } }
+@keyframes bob { 0%, 100% { translate: 0 0; rotate: -4deg; } 50% { translate: 0 18px; rotate: 6deg; } }
+.c-fly { position: absolute; z-index: 1; }
+.c-fly.bird-a { height: 64px; top: 70px; left: -120px; animation: fly-right 19s linear infinite, flap .6s ease-in-out infinite; animation-delay: -6s, 0s; }
+.c-fly.bird-b { height: 58px; top: 120px; right: -120px; animation: fly-left 24s linear infinite, flap .7s ease-in-out infinite; animation-delay: -15s, 0s; }
+@keyframes fly-right { from { left: -140px; } to { left: calc(100% + 40px); } }
+@keyframes fly-left { from { right: -140px; } to { right: calc(100% + 40px); } }
+@keyframes flap { 0%, 100% { scale: 1 1; translate: 0 0; } 50% { scale: 1 .82; translate: 0 6px; } }
+.c-crawl { position: absolute; bottom: 14px; left: -60px; height: 38px; z-index: 3; transform: rotate(90deg); animation: crawl 34s linear infinite; }
+@keyframes crawl { 0% { left: -60px; translate: 0 0; } 25% { translate: 0 -4px; } 50% { translate: 0 0; } 75% { translate: 0 -4px; } 100% { left: calc(100% + 20px); translate: 0 0; } }
+.cast .leaf { z-index: 1; }
+.c-stage { z-index: 3; }
+@media (max-width: 640px) {
+  .cast { height: 250px; }
+  .c-stage { gap: 0; }
+  .c-pal.orange { height: 128px; }
+  .c-pal.pink { height: 146px; }
+  .c-deco.berry { display: none; }
+  .c-deco.daisy { position: absolute; left: 8px; bottom: -4px; height: 54px; margin: 0; }
+  .c-bubble { font-size: .82rem; padding: 5px 9px; margin: 0 -18px; }
+  .c-float.blue { height: 84px; top: 14px; }
+  .c-fly.bird-a { height: 46px; top: 54px; }
+  .c-fly.bird-b { height: 42px; top: 92px; }
+}

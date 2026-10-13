@@ -7,24 +7,28 @@
     "note": "1,400+ sales on Etsy and a lot of happy walls.",
     "slides": [
       {
+        "image": "/images/hits/just-relax-45.webp",
+        "alt": "Liz's pink character relaxing in the grass with yellow flowers. Just relax my friend."
+      },
+      {
+        "image": "/images/hits/cosmic-dance-45.webp",
+        "alt": "Two figures, one made of stars, dancing together in a glowing blue swirl"
+      },
+      {
+        "image": "/images/hits/healthy-love-45.webp",
+        "alt": "Pink and orange characters wiping each other's tears. Thank you for proving to me that healthy love exists."
+      },
+      {
+        "image": "/images/hits/flower-hug-pink-45.webp",
+        "alt": "Two people hugging under giant flowers"
+      },
+      {
+        "image": "/images/hits/dancing-meadow-45.webp",
+        "alt": "Two pink figures dancing in a meadow of dandelions under big clouds"
+      },
+      {
         "image": "/images/art/trust-grass.webp",
-        "alt": "Liz's pink character resting in the green grass among yellow flowers, with the words I trust that I am where I am supposed to be and that good things always come to me"
-      },
-      {
-        "image": "/images/art/glad-you-are-here.webp",
-        "alt": "Three colorful characters dancing with birds, ladybugs and strawberries, with the words I am so glad you are here"
-      },
-      {
-        "image": "/images/art/amazing-things.webp",
-        "alt": "A girl and her cat riding a giant bird through a sunset sky, with the words I trust I am where I am meant to be"
-      },
-      {
-        "image": "/images/art/heart-glow-45.webp",
-        "alt": "The pink character hugging itself around a glowing green heart"
-      },
-      {
-        "image": "/images/art/still-whole.webp",
-        "alt": "Swirling tulips and stars around the words You are still whole no matter what phase you're in"
+        "alt": "Liz's pink character resting in the grass with the words I trust that I am where I am supposed to be"
       }
     ]
   },
@@ -106,12 +110,16 @@
     ],
     "stats": [
       {
-        "value": "175K",
-        "label": "followers on Instagram"
+        "value": "55M+",
+        "label": "views on my animated reels"
       },
       {
-        "value": "420+",
-        "label": "posts, reels and animations"
+        "value": "10.9M",
+        "label": "views on a single animation"
+      },
+      {
+        "value": "175K",
+        "label": "followers on Instagram"
       },
       {
         "value": "Philly",
@@ -128,6 +136,8 @@
       "Astropad",
       "Sky: Children of the Light",
       "Be The People",
+      "Option B",
+      "Chaco",
       "Independent therapists"
     ],
     "clients_label": "Worked with"
@@ -188,24 +198,32 @@
     "intro": "Pick a doodle to go with it. They'll get a link to today's reminder and your note.",
     "art": [
       {
-        "label": "Pink guy in the grass",
-        "image": "/images/art/trust-grass.webp"
+        "label": "Just relax my friend",
+        "image": "/images/hits/just-relax-45.webp"
+      },
+      {
+        "label": "Cosmic dance",
+        "image": "/images/hits/cosmic-dance-45.webp"
+      },
+      {
+        "label": "Healthy love exists",
+        "image": "/images/hits/healthy-love-45.webp"
+      },
+      {
+        "label": "Big flower hug",
+        "image": "/images/hits/flower-hug-pink-45.webp"
+      },
+      {
+        "label": "Dancing in the meadow",
+        "image": "/images/hits/dancing-meadow-45.webp"
+      },
+      {
+        "label": "You can do anything",
+        "image": "/images/hits/do-anything-45.webp"
       },
       {
         "label": "So glad you are here",
         "image": "/images/art/glad-you-are-here.webp"
-      },
-      {
-        "label": "Amazing things are meant for me",
-        "image": "/images/art/amazing-things.webp"
-      },
-      {
-        "label": "Glowing heart",
-        "image": "/images/art/heart-glow-45.webp"
-      },
-      {
-        "label": "Still whole",
-        "image": "/images/art/still-whole.webp"
       },
       {
         "label": "A new magical chapter",
@@ -256,11 +274,74 @@
         "alt": "Liz's shadow character holding hands with two ghosts as autumn leaves fall"
       },
       {
-        "image": "/images/art/autumn-hill.webp",
+        "image": "/images/hits/autumn-what-will-be.webp",
         "alt": "A small figure on an orange hill watching leaves blow off an autumn tree"
       }
     ],
     "leaves": true,
-    "color": "#e08c3c"
+    "color": "#231d1a",
+    "style": "characters",
+    "sky": "#bfe0f2",
+    "greetings": [
+      "so glad you're here!",
+      "hi friend!",
+      "take it easy :)",
+      "you are doing great!",
+      "come back soon!"
+    ]
+  },
+  "loved": {
+    "title": "Most loved",
+    "intro": "The little animations that found their way to millions of people.",
+    "items": [
+      {
+        "image": "/images/hits/cosmic-dance.webp",
+        "title": "Human is a process of evolving",
+        "views": "10.9M",
+        "url": "https://www.instagram.com/lizpop_art/reel/C5lD5BIuPWc/"
+      },
+      {
+        "image": "/images/hits/healthy-love.webp",
+        "title": "Healthy love exists",
+        "views": "6.5M",
+        "url": "https://www.instagram.com/lizpop_art/reel/CrB7_4lpl4Z/"
+      },
+      {
+        "image": "/images/hits/just-relax.webp",
+        "title": "Just relax my friend",
+        "views": "5.7M",
+        "url": "https://www.instagram.com/lizpop_art/reel/CrHw2w-vLCB/"
+      },
+      {
+        "image": "/images/hits/all-the-time.webp",
+        "title": "You still have all the time in the world",
+        "views": "4.6M",
+        "url": "https://www.instagram.com/lizpop_art/reel/CtB2xY5OYui/"
+      },
+      {
+        "image": "/images/hits/autumn-what-will-be.webp",
+        "title": "And what will be",
+        "views": "3.3M",
+        "url": "https://www.instagram.com/lizpop_art/reel/C2Yk1P0rUZf/"
+      },
+      {
+        "image": "/images/hits/flower-hug-blue.webp",
+        "title": "The universe is using every challenge",
+        "views": "2.7M",
+        "url": "https://www.instagram.com/lizpop_art/reel/DG_6yVEpjZF/"
+      },
+      {
+        "image": "/images/hits/night-meadow.webp",
+        "title": "Under the stars",
+        "views": "2.3M",
+        "url": "https://www.instagram.com/lizpop_art/reel/C4DwX6ArLX4/"
+      },
+      {
+        "image": "/images/hits/bad-day-ok.webp",
+        "title": "It will all be ok",
+        "views": "2.3M",
+        "url": "https://www.instagram.com/lizpop_art/reel/C2p8cfQpMAl/"
+      }
+    ]
   }
 }

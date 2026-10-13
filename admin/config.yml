@@ -173,6 +173,24 @@ collections:
                 fields:
                   - { name: label, label: Name in the dropdown, widget: string }
                   - { name: image, label: Image, widget: image }
+          - name: loved
+            label: Most loved (top animations)
+            widget: object
+            fields:
+              - { name: title, label: Heading, widget: string }
+              - { name: intro, label: Intro, widget: string }
+              - name: items
+                label: Pieces
+                label_singular: Piece
+                widget: list
+                summary: "{{fields.views}} {{fields.title}}"
+                hint: "Her best performers. Order them by views, biggest first. Update the view counts now and then."
+                fields:
+                  - { name: image, label: Cover image, widget: image }
+                  - { name: title, label: Title, widget: string }
+                  - { name: views, label: Views, widget: string, required: false, hint: "Like 10.9M" }
+                  - { name: url, label: Link to the reel, widget: string }
+                  - { name: show, label: Show on site, widget: boolean, default: true }
           - name: studio
             label: From the studio
             widget: object
@@ -200,7 +218,16 @@ collections:
             label: Footer art (swap by season)
             widget: object
             fields:
-              - { name: color, label: Background color, widget: color }
+              - name: style
+                label: Footer style
+                widget: select
+                default: characters
+                options:
+                  - { label: "Waving characters", value: characters }
+                  - { label: "Framed art pieces", value: scenes }
+              - { name: sky, label: Sky color behind the characters, widget: color, required: false }
+              - { name: greetings, label: Speech bubble lines, widget: list, required: false, hint: "Tapping a character makes them hop and switches to the next line." }
+              - { name: color, label: Background color (framed art style), widget: color }
               - { name: leaves, label: Falling leaves, widget: boolean, default: true }
               - name: scenes
                 label: Footer pieces

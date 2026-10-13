@@ -18,6 +18,24 @@
       "show": true
     },
     {
+      "title": "Dear Van Gogh: my Starry Night",
+      "client": "Sky: Children of the Light",
+      "type": "animation",
+      "thumbnail": "/images/work/sky-starry-night.webp",
+      "video_url": "https://www.instagram.com/lizpop_art/reel/DdEpCqGxWqI/",
+      "link_url": "",
+      "description": "An animated take on Van Gogh's Starry Night for thatgamecompany's “Dear Van Gogh” experience in Sky: Children of the Light. 92K+ views.",
+      "tags": [
+        "gaming",
+        "art history",
+        "animation"
+      ],
+      "alt": "Sky: Children of the Light: two of Liz's characters holding hands under a swirling Starry Night sky",
+      "orientation": "vertical",
+      "featured": true,
+      "show": true
+    },
+    {
       "title": "World Mental Health Day",
       "client": "World Health Organization",
       "type": "animation",
@@ -28,7 +46,7 @@
         "mental health",
         "animation"
       ],
-      "featured": true,
+      "featured": false,
       "link_url": "",
       "alt": "World Health Organization: World Mental Health Day",
       "orientation": "vertical",
@@ -125,7 +143,7 @@
       "type": "animation",
       "thumbnail": "/images/work/option-b-holidays.webp",
       "video_url": "https://www.instagram.com/lizpop_art/reel/DSne8YakYQU/",
-      "description": "A holiday animation with Option B for anyone carrying grief or hard feelings through the season.",
+      "description": "A paid partnership with Option B: a holiday animation for anyone carrying grief or hard feelings through the season.",
       "tags": [
         "grief",
         "animation"
@@ -154,12 +172,12 @@
       "show": true
     },
     {
-      "title": "Designapalooza strap design contest",
+      "title": "Designapalooza strap contest",
       "client": "Chaco",
       "type": "influencer",
       "thumbnail": "/images/work/chaco.webp",
       "video_url": "https://www.instagram.com/lizpop_art/reel/DNyK7SI4lSu/",
-      "description": "Inviting fellow artists to enter Chaco's sandal strap design competition.",
+      "description": "A paid partnership with Chaco inviting artists to design a sandal strap for their Designapalooza competition.",
       "tags": [
         "art",
         "community"

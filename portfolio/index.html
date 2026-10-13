@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css">
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css?v=13">
 </head>
 <body data-page="portfolio">
 <a class="skip" href="#main">Skip to content</a>
@@ -88,10 +88,22 @@
 </main>
 
 <footer class="site">
-  <div class="ghost-band" id="ghostBand">
-    <div class="scenes" id="footScenes">
-      <img class="ghosts" src="/images/ghosts.webp" width="758" height="624" loading="lazy" decoding="async" alt="Liz's shadow character holding hands with two ghosts as autumn leaves fall">
+  <div class="cast" id="cast" aria-label="Liz's characters waving hello">
+    <svg class="hill" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 64 C 180 26, 340 30, 520 52 S 860 92, 1040 58 S 1300 22, 1440 48 L1440 120 L0 120 Z" fill="#7fb36b" stroke="#231d1a" stroke-width="3"/></svg>
+    <img class="c-float blue" src="/images/cast/blue.png" alt="" aria-hidden="true">
+    <img class="c-fly bird-a" src="/images/cast/bird-left.png" alt="" aria-hidden="true">
+    <img class="c-fly bird-b" src="/images/cast/bird-right.png" alt="" aria-hidden="true">
+    <div class="c-stage">
+      <img class="c-deco daisy" src="/images/cast/daisy.png" alt="" aria-hidden="true">
+      <button type="button" class="c-pal orange" aria-label="Say hi to the orange guy"><img src="/images/cast/orange.png" alt=""></button>
+      <div class="c-bubble" id="castBubble">so glad you're here!</div>
+      <button type="button" class="c-pal pink" aria-label="Say hi to the pink guy"><img src="/images/cast/pink.png" alt=""></button>
+      <img class="c-deco berry" src="/images/cast/strawberry.png" alt="" aria-hidden="true">
     </div>
+    <img class="c-crawl" src="/images/doodle-ladybug.png" alt="" aria-hidden="true">
+  </div>
+  <div class="ghost-band" id="ghostBand" hidden>
+    <div class="scenes" id="footScenes"></div>
   </div>
   <div class="foot">
     <div class="wrap">
@@ -112,6 +124,6 @@
   <div class="viewer-body"></div>
 </dialog>
 
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v=13" defer></script>
 </body>
 </html>

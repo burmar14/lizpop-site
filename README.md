@@ -60,10 +60,14 @@ It needs two repo secrets (**Settings > Secrets and variables > Actions**): `ETS
 - `scripts/sync_etsy.py` and `.github/workflows/deploy.yml` the Etsy sync and deploy steps
 - `CNAME` keeps the lizpop.art domain connected. Don't delete it.
 
-## Liz's font (Ugly Dave)
+## Fonts
 
-Headers and accents use "Ugly Dave". Add the font file as `assets/fonts/UglyDave.woff2` (or `.otf`/`.ttf`) and the site switches to it automatically. Until then it uses Sniglet, a similar free font. Check that the font's license allows web use.
+Headers and accents use Comic Sans (built into Mac, Windows and iPhone), with Comic Neue as a matching backup for other devices. Body text is Karla.
 
 ## Monthly email
 
 Make a free account at buttondown.com, then paste the username in the admin under Page text and links > Monthly email. The signup form turns on as soon as it's saved.
+
+## Footer characters
+
+The footer's waving characters, birds, daisy and strawberry are cut from Liz's "I am so glad you are here" piece (in `images/cast/`). Tapping a character makes it hop and changes the speech bubble. To swap in new drawings, replace the PNGs in `images/cast/` with transparent PNGs of the same names. Bubble lines, sky color, and the old framed-art style are under Page text and links > Footer in the admin.
