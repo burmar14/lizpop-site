@@ -179,8 +179,8 @@
   /* ---------- Reminder and sharing ---------- */
   // Everyone sees the same quote on a given day; it changes at local midnight.
   // Everyone sees the same quote on a given day; it changes at local midnight.
-  function renderQuotes(data) {
-    var box = $('#qotd'), btn = $('#qnext');
+  function renderQuotes(data, share) {
+    var box = $('#qotd'), btn = $('#qnext'), pic = $('#qArt');
     if (!box) return;
     var list = (data.items || []).filter(function (q) { return q.show !== false && q.text; }).map(function (q) { return q.text; });
     if (!list.length) { box.closest('section').hidden = true; return; }
@@ -189,8 +189,19 @@
     var i = day % list.length;
     quoteState.list = list; quoteState.i = i;
     box.textContent = list[i];
+    // The Extras page card also shows a doodle, which changes along with the reminder.
+    var arts = ((share && share.art) || []).filter(function (a) { return a.image; }), artIndex = null;
+    function swapArt() {
+      if (!pic) return;
+      if (!arts.length) { pic.hidden = true; return; }
+      var n = artIndex;
+      while (arts.length > 1 && n === artIndex) n = Math.floor(Math.random() * arts.length);
+      artIndex = n;
+      pic.src = arts[n].image; pic.alt = arts[n].label || '';
+    }
+    swapArt();
     var send = $('#qshare');
-    if (send) send.addEventListener('click', function () { quoteState.i = i; quoteState.art = null; });
+    if (send) send.addEventListener('click', function () { quoteState.i = i; quoteState.art = artIndex; });
     if (!btn) return;
     if (list.length < 2) { btn.hidden = true; return; }
     btn.addEventListener('click', function () {
@@ -198,7 +209,7 @@
       while (next === i) next = Math.floor(Math.random() * list.length);
       i = next; quoteState.i = i;
       box.classList.add('fade');
-      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); }, 250);
+      setTimeout(function () { box.textContent = list[i]; box.classList.remove('fade'); swapArt(); }, 250);
     });
   }
 
@@ -708,7 +719,7 @@
     }
     if (site) {
       rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
-      if (quotes) { renderQuotes(quotes); renderMoodBuilder(quotes, site.share); }
+      if (quotes) { renderQuotes(quotes, site.share); renderMoodBuilder(quotes, site.share); }
       renderNature(site.extras); setupPause(site.share);
       setupShare(site.share);
       if (page === 'home') checkGift(site.share);
