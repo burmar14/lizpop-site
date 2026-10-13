@@ -25,7 +25,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
 <!-- Styles -->
-<link rel="stylesheet" href="/assets/site.css?v=27">
+<link rel="stylesheet" href="/assets/site.css?v=28">
 </head>
 <body data-page="pause">
 <a class="skip" href="#main">Skip to content</a>
@@ -50,25 +50,30 @@
 <main id="main">
 
   <section class="pause">
-    <div class="wrap pause-wrap">
-      <div class="kicker">Take a minute</div>
-      <h1>Breathe with me</h1>
-      <p class="lede">In for four, out for four. One minute is plenty.</p>
+    <div class="wrap pause-grid">
+      <div class="pause-head">
+        <div class="kicker">Take a minute</div>
+        <h1>Breathe with me</h1>
+        <p class="lede">In for four, out for four. One minute is plenty.</p>
+      </div>
       <div class="breather" id="breather">
-        <div class="breath-ring"></div>
-        <div class="breath-text" id="breathText" role="status">Ready when you are</div>
-      </div>
-      <div class="btn-row pause-actions">
-        <button type="button" class="btn btn-yellow btn-big" id="pauseStart">Start</button>
-      </div>
-      <div class="pause-done" id="pauseDone" hidden>
-        <p class="pause-thanks">Nice. Go easy on yourself today.</p>
-        <div class="btn-row">
-          <a class="btn btn-pink" href="/extras/">Get a little reminder</a>
-          <button type="button" class="btn" id="pauseAgain">Once more</button>
+        <div class="breath-ring">
+          <img id="pauseArt" src="/images/art/trust-grass.webp" alt="" width="460" height="460">
         </div>
       </div>
-      <img class="pause-art" id="pauseArt" src="/images/art/trust-grass.webp" alt="" width="260" height="325">
+      <div class="pause-controls">
+        <div class="breath-text" id="breathText" role="status">Ready when you are</div>
+        <div class="btn-row pause-actions">
+          <button type="button" class="btn btn-yellow btn-big" id="pauseStart">Start</button>
+        </div>
+        <div class="pause-done" id="pauseDone" hidden>
+          <p class="pause-thanks">Nice. Go easy on yourself today.</p>
+          <div class="btn-row">
+            <a class="btn btn-pink" href="/extras/">Get a little reminder</a>
+            <button type="button" class="btn" id="pauseAgain">Once more</button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -159,6 +164,6 @@
 </dialog>
 <!-- @/dialogs -->
 
-<script src="/assets/app.js?v=27" defer></script>
+<script src="/assets/app.js?v=28" defer></script>
 </body>
 </html>
