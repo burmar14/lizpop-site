@@ -238,6 +238,7 @@
       } else pic.hidden = true;
       result.hidden = false;
     }
+    chips.hidden = false;
     chips.innerHTML = moods.map(function (m) { return '<button type="button" class="chip" aria-pressed="false" data-m="' + esc(m) + '">' + esc(m) + '</button>'; }).join('');
     $all('button', chips).forEach(function (b) {
       b.addEventListener('click', function () {
@@ -338,12 +339,26 @@
     if (!moonBox || !ex) return;
     var age = (((Date.now() / 86400000 - Date.UTC(2000, 0, 6, 18, 14) / 86400000) % SYNODIC) + SYNODIC) % SYNODIC;
     var moon = (ex.moon || [])[Math.floor(age / SYNODIC * 8 + 0.5) % 8];
-    if (moon) moonBox.innerHTML = moonSVG(age) + '<div><div class="what">Tonight</div><h3>' + esc(moon.name) + '</h3><p>' + esc(moon.line) + '</p></div>';
+    var thumb = '<img class="doodle-thumb" data-doodle src="/images/art/trust-grass.webp" alt="">';
+    if (moon) moonBox.innerHTML = moonSVG(age) + '<div><div class="what">Tonight</div><h3>' + esc(moon.name) + '</h3><p>' + esc(moon.line) + '</p></div>' + thumb;
     else moonBox.hidden = true;
     var m = new Date().getMonth(), si = (m === 11 || m < 2) ? 0 : m < 5 ? 1 : m < 8 ? 2 : 3;
     var season = (ex.seasons || [])[si];
-    if (season) seasonBox.innerHTML = SEASON_ART[si] + '<div><div class="what">This season</div><h3>' + esc(season.name) + '</h3><p>' + esc(season.line) + '</p></div>';
+    if (season) seasonBox.innerHTML = SEASON_ART[si] + '<div><div class="what">This season</div><h3>' + esc(season.name) + '</h3><p>' + esc(season.line) + '</p></div>' + thumb;
     else seasonBox.hidden = true;
+  }
+
+  // Pair a doodle with each little extra: every [data-doodle] picture gets a different one.
+  function placeDoodles(share) {
+    var spots = $all('[data-doodle]');
+    var art = ((share && share.art) || []).filter(function (a) { return a.image; });
+    if (!spots.length) return;
+    if (!art.length) { spots.forEach(function (el) { el.hidden = true; }); return; }
+    var order = art.slice().sort(function () { return Math.random() - 0.5; });
+    spots.forEach(function (el, n) {
+      var a = order[n % order.length];
+      el.src = a.image; el.alt = a.label || '';
+    });
   }
 
   // One minute of breathing: in for four, out for four.
@@ -720,7 +735,7 @@
     if (site) {
       rotateHeroWords(site.hero); renderHero(site.hero); renderLoved(site.loved); renderStudio(site.studio); renderLetter(site.newsletter); renderFooter(site.footer);
       if (quotes) { renderQuotes(quotes, site.share); renderMoodBuilder(quotes, site.share); }
-      renderNature(site.extras); setupPause(site.share);
+      renderNature(site.extras); placeDoodles(site.share); setupPause(site.share);
       setupShare(site.share);
       if (page === 'home') checkGift(site.share);
     }

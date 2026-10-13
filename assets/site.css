@@ -484,17 +484,35 @@ h3 { font-size: 1.3rem; font-weight: 600; }
 @media (max-width: 760px) { .nature-grid { grid-template-columns: 1fr; } }
 
 
+/* a doodle paired with each little extra */
+.hero-with-doodle { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
+.doodle-frame {
+  width: 240px; border: 3px solid var(--ink); border-radius: 10px; box-shadow: 5px 5px 0 var(--ink); transform: rotate(2deg);
+}
+.doodle-frame.small { width: 110px; box-shadow: 4px 4px 0 var(--ink); transform: rotate(-3deg); }
+.nature-card .doodle-thumb {
+  width: 96px; height: auto; flex: none; margin-left: auto; object-fit: initial;
+  border: 2.5px solid var(--ink); border-radius: 8px; box-shadow: 3px 3px 0 var(--ink); transform: rotate(3deg);
+}
+@media (max-width: 700px) {
+  .hero-with-doodle { grid-template-columns: 1fr; gap: 26px; }
+  .doodle-frame { width: min(240px, 70%); }
+  .doodle-frame.small { width: 96px; }
+  .nature-card { flex-wrap: wrap; }
+  .nature-card .doodle-thumb { width: min(180px, 60%); margin: 6px auto 0; }
+}
+
 /* ---------- Pause (breathing) ---------- */
 .pause-wrap { max-width: 640px; text-align: center; }
 .pause .lede { font-size: 1.2rem; color: var(--ink-soft); }
-.breather { position: relative; width: min(300px, 80vw); aspect-ratio: 1; margin: 34px auto; display: grid; place-items: center; }
+.breather { position: relative; width: min(460px, 90vw); aspect-ratio: 1; margin: 30px auto; display: grid; place-items: center; }
 .breath-ring {
   position: absolute; inset: 0; border-radius: 50%; background: var(--pink-wash);
-  border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); transform: scale(.62);
+  border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); transform: scale(.82);
 }
 .breather.is-breathing .breath-ring { animation: breathe-circle 8s ease-in-out infinite; }
-@keyframes breathe-circle { 0%, 100% { transform: scale(.62); } 50% { transform: scale(1); } }
-.breath-text { position: relative; z-index: 1; font-family: var(--hand); font-weight: 800; font-size: 1.5rem; }
+@keyframes breathe-circle { 0%, 100% { transform: scale(.7); } 50% { transform: scale(1); } }
+.breath-text { position: relative; z-index: 1; max-width: 70%; font-family: var(--hand); font-weight: 800; font-size: 1.5rem; line-height: 1.2; }
 .pause-actions, .pause-done .btn-row { justify-content: center; }
 .pause-thanks { font-family: var(--hand); font-weight: 800; font-size: 1.6rem; color: var(--pink-deep); }
 .pause-art {
