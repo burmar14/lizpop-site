@@ -180,7 +180,7 @@
     var order = []; for (var i = 0; i < n; i++) order.push(i);
     order.sort(function (a, b) { return Math.abs(SLOTS[b]) - Math.abs(SLOTS[a]); });   // outer flowers first, middle on top
     order.forEach(function (i) {
-      var f = S.flowers[i], a = SLOTS[i] * 0.17 * (inPot ? 0.62 : 1), len = (30 - 2.5 * Math.abs(SLOTS[i])) * U * scale;
+      var f = S.flowers[i], a = SLOTS[i] * 0.17 * (inPot ? 0.85 : 1), len = (30 - 2.5 * Math.abs(SLOTS[i])) * U * scale;
       var ex = bx + Math.sin(a) * len, ey = by - Math.cos(a) * len;
       ctx.strokeStyle = f.stem || '#357a7c'; ctx.lineWidth = 3 * U * scale; ctx.lineCap = 'round';
       ctx.beginPath(); ctx.moveTo(bx, by - 2 * U); ctx.lineTo(ex, ey + 2 * U); ctx.stroke();
@@ -228,7 +228,7 @@
       fb = Math.max(0, Math.sin(S.t * 3.2)) * 7 * U * (happy ? 1.8 : 0.5);
       var fs = friendChar.h * U / 330, fy = groundY() - fb - friendChar.lift * U;
       pot = { x: S.friend.x - (110 - 92.5) * fs, y: fy + (94 - 330) * fs };   // his pot is on the side facing the walker
-      if (happy) drawBouquet(pot.x, pot.y, 0.55, true);          // the flowers stand in his pot, behind its front
+      if (happy) drawBouquet(pot.x, pot.y + 6 * U, 0.82, true);      // the flowers fill his pot, behind its front
       pic(friendChar.id, S.friend.x, fy, friendChar.h, happy ? Math.sin(S.t * 5) * 0.035 : Math.sin(S.t * 2) * 0.02, -1, 1);
     }
     // the walker: little bob, a squash when landing, and a lift for the floaty blue one
@@ -239,7 +239,7 @@
       var k = Math.min(1, S.gift), ease = k * k * (3 - 2 * k);
       if (k < 1) {
         var gx = 64 * U + (pot.x - 64 * U) * ease, gy = 128 * U + (pot.y - 128 * U) * ease - Math.sin(ease * Math.PI) * 70 * U;
-        drawBouquet(gx, gy, 1 + 0.25 * Math.sin(ease * Math.PI) - 0.45 * ease, false);
+        drawBouquet(gx, gy, 1 + 0.25 * Math.sin(ease * Math.PI) - 0.18 * ease, false);
         if (!reduceMotion && Math.random() < 0.55) sparkle(gx + (Math.random() - .5) * 20 * U, gy - 20 * U, 1);
       }
       else {
