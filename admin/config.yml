@@ -285,6 +285,7 @@ collections:
             label: Monthly email
             widget: object
             fields:
+              - { name: show, label: Show the signup on the site, widget: boolean, default: false, hint: "Off for now. The signup only appears when this is on AND a Buttondown username is filled in below." }
               - { name: title, label: Heading, widget: string }
               - { name: text, label: Text, widget: text }
               - { name: button, label: Button text, widget: string }

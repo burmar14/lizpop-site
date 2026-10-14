@@ -373,6 +373,7 @@
     ]
   },
   "newsletter": {
+    "show": false,
     "title": "A little reminder, once a month",
     "text": "One new doodle and a kind word in your inbox each month. Plus first dibs on new prints and market dates. No spam, ever.",
     "button": "Sign me up",

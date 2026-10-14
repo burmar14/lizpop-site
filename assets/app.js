@@ -729,19 +729,14 @@
   }
 
   /* ---------- Newsletter ---------- */
+  // The monthly email signup stays hidden until it is switched on in the admin AND a Buttondown username is filled in.
   function renderLetter(n) {
-    var form = $('#letterForm');
-    if (!form) return;
-    if (!n || n.show === false) { $('#letter').hidden = true; return; }
-    var user = (n.buttondown_username || '').trim();
-    if (user) {
-      form.action = 'https://buttondown.com/api/emails/embed-subscribe/' + encodeURIComponent(user);
-    } else {
-      form.addEventListener('submit', function (e) { e.preventDefault(); });
-      $('#letterBtn').disabled = true;
-      $('#letterEmail').disabled = true;
-      $('#letterNote').hidden = false;
-    }
+    var form = $('#letterForm'), sec = $('#letter');
+    if (!form || !sec) return;
+    var user = n && n.show !== false ? (n.buttondown_username || '').trim() : '';
+    if (!user) { sec.hidden = true; return; }
+    form.action = 'https://buttondown.com/api/emails/embed-subscribe/' + encodeURIComponent(user);
+    sec.hidden = false;
   }
 
   /* ---------- Footer: waving characters, scenes, falling leaves ---------- */
