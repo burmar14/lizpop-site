@@ -19,7 +19,6 @@
 }
 .walk-char img { width: auto; height: 84px; object-fit: contain; }
 .walk-char[aria-pressed="true"] { background: var(--yellow); transform: translateY(-3px) rotate(-1.5deg); box-shadow: 5px 5px 0 var(--ink); }
-.walk-how { max-width: 52ch; margin: 18px auto 0; text-align: center; color: var(--ink-soft); font-size: .95rem; }
 .walk-end blockquote { margin: 0 auto; max-width: 24ch; font-family: var(--hand); font-weight: 800; font-size: clamp(1.4rem, 3.2vw, 2.1rem); line-height: 1.25; color: var(--pink-deep); }
 .walk-end .label { font-family: var(--hand); font-weight: 600; color: var(--green-deep); margin: 0; }
 .walk-end-actions { justify-content: center; }

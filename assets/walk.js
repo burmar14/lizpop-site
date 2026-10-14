@@ -287,7 +287,7 @@
     }
     if (ending && S.friend) {
       var gap = S.friend.x - playerX() - 120 * U;
-      if (gap <= 2 * U) { move = 0; S.mode = 'gift'; S.gift = 0; say('You gave the bouquet to your friend.'); chime(4); chime(0); }
+      if (gap <= 2 * U) { move = 0; S.mode = 'gift'; S.gift = 0; say('The flowers are in his pot.'); chime(4); chime(0); }
       else move = Math.min(move, gap);
     }
     S.scroll += move;
@@ -312,9 +312,9 @@
       var near = Math.abs(it.x - px) < (it.type === 'puddle' ? it.w * U * 0.42 : 34 * U);
       if (it.type === 'flower' && !it.got && near && S.mode === 'walk') {
         it.got = true; S.got++; S.flowers.push({ img: it.img, h: it.h, stem: it.stem }); sparkle(it.x, groundY() - it.h * U * 0.7, 5); chime(S.got);
-        say('Picked a flower. ' + S.got + ' of ' + NEED + '.');
+        say(S.got + ' of ' + NEED + ' flowers.');
       } else if (it.type === 'treat' && !it.got && near && Math.abs((groundY() - it.lift * U) - (groundY() + S.py - 40 * U)) < 54 * U) {
-        it.got = true; S.treats++; S.boost = 2.2; S.slow = 0; sparkle(it.x, groundY() - it.lift * U, 6); chime(1); say('A strawberry. A little burst of speed.');
+        it.got = true; S.treats++; S.boost = 2.2; S.slow = 0; sparkle(it.x, groundY() - it.lift * U, 6); chime(1); say('A strawberry.');
       } else if (it.type === 'puddle' && near && !it.hit) {
         it.hit = true;
         if (S.py > -16 * U) { S.slow = 0.9; splash(it.x, groundY() + 8 * U); }
@@ -324,7 +324,7 @@
     // the ladybug flies by and says something kind when it passes the walker
     if (S.lady) {
       S.lady.x -= (reduceMotion ? 30 : 46) * U * dt; S.lady.t += dt; S.lady.y += Math.sin(S.lady.t * 2) * 0.25 * U;
-      if (!S.lady.said && S.lady.x < px + 160 * U) { S.lady.say = ladyLines[Math.floor(Math.random() * ladyLines.length)]; S.lady.said = true; say('A ladybug says: ' + S.lady.say); }
+      if (!S.lady.said && S.lady.x < px + 160 * U) { S.lady.say = ladyLines[Math.floor(Math.random() * ladyLines.length)]; S.lady.said = true; say('The ladybug says: ' + S.lady.say); }
       if (S.lady.said && S.lady.x < px + 10 * U) S.lady.y -= 70 * U * dt;      // after saying it, up and away
       if (S.lady && (S.lady.y < -30 * U || S.lady.x < -40 * U)) S.lady = null;
     }
@@ -363,13 +363,13 @@
     $('#walkQuote').textContent = text;
     var panel = $('#walkEnd'); panel.hidden = false;
     if (window.lizpopSetShare && quotes.length) window.lizpopSetShare(quotes, Math.max(0, quotes.indexOf(text)), shareArt);
-    say('The walk is done. A little reminder for you: ' + text);
+    say(text);
     $('#walkAgain').focus({ preventScroll: true });
     stop(); drawScene();
   }
   function begin() {
     $('#walkPick').classList.remove('is-open'); $('#walkPick').hidden = true; $('#walkEnd').hidden = true;
-    newWalk(); resize(); say('Walking. Press space or tap to hop.'); start(); cv.focus({ preventScroll: true });
+    newWalk(); resize(); say('Walking.'); start(); cv.focus({ preventScroll: true });
   }
   function openPick() {
     stop(); $('#walkEnd').hidden = true; var p = $('#walkPick'); p.hidden = false; p.classList.add('is-open');
