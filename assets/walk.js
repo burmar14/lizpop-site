@@ -90,7 +90,7 @@
     S.sinceFlower++;
     var type = (S.sinceFlower >= 2 && r < 0.62) || S.sinceFlower >= 4 ? 'flower' : (r < 0.8 ? 'puddle' : 'treat');
     if (type === 'flower') S.sinceFlower = 0;
-    var it = { type: type, x: W + 120 * U, got: false, hit: false, id: Math.random() * 6 };
+    var it = { type: type, x: W + 120 * U, got: false, hit: false, id: Math.random() * 6, flip: Math.random() < 0.5 };
     if (type === 'flower') { if (!S.bag.length) S.bag = dealBag(); var f = S.bag.shift(); it.img = f.img; it.h = f.h; it.stem = f.stem; }
     if (type === 'puddle') { it.w = 118 + Math.random() * 40; }
     if (type === 'treat') { it.img = 'strawberry'; it.h = 34; it.lift = 84 + Math.random() * 16; }
@@ -196,7 +196,7 @@
       var ex = bx + Math.sin(a) * len, ey = by - Math.cos(a) * len;
       ctx.strokeStyle = f.stem || '#357a7c'; ctx.lineWidth = 3 * U * scale; ctx.lineCap = 'round';
       ctx.beginPath(); ctx.moveTo(bx, by - 2 * U); ctx.lineTo(ex, ey + 2 * U); ctx.stroke();
-      pic(f.img, ex, ey, (34 + f.h * 0.8) * k * (1 - 0.035 * Math.abs(SLOTS[i])), a);
+      pic(f.img, ex, ey, (34 + f.h * 0.8) * k * (1 - 0.035 * Math.abs(SLOTS[i])), a, ((i % 2 === 1) !== !!f.flip) ? -1 : 1, 1);   // neighbours alternate, with a little randomness
     });
     if (n && !inPot) {
       var w = 15 * U * scale;
@@ -233,7 +233,7 @@
     if (S.friend) drawTree(S.friend.x + 34 * U);
     S.items.forEach(function (it) {
       if (it.type === 'puddle') drawPuddle(it.x, it.w, it.hit);
-      else if (!it.got) { var sway = it.type === 'treat' ? 0.05 : Math.sin(S.t * 1.4 + it.id) * 0.03; pic(it.img, it.x, groundY() - (it.lift || 0) * U, it.h, sway); }
+      else if (!it.got) { var sway = it.type === 'treat' ? 0.05 : Math.sin(S.t * 1.4 + it.id) * 0.03; pic(it.img, it.x, groundY() - (it.lift || 0) * U, it.h, sway, it.flip ? -1 : 1, 1); }
     });
     var happy = (S.mode === 'gift' || S.mode === 'done') && S.gift >= 1, pot = null, fb = 0;
     if (S.friend) {
@@ -261,8 +261,8 @@
     }
     // ladybug and its message
     if (S.lady) {
-      pic('ladybug', S.lady.x, S.lady.y, 30, Math.sin(S.t * 5) * 0.2);
-      if (S.lady.say) drawBubble(S.lady.x, S.lady.y - 30 * U, S.lady.say);
+      pic('ladybug', S.lady.x, S.lady.y, 38, Math.sin(S.t * 5) * 0.2);
+      if (S.lady.say) drawBubble(S.lady.x, S.lady.y - 40 * U, S.lady.say);
     }
     S.drops.forEach(function (d) { ctx.globalAlpha = Math.max(0, d.a); ctx.fillStyle = '#74c2f4'; ctx.beginPath(); ctx.arc(d.x, d.y, 3 * U, 0, 7); ctx.fill(); ctx.globalAlpha = 1; });
     S.bits.forEach(function (b) { ctx.globalAlpha = Math.max(0, b.a); var im = IMG.sparkle; if (im && im.naturalWidth) ctx.drawImage(im, b.x - b.r * U / 2, b.y - b.r * U / 2, b.r * U, b.r * U * im.naturalHeight / im.naturalWidth); ctx.globalAlpha = 1; });
@@ -311,7 +311,7 @@
     S.items.forEach(function (it) {
       var near = Math.abs(it.x - px) < (it.type === 'puddle' ? it.w * U * 0.42 : 34 * U);
       if (it.type === 'flower' && !it.got && near && S.mode === 'walk') {
-        it.got = true; S.got++; S.flowers.push({ img: it.img, h: it.h, stem: it.stem }); sparkle(it.x, groundY() - it.h * U * 0.7, 5); chime(S.got);
+        it.got = true; S.got++; S.flowers.push({ img: it.img, h: it.h, stem: it.stem, flip: it.flip }); sparkle(it.x, groundY() - it.h * U * 0.7, 5); chime(S.got);
         say(S.got + ' of ' + NEED + ' flowers.');
       } else if (it.type === 'treat' && !it.got && near && Math.abs((groundY() - it.lift * U) - (groundY() + S.py - 40 * U)) < 54 * U) {
         it.got = true; S.treats++; S.boost = 2.2; S.slow = 0; sparkle(it.x, groundY() - it.lift * U, 6); chime(1); say('A strawberry.');
