@@ -61,7 +61,7 @@
   function newWalk() {
     S = {
       mode: 'walk', t: 0, scroll: 0, step: 0,
-      got: 0, treats: 0, boost: 0, flowers: [],
+      got: 0, treats: 0, boost: 0, flowers: [], bag: dealBag(),
       px: 0, py: 0, vy: 0, squash: 0, slow: 0, hopped: false,
       items: [], spawnIn: 0.8, sinceFlower: 0, ladyIn: 7, lady: null,
       drops: [], bits: [], gift: 0, friend: null, endIn: 0, shown: false
@@ -72,13 +72,26 @@
   var groundY = function () { return H * 0.8; };
   var playerX = function () { return W * 0.24; };
 
+  // Eight flowers per walk, dealt from a shuffled bag: every kind shows up, and no two of the same come in a row.
+  function dealBag() {
+    var by = {}; FLOWERS.forEach(function (f) { by[f.img] = f; });
+    var base = ['tulip-red-1', 'tulip-red-2', 'tulip-yel-1', 'tulip-yel-2', 'tulip-yel-3', 'daisy', 'daisy'];
+    var extra = ['daisy', 'tulip-red-1', 'tulip-yel-2'][Math.floor(Math.random() * 3)];
+    var bag, tries = 0;
+    do {
+      bag = base.concat(extra).sort(function () { return Math.random() - 0.5; });
+      var clash = bag.some(function (n, i) { return i && n === bag[i - 1]; });
+      tries++;
+    } while (clash && tries < 60);
+    return bag.map(function (n) { return by[n]; });
+  }
   function spawn() {
     var gap = 1.5 + Math.random() * 1.3, r = Math.random();
     S.sinceFlower++;
     var type = (S.sinceFlower >= 2 && r < 0.62) || S.sinceFlower >= 4 ? 'flower' : (r < 0.8 ? 'puddle' : 'treat');
     if (type === 'flower') S.sinceFlower = 0;
     var it = { type: type, x: W + 120 * U, got: false, hit: false, id: Math.random() * 6 };
-    if (type === 'flower') { var f = FLOWERS[Math.floor(Math.random() * FLOWERS.length)]; it.img = f.img; it.h = f.h; it.stem = f.stem; }
+    if (type === 'flower') { if (!S.bag.length) S.bag = dealBag(); var f = S.bag.shift(); it.img = f.img; it.h = f.h; it.stem = f.stem; }
     if (type === 'puddle') { it.w = 118 + Math.random() * 40; }
     if (type === 'treat') { it.img = 'strawberry'; it.h = 34; it.lift = 84 + Math.random() * 16; }
     S.items.push(it);
@@ -167,12 +180,19 @@
   // The bouquet grows with every flower gathered: the whole flowers fan out from one point, small and tidy,
   // with paper and a bow at the bottom. `inPot` draws just the flowers (no paper) for the friend's pot.
   var SLOTS = [0, 1, -1, 2, -2, 3, -3, 4];
+  function arrange(list) {
+    var reds = list.filter(function (f) { return /red/.test(f.img); }), dais = list.filter(function (f) { return f.img === 'daisy'; }), yels = list.filter(function (f) { return /yel/.test(f.img); });
+    var out = reds.slice(0, 1), rest = [], i = 0;
+    while (dais.length || yels.length) { if (i % 2 === 0 && yels.length) rest.push(yels.shift()); else if (dais.length) rest.push(dais.shift()); else rest.push(yels.shift()); i++; }
+    // the second red goes to the first outer spot, then the rest alternate outward
+    return out.concat(reds.slice(1), rest);
+  }
   function drawBouquet(bx, by, scale, inPot) {
-    var n = S.flowers.length, k = 0.78 * scale;
+    var n = S.flowers.length, k = 0.78 * scale, arranged = arrange(S.flowers);
     var order = []; for (var i = 0; i < n; i++) order.push(i);
     order.sort(function (a, b) { return Math.abs(SLOTS[b]) - Math.abs(SLOTS[a]); });   // outer flowers first, middle on top
     order.forEach(function (i) {
-      var f = S.flowers[i], a = SLOTS[i] * 0.17 * (inPot ? 0.85 : 1), len = (30 - 2.5 * Math.abs(SLOTS[i])) * U * scale;
+      var f = arranged[i], a = SLOTS[i] * 0.17 * (inPot ? 0.85 : 1), len = (30 - 2.5 * Math.abs(SLOTS[i])) * U * scale;
       var ex = bx + Math.sin(a) * len, ey = by - Math.cos(a) * len;
       ctx.strokeStyle = f.stem || '#357a7c'; ctx.lineWidth = 3 * U * scale; ctx.lineCap = 'round';
       ctx.beginPath(); ctx.moveTo(bx, by - 2 * U); ctx.lineTo(ex, ey + 2 * U); ctx.stroke();
@@ -210,7 +230,7 @@
     hill(0.15, 70, groundY() - 10 * U, '#b9d9c0', 330);
     hill(0.35, 44, groundY() + 2 * U, '#9fcf8f', 210);
     drawGround();
-    if (S.friend) drawTree(S.friend.x + 10 * U);
+    if (S.friend) drawTree(S.friend.x + 34 * U);
     S.items.forEach(function (it) {
       if (it.type === 'puddle') drawPuddle(it.x, it.w, it.hit);
       else if (!it.got) { var sway = it.type === 'treat' ? 0.05 : Math.sin(S.t * 1.4 + it.id) * 0.03; pic(it.img, it.x, groundY() - (it.lift || 0) * U, it.h, sway); }
@@ -267,7 +287,7 @@
     }
     if (ending && S.friend) {
       var gap = S.friend.x - playerX() - 120 * U;
-      if (gap <= 0) { move = 0; S.mode = 'gift'; S.gift = 0; say('You gave the bouquet to your friend.'); chime(4); chime(0); }
+      if (gap <= 2 * U) { move = 0; S.mode = 'gift'; S.gift = 0; say('You gave the bouquet to your friend.'); chime(4); chime(0); }
       else move = Math.min(move, gap);
     }
     S.scroll += move;
@@ -322,7 +342,7 @@
   function frame(now) {
     if (!running) return;
     var dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now;
-    update(dt); drawScene();
+    try { update(dt); drawScene(); } catch (e) { if (window.console) console.warn('walk:', e); }
     raf = requestAnimationFrame(frame);
   }
   function start() { if (running) return; running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
@@ -411,7 +431,7 @@
   // For testing only: with ?walktest in the address, the game can be stepped by hand.
   if (/[?&]walktest/.test(location.search)) window.__walk = {
     tick: function (dt) { if (S) { update(dt); drawScene(); } },
-    hop: hop, state: function () { return S; }
+    hop: hop, freeze: stop, state: function () { return S; }
   };
 
   buildPicker();
